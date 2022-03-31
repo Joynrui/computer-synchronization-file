@@ -1,0 +1,89 @@
+JavaScript入门	
+	0. 教材
+		(1)电子版，分享在QQ群里
+		(2)网页版  	https://www.ryjiaoyu.com/book/details/8843
+		(3)参考资料 	https://www.w3school.com.cn/js/index.asp
+	1. JavaScript简介
+		解释型语言、基于对象的语言
+		HTML、CSS和JavaScript分别代表了结构（网页的骨架）、样式（网页的外观）和行为（网页的交互逻辑）。
+		复习HTML的基本结构，CSS的基本写法。
+		<html>
+			<head>
+				<meta charset="UTF-8" />
+				<title>这是网页标题</title>
+				<style type="text/css">
+					body{
+						color: red;
+						background-color: #aaa;
+					}
+				</style>
+				<script type="text/JavaScript">
+					alert("JavaScript语句"); 
+				</script>
+			</head>
+			<body>
+				这是网页的正文。
+			</body>
+		</html>
+	2. 开发工具
+		解释器：浏览器
+		代码编辑器：NotePad++、HBuilder、Dreamweaver。
+	3. JavaScript引入方式
+		嵌入式、外链式和行内式
+		嵌入式：
+			<script type="text/JavaScript">
+				JavaScript语句; 
+			</script>
+		外链式:
+			<script type="text/JavaScript" src="JavaScript文件的路径"></script>
+		行内式：
+			<a href="JavaScript:alert('Hello');">test</a>
+			<input type="button" onclick="alert('Hello');" value="test">
+	4. css的引入方式
+		行内式：
+			<p style="font-size: 16px; "> CSS以HTML为基础，提供了美化网页的功能。</p>
+		嵌入式：
+			<style type="text/css">
+				body {
+					color:#F00;
+					background-color: blue;
+				}
+			</style>
+		链入式：
+			<link href="CSS 文件路径" type = "text/css" rel="stylesheet" />
+		导入式
+			<style type="text/css">
+				@import url("CSS 文件路径");
+			</style>
+JavaScript基本语法
+	1. JavaScript常用输出语句
+		alert("什么是幸福");//求你夸夸我，什么是幸福，我想我妈了！
+		document.write("求你夸夸我");
+		console.log("回家好难呀！");
+	2. JavaScript的注释
+		//单行注释
+		/*多行注释*/
+	3. JavaScript的变量
+		JavaScript是一种弱类型的语言，即数据（变量或常量）在定义时不必指明数据类型，其数据类型可以通过为数据赋值时根据其值来确定是什么类型。
+		变量类型(基本数据类型)：数值型Number、字符串型String、布尔类型Boolean、空型Null、未定义型Undefined
+		var name="zhangSan";
+	4. JavaScript的常量
+		使用 const 关键字声明常量
+		const PI = 3.14;
+	
+note:
+	1. 注释
+		现阶段多多写注释。
+		注释只写做什么，不写怎么做的。
+	2. 标识符
+		由数字、字母、下划线和美元$符号来构成，首字符不能是数字。
+		见名识意
+		一行只写一个表达式，并且每个表达式后面都有;结尾
+	
+		
+		
+		
+		
+		
+		
+	
