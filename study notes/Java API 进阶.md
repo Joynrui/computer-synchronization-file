@@ -1022,6 +1022,36 @@ Generic type parameters will give you a prompt when you want to pass the paramet
 
 #### ? Wildcard type
 
+- Upper Bounded Wildcards：
+
+```java
+import java.util.Arrays;
+import java.util.List;
+
+public class UpperBoundedWildcardsTest {
+    public static void main(String[] args) {
+        // Upper Bounded Integer List
+        List<Integer> list1 = Arrays.asList(2, 3, 4, 5);
+        // printing the sum of elements in list1
+        System.out.println("Total sum is: " + sum(list1));
+
+        // Double List
+        List<Double> list2 = Arrays.asList(2.1, 3.1, 4.1, 5.1);
+        // printing the sum of elements in list2
+        System.out.println("Total sum is: " + sum(list2));
+
+    }
+
+    private static Double sum(List<? extends Number> list) {
+        double sum = 0.0;
+        for (Number i : list) {
+            sum += i.doubleValue();
+        }
+        return sum;
+    }
+}
+```
+
 
 
 ### Java 集合框架
