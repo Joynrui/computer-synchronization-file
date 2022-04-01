@@ -1052,6 +1052,59 @@ public class UpperBoundedWildcardsTest {
 }
 ```
 
+- Lower Bounded Wildcards:
+
+It is expressed using the wildcard character (‘?’), followed by the super keyword, followed by its lower bound: <? super A>. 
+
+```java
+import java.util.Arrays;
+import java.util.List;
+
+public class LowerBoundedWildcardsTest {
+    public static void main(String[] args) {
+        // Lower Bounded Integer List
+        List<Integer> list1 = Arrays.asList(4, 5, 6, 7);
+
+        // Integer list object is being passed
+        System.out.println(list1);
+
+        // Number List
+        List<Number> list2= Arrays.asList(4, 5, 6, 7);
+
+        // Integer list object is being passed
+        System.out.println(list2);
+    }
+
+    private static void printOnlyIntegerClassOrSuperClass(List<? super Integer> list) {
+        System.out.println(list);
+    }
+}
+```
+
+
+
+- Unbounded Wildcards:
+
+```java
+mport java.util.Arrays;
+import java.util.List;
+
+public class UnboundedWildcardsTest {
+    public static void main (String[] args) {
+        List<Integer> list1 = Arrays.asList(12, 34, 45, 56);
+        System.out.println(list1);
+
+        List<Double> list2 = Arrays.asList(1.2, 3.4, 4.5, 5.6);
+        System.out.println(list2);
+
+    }
+    // This function uses unbounded wildcards
+    public static void printList(List<?> list) {
+        System.out.println(list);
+    }
+}
+```
+
 
 
 ### Java 集合框架
@@ -1063,7 +1116,7 @@ Java 集合大致可以分为两大体系，一个是 Collection，另一个是 
 
 **java.util.Collection 下的接口和继承类关系简易结构图：**
 
-![img](http://www.justdojava.com/assets/images/2019/java/image-jay/c25904af60394296a36c41d0c3749ab4.jpg)
+![img](http://www.justdojava.com/assets/images/2019/java/image-jay/c25904af60394296a36c41d0c3749ab4.jpg) 	
 
 **java.util.Map 下的接口和继承类关系简易结构图：**
 
