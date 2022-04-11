@@ -324,3 +324,30 @@ arr = newArr;
 
 #### 3.2.2 Simple Linked List  简单链表
 
+链表为一系列节点组成，节点不必在内存中相连。每一个节点包含到该元素后面的节点的链，称next链。
+
+**双链表：** 每一个节点都持有一个指向它在表中的前驱节点的链。
+
+
+
+### 3.3  List in Collection API  
+
+
+
+#### **3.3.2 Iterator Interface** 
+
+The main advantage of the Iterator `remove` method is that collection `remove` should find the item which will be deleted. In some cases, the Iterator is more effective than the Collection.  We use Iterator when needed. However, if Iterator called its own remove method, this Iterator is legal.  
+
+
+
+Notice： If you want to change the structure of the collection (like use add, remove, clear method), this collection will be illegal. (And it will throw a `ConcurrentModificationException` after this situation. )
+
+ 
+
+#### **3.3.3 List Interface, ArrayList Class and LinkedList Class**
+
+
+
+ArrayList class's advantage is that calls to get and set use constant time. But it's not effective in some situations. Such as adding the new items into the ArrayList, unless the change is made at the end of the ArrayList. And the LinkedList class provides a doubly-linked list implementation of the List ADT.
+
+LinkedList class's advantage is that adding the new items and deleting the old items both have a small overhead(开销). (The default assumes that the position of the variable is known) It means that adding and deleting the items at the front of the LinkedList use operate in constant time.
