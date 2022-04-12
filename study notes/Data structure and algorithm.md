@@ -351,3 +351,146 @@ Notice： If you want to change the structure of the collection (like use add, r
 ArrayList class's advantage is that calls to get and set use constant time. But it's not effective in some situations. Such as adding the new items into the ArrayList, unless the change is made at the end of the ArrayList. And the LinkedList class provides a doubly-linked list implementation of the List ADT.
 
 LinkedList class's advantage is that adding the new items and deleting the old items both have a small overhead(开销). (The default assumes that the position of the variable is known) It means that adding and deleting the items at the front of the LinkedList use operate in constant time.
+
+
+
+### 3.4 The implementation of the ArrayList class
+
+
+
+This is an example program as follows:
+
+**MyArrayList**    *p47*
+
+```java
+package chapter3;
+
+import java.util.Iterator;
+
+/**
+ * The implement of ArrayList class.
+ */
+public class MyArrayList<E> implements Iterable<E> {
+
+    private static final int DEFAULT_CAPACITY = 10;
+
+    private int theSize;
+    private E[] theItems;
+
+    public MyArrayList() {
+        doClear();
+    }
+
+    public void clear() {
+        doClear();
+    }
+
+    private void doClear() {
+        theSize = 0;
+        ensureCapacity(DEFAULT_CAPACITY);
+    }
+
+    public int size() {
+        return theSize;
+    }
+
+    public boolean isEmpty() {
+        return size() == 0;
+    }
+
+    // change array size
+    public void trimToSize() {
+        ensureCapacity(size());
+    }
+
+    public E get(int index) {
+        if (index < 0 || index >= size()) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        return theItems[index];
+    }
+
+    public E set(int index, E newValue) {
+        if (index < 0 || index >= size()) {
+            throw new ArrayIndexOutOfBoundsException();
+        }
+        E old = theItems[index];
+        theItems[index] = newValue;
+        return old;
+    }
+
+    // initialize the arrayList size
+    public void ensureCapacity(int newCapacity) {
+        // Shrink the array size
+        if (newCapacity < theSize) {
+            return;
+        }
+        /*  It is unlawful to create generic array.
+            We can create an array of generic type bounds and then use an array for type conversion.
+            This will generate a compile warning, but is unavoidable in the implementation of generic collections.
+        */
+        E[] old = theItems;
+        theItems = (E[]) new Object[newCapacity];
+        for (int i = 0; i < size(); i++) {
+            theItems[i] = old[i];
+        }
+    }
+
+    // add method 1
+    public boolean add(E x) {
+        add(size(), x);
+        return true;
+    }
+
+    // add method 2
+    public void add(int index, E x) {
+        if (theItems.length == size()) {
+            ensureCapacity(size() * 2 + 1);
+            for (int i = theSize; i > index; i--) {
+                theItems[i] = theItems[i - 1];
+            }
+            theItems[index] = x;
+            theSize++;
+        }
+    }
+
+
+    public E remove(int index) {
+        E removedItem = theItems[index];
+        for (int i = index; i < size() - 1; i++) {
+            theItems[i] = theItems[i + 1];
+        }
+        theSize--;
+        return removedItem;
+    }
+
+
+    @Override
+    public java.util.Iterator<E> iterator() {
+        return new ArrayListIterator();
+    }
+
+    private class ArrayListIterator implements java.util.Iterator<E> {
+
+        private int current = 0;
+
+        @Override
+        public boolean hasNext() {
+            return current < size();
+        }
+
+        public E next() {
+            if (!hasNext()) {
+                throw new java.util.NoSuchElementException();
+            }
+            return theItems[current++];
+        }
+
+        public void remove() {
+            MyArrayList.this.remove(--current);
+        }
+    }
+}
+
+```
+

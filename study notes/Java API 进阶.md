@@ -1014,7 +1014,7 @@ product.notifyAll();
 
 #### Generic programming
 
-**Specialty:**  Generic programming makes your program can multiplex objects of various types. Generic add a limit when you cite a class.
+**Speciality:**  Generic programming makes you program can multiplex objects of various types. Generic add a limit when you cite a class.
 
 Generic type parameters will give you a prompt when you want to pass the parameters. Generic is a clear way that it makes the program have a compile error rather than a runtime cast exception. It makes the program easier to understand and safer.
 
@@ -1104,6 +1104,24 @@ public class UnboundedWildcardsTest {
     }
 }
 ```
+
+
+
+**notice：** 
+
+ **E** - Element (在集合中使用，因为集合中存放的是元素)
+
+ **T** - Type（Java 类）
+
+ **K** - Key（键）
+
+ **V** - Value（值）
+
+ **N** - Number（数值类型）
+
+**？** - 表示不确定的java类型
+
+
 
 
 
