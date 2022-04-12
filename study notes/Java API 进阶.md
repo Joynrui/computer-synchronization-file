@@ -1109,7 +1109,7 @@ public class UnboundedWildcardsTest {
 
 ### Java 集合框架
 
-Java 集合大致可以分为两大体系，一个是 Collection，另一个是 Map；
+Java 集合大致可以分为两大体系，一个是 `Collection`，另一个是 `Map`；
 
 - Collection ：主要由List、Set、Queue接口组成，List代表有序、重复的集合；其中Set代表无序、不可重复的集合；Java 5 又增加了Queue体系集合，代表一种队列集合实现。
 - Map：则代表具有映射关系的键值对集合。
