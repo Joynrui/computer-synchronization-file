@@ -288,7 +288,7 @@ eg： algorithm 4  p30
 
 
 
-## Lists, stacks and queues 表、栈和队列  
+## Lists, stacks, and queues 表、栈和队列  
 
 
 
@@ -494,3 +494,38 @@ public class MyArrayList<E> implements Iterable<E> {
 
 ```
 
+
+
+#### 3.4.2 The Iterator and Java Nested and Inner Classes
+
+1. *p50*
+
+**postfix ++ operator** and **prefix ++ operator** used in `arr[idx]`   (`arr[++idx] arr[idx++]`)
+
+2. *p50*
+
+**package visibility** 
+
+
+
+- Nested class  *p50*
+
+Make the `ArrayListIterator` class a nested class, When we make `ArraylistIterator` a nested class, it is placed inside of another class (in this case `MyArrayList`) which is the **outer class**. We must use the word **`static`** to signify that it is nested; without **`static`**, we will get an inner class, which is sometimes good and sometimes bad.  
+
+- Inner class *p51*
+
+When you declare an inner class, the compiler adds an implicit reference to the outer class object that caused the inner class object's construction. If the name of the outer class is `Outer`, then the implicit reference is `Outer.this.` Thus if `ArrayListIterator` is declared as an inner class, without the static, then `MyArrayList.this` and `theList` would both be referencing the same `MyArrayList`. Thus `theList` would be redundant and could be removed.
+
+
+
+
+
+------
+
+
+
+### 3.5 Implementation of LinkedList
+
+Doubly linked list 
+
+These extra nodes are sometimes known as **sentinel nodes**; specifically, the node at the front is sometimes known as a **header node**;  and the node at the end is sometimes known as a **tail node**.
