@@ -529,3 +529,291 @@ When you declare an inner class, the compiler adds an implicit reference to the 
 Doubly linked list 
 
 These extra nodes are sometimes known as **sentinel nodes**; specifically, the node at the front is sometimes known as a **header node**;  and the node at the end is sometimes known as a **tail node**.
+
+
+
+```java
+package chapter3;
+
+import java.util.ConcurrentModificationException;
+
+/**
+ * The implementation of the LinkedList
+ */
+public class MyLinkedList<T> implements Iterable<T> {
+
+
+    // node generic class
+    private static class Node<T> {
+        public Node(T d, Node<T> p, Node<T> n) {
+            data = d;
+            prev = p;
+            next = n;
+        }
+
+        public T data;
+        public Node<T> prev;
+        public Node<T> next;
+    }
+
+    public MyLinkedList() {
+        doClear();
+    }
+
+    public void clear() {
+        doClear();
+    }
+
+    private void doClear() {
+        // Create a begin marker and a end marker.Set the size equals 0;
+        beginMarker = new Node<T>(null, null, null);
+        endMarker = new Node<T>(null, beginMarker, null);
+        beginMarker.next = endMarker;
+
+        theSize = 0;
+        modCount++;
+    }
+
+    public int size() {
+        return theSize;
+    }
+
+    public boolean isEmpty() {
+        return size() == 0;
+    }
+
+    public boolean add(T x) {
+        add(size(), x);
+        return true;
+    }
+
+    public void add(int idx, T x) {
+        addBefore(getNode(idx, 0, size()), x);
+    }
+
+    public T get(int idx) {
+        return getNode(idx).data;
+    }
+
+    public T set(int idx, T newVal) {
+        Node<T> p = getNode(idx);
+        T oldVal = p.data;
+        p.data = newVal;
+        return oldVal;
+    }
+
+    public T remove(int idx) {
+        return remove(getNode(idx));
+    }
+
+    /**
+     * Add an item to this collection, at specified position p;
+     * Items at or after that position are slid one position higher.
+     *
+     * @param p Node to add before
+     * @param x any object
+     * @thorws IndexOutOfBoundsException if idx is not between 0 and size().
+     */
+    private void addBefore(Node<T> p, T x) {
+        /*
+            This part can be short like this:
+
+            1>
+            Node newNode = new Node(x, p.prev, p);
+            p.prev = p.prev.next = newNode;
+
+            2>
+            p.prev = p.prev.next = new Node(x, p.prev, p);
+
+         */
+        Node<T> newNode = new Node<>(x, p.prev, p);
+        newNode.prev.next = newNode;
+        p.prev = newNode;
+        theSize++;
+        modCount++;
+    }
+
+    /**
+     * Remove the object contains in Node p;
+     *
+     * @param p the Node containing the object.
+     * @return the item was removed from the collection.
+     */
+    private T remove(Node<T> p) {
+        p.next.prev = p.prev;
+        p.prev.next = p.next;
+        theSize--;
+        modCount++;
+
+        return p.data;
+    }
+
+
+    /**
+     * Gets the Node at position idx, which must range from 0 to size() - 1.
+     *
+     * @param idx idx index to search at.
+     * @return internal node corresponding to idx.
+     * @throws IndexOutOfBoundsException if idx is not
+     *                                   between 0 and size() - 1, inclusive.
+     */
+    private Node<T> getNode(int idx) {
+        return getNode(idx, 0, size() - 1);
+    }
+
+    /**
+     * Gets the Node at position idx, which must range from lower to upper.
+     *
+     * @param idx   index to search at.
+     * @param lower Lowest valid index.
+     * @param upper Highest valid index.
+     * @return internal node corresponding to idx.
+     * @throws IndexOutOfBoundsException if id is not
+     *                                   between lower and upper, inclusive.
+     */
+    private Node<T> getNode(int idx, int lower, int upper) {
+        Node<T> p;
+
+        if (idx < lower || idx > upper) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        if (idx < size() / 2) {
+            p = beginMarker.next;
+            for (int i = 0; i < idx; i++) {
+                p = p.next;
+            }
+        } else {
+            p = endMarker;
+            for (int i = size(); i > idx; i--) {
+                p = p.prev;
+            }
+        }
+
+        return p;
+    }
+
+    public java.util.Iterator<T> iterator() {
+        return new LinkedListIterator();
+    }
+
+    private class LinkedListIterator implements java.util.Iterator<T> {
+        private Node<T> current = beginMarker.next;
+        private int expectedModCount = modCount;
+        private boolean okToRemove = false;
+
+
+        @Override
+        public boolean hasNext() {
+            return current != endMarker;
+        }
+
+        public T next() {
+            if (modCount != expectedModCount) {
+                throw new java.util.ConcurrentModificationException();
+            }
+            if (!hasNext()) {
+                throw new java.util.NoSuchElementException();
+            }
+
+            T nextItem = current.data;
+            current = current.next;
+            okToRemove = true;
+            return nextItem;
+        }
+
+        public void remove() {
+            if (modCount != expectedModCount) {
+                throw new ConcurrentModificationException();
+            }
+            if (!okToRemove) {
+                throw new IllegalStateException();
+            }
+
+            MyLinkedList.this.remove(current.prev);
+            expectedModCount++;
+            okToRemove = false;
+
+        }
+    }
+
+    private int theSize;
+    private int modCount = 0;
+    private Node<T> beginMarker;
+    private Node<T> endMarker;
+
+
+}
+
+```
+
+
+
+------
+
+
+
+### 3.6 The Stack ADT
+
+#### 3.6.1 Stack Model
+
+- Stack is sometimes known as **LIFO (last in, first out)** lists. 
+
+- The general model is that there is some element that is at the top of the stack, and it is the only element that is visible.
+
+
+
+#### 3.6.2 Implementation of Stacks
+
+
+
+**Linked List Implementation of Stacks**
+
+
+
+**Array Implementation of Stacks**
+
+
+
+
+
+#### 3.6.3 Applications
+
+
+
+- Balancing Symbols
+
+- **Postfix Expressions**
+
+Postfix notation, or reverse Polish notation, the easiest way to do this is to use the stack. When a number is seen, it is pushed onto the stack; when an operator is seen, the operator is applied to the two numbers(symbols) that are popped from the stack, and the result is pushed onto the stack. 
+
+
+
+##### Infix to Postfix Conversion (important)
+
+
+
+- 几个注意事项
+
+1. 中缀转后缀时，需要一个读取域、一个栈及一个输出域；
+2. 读取域中存放将要被转换的中缀表达式（标准表达式）；
+3. 数据去向基本路线：读取域 ------> 栈（停留或不停留） ------> 输出域；
+4. 所有操作数都将从读取域经过堆栈并直接输出到输出域；
+5. 运算操作符（即加减乘除等）从读取域被读取并进入堆栈；
+6. 当堆栈为空时，读取到操作符时直接将操作符压入堆栈；
+7. 当堆栈不为空时，**比较栈顶元素（栈顶操作符）与被读取（current）到的操作符的优先级（precedence），通过操作符的优先级判断即将进行的操作**；***若栈顶操作符的优先级低于被读取到的操作符的优先级，则不输出栈顶操作符，直接将读取到的操作符压入堆栈；若栈顶操作符的优先级高于被读取到的操作符的优先级，则先将栈顶操作符输出，再将被读取到的操作符压入堆栈***；
+
+```java
+Stack<E> stack = new Stack<>();
+if (operatorStackTop.precedence() < operatorRead.precedence()) {
+	stack.push(operatorRead);     
+}
+
+if (operatorStackTop.precedence() > operatorRead.precedence()) {
+    outputField = operatorStackTop;
+    stack.push(operatorRead);
+}
+```
+
+8. 关于圆括号：圆括号进行特殊处理。一般而言，**（ 左括号具有最高优先级**，当进行压栈时，无论栈顶是什么操作符，（的优先级都是较高的；**当读取到一个）右括号时，将堆栈中（之上所有的操作符全部输出**，最终舍弃左右括号。
+
