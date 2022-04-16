@@ -787,6 +787,84 @@ public class MyLinkedList<T> implements Iterable<T> {
 
 Postfix notation, or reverse Polish notation, the easiest way to do this is to use the stack. When a number is seen, it is pushed onto the stack; when an operator is seen, the operator is applied to the two numbers(symbols) that are popped from the stack, and the result is pushed onto the stack. 
 
+```java
+package chapter3;
+
+/**
+ * Java program to evaluate value of a postfix
+ * expression having multiple digit operands
+ */
+
+
+import java.util.Stack;
+
+class PostfixExpression {
+    // Method to evaluate value of a postfix expression
+    public static int evaluatePostfix(String exp) {
+        //create a stack
+        Stack<Integer> stack = new Stack<>();
+
+        // Scan all characters one by one
+        for (int i = 0; i < exp.length(); i++) {
+            char c = exp.charAt(i);
+
+            if (c == ' ') {
+                continue;
+            }
+                // If the scanned character is an operand(number here),
+                // extract the number
+                // Push it to the stack.
+            else if (Character.isDigit(c)) {
+                int n = 0;
+
+                //extract the characters and store it in num
+                while (Character.isDigit(c)) {
+                    n = n * 10 + (int) (c - '0');
+                    i++;
+                    c = exp.charAt(i);
+                }
+                i--;
+
+                //push the number in stack
+                stack.push(n);
+            }
+
+            // If the scanned character is an operator, pop two
+            // elements from stack apply the operator
+            else {
+                int val1 = stack.pop();
+                int val2 = stack.pop();
+
+                switch (c) {
+                    case '+':
+                        stack.push(val2 + val1);
+                        break;
+
+                    case '-':
+                        stack.push(val2 - val1);
+                        break;
+
+                    case '/':
+                        stack.push(val2 / val1);
+                        break;
+
+                    case '*':
+                        stack.push(val2 * val1);
+                        break;
+                }
+            }
+        }
+        return stack.pop();
+    }
+
+    // Driver program to test above functions
+    public static void main(String[] args) {
+        String exp = "100 200 + 2 / 5 * 7 +";
+        System.out.println(evaluatePostfix(exp));
+    }
+}
+```
+
 
 
 ##### Infix to Postfix Conversion (important)
@@ -816,4 +894,111 @@ if (operatorStackTop.precedence() > operatorRead.precedence()) {
 ```
 
 8. 关于圆括号：圆括号进行特殊处理。一般而言，**（ 左括号具有最高优先级**，当进行压栈时，无论栈顶是什么操作符，（的优先级都是较高的；**当读取到一个）右括号时，将堆栈中（之上所有的操作符全部输出**，最终舍弃左右括号。
+
+
+
+eg:
+
+```java
+package chapter3;
+
+import java.util.Scanner;
+import java.util.Stack;
+
+public class InfixToPostfix {
+
+    /**
+     * Checks if the input is operator or not
+     * @param c input to be checked
+     * @return true if operator
+     */
+    private boolean isOperator(char c){
+        if(c == '+' || c == '-' || c == '*' || c =='/' || c == '^')
+            return true;
+        return false;
+    }
+
+    /**
+     * Checks if c2 has same or higher precedence than c1
+     * @param c1 first operator
+     * @param c2 second operator
+     * @return true if c2 has same or higher precedence
+     */
+    private boolean checkPrecedence(char c1, char c2){
+        if((c2 == '+' || c2 == '-') && (c1 == '+' || c1 == '-'))
+            return true;
+        else if((c2 == '*' || c2 == '/') && (c1 == '+' || c1 == '-' || c1 == '*' || c1 == '/'))
+            return true;
+        else if((c2 == '^') && (c1 == '+' || c1 == '-' || c1 == '*' || c1 == '/'))
+            return true;
+        else
+            return false;
+    }
+
+    /**
+     * Converts infix expression to postfix
+     * @param infix infix expression to be converted
+     * @return postfix expression
+     */
+    public String convert(String infix){
+        System.out.printf("%-8s%-10s%-15s\n", "Input","Stack","Postfix");
+        String postfix = "";  //equivalent postfix is empty initially
+        Stack<Character> s = new Stack<>();  //stack to hold symbols
+        s.push('#');  //symbol to denote end of stack
+
+        System.out.printf("%-8s%-10s%-15s\n", "",format(s.toString()),postfix);
+
+        for(int i = 0; i < infix.length(); i++){
+            char inputSymbol = infix.charAt(i);  //symbol to be processed
+            if(isOperator(inputSymbol)){  //if a operator
+                //repeatedly pops if stack top has same or higher precedence
+                while(checkPrecedence(inputSymbol, s.peek()))
+                    postfix += s.pop();
+                s.push(inputSymbol);
+            }
+            else if(inputSymbol == '(')
+                s.push(inputSymbol);  //push if left parenthesis
+            else if(inputSymbol == ')'){
+                //repeatedly pops if right parenthesis until left parenthesis is found
+                while(s.peek() != '(')
+                    postfix += s.pop();
+                s.pop();
+            }
+            else
+                postfix += inputSymbol;
+            System.out.printf("%-8s%-10s%-15s\n", ""+inputSymbol,format(s.toString()),postfix);
+        }
+
+        //pops all elements of stack left
+        while(s.peek() != '#'){
+            postfix += s.pop();
+            System.out.printf("%-8s%-10s%-15s\n", "",format(s.toString()),postfix);
+
+        }
+
+        return postfix;
+    }
+
+    /**
+     * Formats the input  stack string
+     * @param s It is a stack converted to string
+     * @return formatted input
+     */
+    private String format(String s){
+        s = s.replaceAll(",","");  //removes all , in stack string
+        s = s.replaceAll(" ","");  //removes all spaces in stack string
+        s = s.substring(1, s.length()-1);  //removes [] from stack string
+
+        return s;
+    }
+
+    public static void main(String[] args) {
+        InfixToPostfix obj = new InfixToPostfix();
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Infix : \t");
+        String infix = sc.next();
+        System.out.print("Postfix : \t"+obj.convert(infix));
+    }
+}
+```
 
