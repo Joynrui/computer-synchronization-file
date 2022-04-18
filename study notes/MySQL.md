@@ -628,9 +628,18 @@ enum(value1, value2, value3,...) //  value 只能为枚举类型中的一个值
 
 notice 枚举类型存储值时，使用整数来存储。这种方法可以大幅降低存储值是占用的大量空间。
 
+insert 时 可以直接输入整数来插入下标所对应的值（数组）
+
 10. set类型
 
 SET(val1, val2, val3, ...)  ： A string object that can have 0 or more values, chosen from a list of possible values. You can list up to 64 values in a SET list 
+
+```mysql
+insert into "table name"('value1, value2,...');
+```
+
+
+
 11. 时间日期类型
 
 实际应用当中一定要使用时间field
@@ -647,6 +656,8 @@ primary key 若设置为auto_increment, 则删除一行值后则不能再次使�
 About InnoDB and MyISAM, note that you cannot reset the counter to a value less than or equal to any that have already been used. For MyISAM, if the value is less than or equal to the maximum value currently in the AUTO_INCREMENT column, the value is reset to the current maximum plus one. For InnoDB, if the value is less than the current maximum value in the column, no error occurs and the current sequence value is not changed.
 
 2. Primary key主键作用以及企业用途
+
+一个表只能有一个主键，但一个主键可以有多个字段（field）.
 
 3. 删除主键、组合键、选择主键
 
@@ -692,13 +703,46 @@ unique// 唯一键关键字
 4. 唯一键扩展
 5. 主键和唯一键区别
 
+- 主键可能由多个字段构成，而唯一键是一个字段。（论坛id和昵称）
+- 一张表有一个主键，可以有多个唯一键。
+- 主键可能会被其他表引用，而唯一键不会。
+- 主键不能为null, 唯一键可以为null. 
+
+6. sql内注释代码注释
+
+- 单行注释：  
+
+  ```mysql
+  create table t_1 (
+  id int(10), # This is the comment about this row.
+  );
+  ```
+
+- 多行注释：
+
+```mysql
+create table t_2(
+id int(10) not null primary key , 
+/*
+    This is the primary key in the table.
+*/
+);
+```
+
+-  comment :
+
+```mysql
+create table if not exists t_3 (
+id int(10) primary key auto_increment comment 'This is the comment about this field.'
+);
+```
 
 
 
-8. sql内注释代码注释
-9. 数据库完整性
-10. 引用数据表的完整性问题，抛出外键的概念
-11. 外键
+
+8. 数据库完整性
+9. 引用数据表的完整性问题，抛出外键的概念
+10. 外键
 
 **外来键**又称**外部键**，是指在关联式资料库中，每个资料表都是由关联来连系彼此的关系，父资料表（Parent Entity）的[主键](https://zh.wikipedia.org/wiki/主键)（Primary Key）会放在另一个资料表，当做属性以建立彼此的关联，而这个属性就是外来键。
 
