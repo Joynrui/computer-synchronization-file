@@ -202,6 +202,18 @@ $ git push -u origin main
 
 关于 git push origin main  与 git push -u origin main 的区别 ：[link](https://www.jianshu.com/p/dd864fcee643)
 
+
+
+## 强制本地与远端同步
+
+```
+      git fetch --all
+      git reset  --hard origin/main 
+      git pullx
+```
+
+
+
 ## 关于因ssh 问题引发的无法提交文件的解决方法
 
 Sometimes, firewalls refuse to allow SSH connections entirely. If using [HTTPS cloning with credential caching](https://docs.github.com/en/github/getting-started-with-github/caching-your-github-credentials-in-git) is not an option, you can attempt to clone using an SSH connection made over the HTTPS port. Most firewall rules should allow this, but proxy servers may interfere.
