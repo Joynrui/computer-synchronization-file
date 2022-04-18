@@ -214,6 +214,55 @@ $ git push -u origin main
 
 
 
+
+
+## 提示Your branch is up-to-date with 'origin/master的解决方法
+
+1、新建一个分支
+
+git branch newBranch
+
+2、检查分支是否创建成功
+
+git branch
+
+3、然后切换到新建的分支
+
+git checkout newBranch
+
+4、将改动提交到新分支
+
+git add .
+git commit -m "the new branch"
+
+
+5、然后git status检查是否提交新分支成功
+
+
+6、切回到主分支
+
+git checkout master
+
+7、新分支提交的改动合并到主分支
+
+git merge newBranch
+
+
+
+8、然后就可以push代码到远端仓库
+
+git push -u origin master
+
+如果不放心，在这里可以再git status检查下
+
+9、删除新分支
+
+git branch -D newBranch
+
+Done，完美解决问题。
+
+原文链接：https://blog.csdn.net/qq_33912215/article/details/89000254
+
 ## 关于因ssh 问题引发的无法提交文件的解决方法
 
 Sometimes, firewalls refuse to allow SSH connections entirely. If using [HTTPS cloning with credential caching](https://docs.github.com/en/github/getting-started-with-github/caching-your-github-credentials-in-git) is not an option, you can attempt to clone using an SSH connection made over the HTTPS port. Most firewall rules should allow this, but proxy servers may interfere.
