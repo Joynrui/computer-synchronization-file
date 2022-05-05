@@ -1004,5 +1004,369 @@ public class InfixToPostfix {
 
 
 
+##### Method transfer
+
+Method transfer is used to execute with a stack. All of the store information is called **"activation record"**, or **"stack frame"**.
+
+**Tail recursion**
+
+关于尾递归
+
+```
+function story() {
+
+从前有座山，山上有座庙，庙里有个老和尚，一天老和尚对小和尚讲故事：story() // 尾递归，进入下一个函数不再需要上一个函数的环境了，得出结果以后直接返回。
+
+}
+
+function story() {
+
+从前有座山，山上有座庙，庙里有个老和尚，一天老和尚对小和尚讲故事：story()，小和尚听了，找了块豆腐撞死了 // 非尾递归，下一个函数结束以后此函数还有后续，所以必须保存本身的环境以供处理返回值。
+
+}
+```
 
 
+
+The recursive routine is always being removed completely. Generally speaking, recursive programs are often slower than equivalence routines. But at the same time, the faster execution speed brings the loss of the clear logic of the recursive program.
+
+
+
+------
+
+
+
+### 3.7 Queue ADT
+
+#### 3.7.1 Queue model
+
+1. enqueue: Add an element at the "**rear**" of the queue.
+2. dequeue: Remove an element at the "**front**" of the queue.
+
+#### 3.7.2 Array implement of Queue
+
+
+
+##### LinkedList implement Queue
+
+
+
+
+
+## Tree
+
+Binary search tree, you will see the following purpose of the tree:
+
+- Implement file systems in several popular operating systems
+- Evaluate the value of an arithmetic expression
+- Perform various search operations in O(log N) average time
+- TreeSet class, TreeMap class
+
+
+
+### 4.1 Preliminary knowledge
+
+Some keywords:
+
+A tree consists of  N nodes and N-1 edges.
+
+- **root**
+- **edge**
+- **child**
+- **parent**
+- **leaf**
+- **siblings(兄弟)**
+- **grandparent**
+- **grandchild**
+- **path**: a sequence about *n1* to *nk*. 
+- **length**: how many edges in the path
+- **depth**:  the length of the unique path form root to *ni*.
+- The depth of a tree is equal to the depth of its deepest leaf
+- **height**: The length of the longest path from ni to a leaf
+- **ancestor**: If there is a path from n1 to n2, then n1 is an ancestor of n2.
+- **proper ancestor**: If n1 is not equal to n2, then n1 is the true ancestor of n2 and n2 is the true descendant of n1
+
+
+
+------
+
+
+
+#### 4.1.1 implementation of the tree
+
+
+
+- Place all the sons of each node in the linked list of tree nodes    将每个节点的所有的儿子都放在树节点的链表中
+
+
+
+#### 4.1.2 application and traversal of the tree
+
+implement file system 
+
+A tree routine example:
+
+```java
+class TreeNode {
+	Object element;
+    TreeNode firstChild;
+    TreeNode nextSibling;
+}
+```
+
+**preorder traversal**
+
+**postorder traversal**
+
+
+
+### 4.2 Binary tree
+
+The binary tree uses in designing compiler.
+
+- The average depth of a binary tree is
+
+$$
+O(\sqrt{N})
+$$
+
+- The average depth of a binary search tree is 
+
+  
+  $$
+  O(logN)
+  $$
+  
+
+#### 4.2.1 implement
+
+a routine example of the binary tree:
+
+```java
+class BinaryNode {
+    Object element;
+    BinaryNode left;
+    BinaryNode right;
+}
+```
+
+
+
+#### 4.2.2 Expression tree
+
+keyword: nodes are operators,  leaves are operands.  
+
+
+
+### The Search Tree ADT - Binary Search Trees
+
+The property that makes a binary tree into a binary search tree is that for every node X, in the tree, the values of all the items in its left subtree are smaller than the item in X, and the values of all the items in its right subtree are larger than the item in X.
+
+
+
+Example routine:
+
+```java
+package chapter4;
+
+import java.nio.BufferUnderflowException;
+
+public class BinarySearchTree<T extends Comparable<? super T>> {
+    // node nested class
+    private static class BinaryNode<T> {
+        // constructors
+        // leaves
+        BinaryNode(T theElement) {
+            this(theElement, null, null);
+        }
+
+        // nodes
+        BinaryNode(T theElement, BinaryNode<T> lt, BinaryNode<T> rt) {
+            element = theElement;
+            left = lt;
+            right = rt;
+        }
+
+        T element;
+        BinaryNode<T> left;
+        BinaryNode<T> right;
+    }
+
+    private BinaryNode<T> root;
+
+    public BinarySearchTree() {
+        root = null;
+    }
+
+    public void makeEmpty() {
+        root = null;
+    }
+
+    public boolean isEmpty() {
+        return root == null;
+    }
+
+    public boolean contains(T x) {
+        return contains(x, root);
+    }
+
+    public T findMin() {
+        if (isEmpty()) {
+            throw new BufferUnderflowException();
+        }
+
+        return findMin(root).element;
+    }
+
+    public T findMax() {
+        if (isEmpty()) {
+            throw new BufferUnderflowException();
+        }
+
+        return findMax(root).element;
+    }
+
+    public void insert(T x) {
+        root = insert(x, root);
+    }
+
+    public void remove(T x) {
+        root = remove(x, root);
+    }
+
+    /**
+     * Print the tree contains in sorted order.
+     */
+    public void printTree() {
+        if (isEmpty()) {
+            System.out.println("Empty tree");
+        } else {
+            printTree(root);
+        }
+    }
+
+    /**
+     * Internal method to find an item in a subtree.
+     *
+     * @param x is item to search for.
+     * @param t the node that roots the subtree.
+     * @return true if the item is found; false otherwise.
+     */
+    private boolean contains(T x, BinaryNode<T> t) {
+        if (t == null) {
+            return false;
+        }
+
+        int compareResult = x.compareTo(t.element);
+
+        if (compareResult < 0) {
+            return contains(x, t.left);
+        } else if (compareResult > 0) {
+            return contains(x, t.right);
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Internal method to find the smallest item in a subtree.
+     *
+     * @param t the node that roots the subtree.
+     * @return node containing the smallest item.
+     */
+    private BinaryNode<T> findMin(BinaryNode<T> t) {
+        if (t == null) {
+            return null;
+        } else if (t.left == null) {
+            return t;
+        }
+
+        return findMin(t.left);
+    }
+
+    /**
+     * Internal method to find the largest item in a subtree.
+     *
+     * @param t the node that roots the subtree.
+     * @return node containing the largest item.
+     */
+    private BinaryNode<T> findMax(BinaryNode<T> t) {
+        if (t != null) {
+            while (t.right != null) {
+                t = t.right;
+            }
+        }
+
+        return t;
+    }
+
+    /**
+     * Internal method to insert into a subtree.
+     * To insert X into tree T, proceed down the tree as you would with a contains. If X is found, do nothing or update
+     * something. Otherwise, insert X at the last spot on the path traversed.
+     *
+     * @param x the item to insert
+     * @param t the node that roots the subtree.
+     * @return the new root to of the subtree.
+     */
+    private BinaryNode<T> insert(T x, BinaryNode<T> t) {
+        if (t == null) {
+            return new BinaryNode<>(x, null, null);
+        }
+
+        int compareResult = x.compareTo(t.element);
+
+        if (compareResult < 0) {
+            t.left = insert(x, t.left);
+        } else if (compareResult > 0) {
+            t.right = insert(x, t.right);
+        } else {
+            ;
+        }
+
+        return t;
+    }
+
+    private BinaryNode<T> remove(T x, BinaryNode<T> t) {
+        if (t == null) {
+            // item not found, do nothing.
+            return t;
+        }
+
+        int compareResult = x.compareTo(t.element);
+
+        if (compareResult < 0) {
+            t.left = remove(x, t.left);
+        } else if (compareResult > 0) {
+            t.right = remove(x, t.right);
+        } else if (t.left != null && t.right != null) { // two children
+            t.element = findMin(t.right).element;
+            t.right = remove(t.element, t.right);
+        } else {
+            t = (t.left != null) ? t.left : t.right;
+        }
+
+        return t;
+    }
+
+    /**
+     * internal method to print a subtree in sorted order.
+     *
+     * @param t the node that roots the subtree.
+     */
+    private void printTree(BinaryNode<T> t) {
+        if (t != null) {
+            printTree(t.left);
+            System.out.println(t.element);
+            printTree(t.right);
+        }
+    }
+
+}
+```
+
+
+
+#### 4.3.2 `findMax` method and `findMin` method 
+
+Noice how we carefully handle the degenerate case of an empty tree and **it's always especially crucial in recursive programs**. 
