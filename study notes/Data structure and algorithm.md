@@ -31,7 +31,7 @@
 
 ***principle 1***：如果 
 $$
-T_1(N) = O(f(N))  
+T_1(N) = O(f(N))
 $$
 ​		且
 $$
@@ -161,7 +161,7 @@ For the above program snippet, the running time of an if/else statement never ex
 
 
 
-#### 2.4.3 最大子序列和问题的求解
+#### 2.4.3 最大子序列和问题的求解（分治算法）
 
 共计四种典型算法，较为特别的是使用**“分治”**方法的算法，使用动态规划的算法。
 

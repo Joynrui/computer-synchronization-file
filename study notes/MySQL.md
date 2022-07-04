@@ -345,7 +345,7 @@ Query OK, 0 rows affected (0.01 sec)
 
 7. 修改表
 
-- add feild:
+- add field:
 
 ```mysql
 ALTER TABLE 'table_name' ADD 'i' INT;   // i
@@ -741,27 +741,98 @@ id int(10) primary key auto_increment comment 'This is the comment about this fi
 
 
 8. 数据库完整性
-9. 引用数据表的完整性问题，抛出外键的概念
-10. 外键
 
-**外来键**又称**外部键**，是指在关联式资料库中，每个资料表都是由关联来连系彼此的关系，父资料表（Parent Entity）的[主键](https://zh.wikipedia.org/wiki/主键)（Primary Key）会放在另一个资料表，当做属性以建立彼此的关联，而这个属性就是外来键。
+- eg: 多种因素造成数据库的完整性约束。
+- 域完整性，实体完整性，引用完整性，自定义完整性。
+
+
+
+9. 引用数据表的完整性问题，抛出外键的概念
+
+
+
+10. 外键约束
+
+- 创建表使用：
+
+```mysql
+foreign key('table2 field') references 'table1 name'('table1 field');
+```
+
+- 修改表使用：
+
+```mysql
+alter 'table_name' add foreign key ('table2_field') references 'table1_name'('table1_field');  
+```
+
+
+
+**外来键**又称**外部键**，是指在关联式资料库中，每个资料表都是由关联来连系彼此的关系，父资料表（主表）（Parent Entity）的[主键](https://zh.wikipedia.org/wiki/主键)（Primary Key）会放在另一个资料表（子表），当做属性以建立彼此的关联，而这个属性就是外来键。
+
+从表中包含主表中的primary key, 则称此key为从表的外键。
 
 12. 什么时候设计外键呢？
-13. 更正上节课错误，删除外键
-14. 外键三种操作：严格、置空、级联的使用场景以及介绍
-15. 置空和级联演示
+
+- **并发设计时禁止使用外键。**
+
+12. 删除外键
+
+- **MUL**意为 此field可重复，并非是外键约束标签。
+
+```mysql
+alter table 'table_name' drop foreign key ('table_field'); 
+```
+
+- 此table_field 是 mysql生成的constraint (约束)的名称。直接drop foregin key 是无效的。所以，drop foregin key 之前先
+
+```mysql
+show create table 'table_name';
+```
+
+，查看是否添加foreign key 后再进行删除。（desc 'table_name'; 无法显示表是否包含外键）
+
+12. 外键三种操作：严格、置空、级联的使用场景以及介绍
+
+置空：删除主表中某一条信息，则与之绑定的外键中对应的信息置为NULL；
+
+级联：删除主表中某一条信息，则将与之绑定的外键中对应的信息删除；
+
+13. 置空和级联演示
+
+- 置空：
+
+创建表时，在foreign key 处使用：
+
+```mysql
+on delete set null // 删除时置空 ，定义此字段包含置空操作
+```
+
+- 级联：
+
+创建表时，在foreign key 处使用：
+
+```mysql
+on update cascade // 更新将关联到此字段的外键信息进行相同的操作。
+```
+
+cascade: 瀑布，层叠； （cas- , 落下，降临； -ade, 状态，物品）
 
 ------
 # 八、数据库设计思维
 
 1. 数据库设计的基本概要
+
+冗余： 
+
 2. 实体和实体之间的关系
-3. Codd第一范式：确保每列原子性 (All the Feild should be original and be unit.)
+
+3. Codd第一范式：确保每列原子性 (All the Feild should be original and be united.)
 
 - BC范式：
 
-1. Codd第二范式：非键字段必须依赖与键字段 （全部属性均为primary_key）
-1. Codd第三范式：消除传递依赖
+4. Codd第二范式：非键字段必须依赖与键字段 （全部属性均为primary_key）
+
+5. Codd第三范式：消除传递依赖
 
 - 避免数据冗余。
 
@@ -771,55 +842,237 @@ id int(10) primary key auto_increment comment 'This is the comment about this fi
 1. 开端
 2. select
 
-1. from
-2. dual
+- ```mysql
+  select 'any date'; # the date may exist or not
+  ```
 
-1. where
-2. in
+- ```mysql
+  select 'any date' as 'field name'; # as can be omit
+  ```
+
+  
+
+3. from
+
+​	from返回一个笛卡尔集。即可以from 多个表组合起来。
+
+1. dual
+
+​	dual 默认伪表
+
+```mysql
+select 7*9 as res from dual;
+```
+
+
+
+1. where 
+
+条件筛选
+
+equal: =  ;   unequal:    ！=   ,  <>;     小于：<;      大于：> ;       
+
+1. in
+
+​	可以进行特殊值查询
+
+
 
 1. between...and
-2. is null
+
+闭区间
+
+1. is null
+
+
 
 1. 聚合函数
-2. 第三方客户端的使用
+
+自带的集成函数： sum(), avg(), max(), min(), count(), {count(*);count(1);}
+
+1. 第三方客户端的使用
+
+navicat
 
 1. like模糊查询
-2. order by 排序查询
+
+```mysql
+select * from 'table_name' where 'field' like '张%'; 
+```
+
+
+
+1. order by 排序查询
+
+升序
+
+```mysql
+select * from 'table_name' order by 'field_name' asc;
+```
+
+降序
+
+```mysql
+select * from 'table_name' order by 'field_name' desc; 
+```
+
+
 
 1. group by 分组查询
-2. group_concat
+
+for  example :
+
+// 升序
+
+```mysql
+select avg('field_name') as '列名称', 'field_name' as '列名称' from 'table_name' group by 'field_name' asc;
+```
+
+// 降序
+
+```mysql
+select avg('field_name') as '列名称', 'field_name' as '列名称' from 'table_name' group by 'field_name' desc;
+```
+
+
+
+1. group_concat
+
+```mysql
+select group_concat('field_name'), 'field_name' from 'table_name' group by 'field_name';
+```
+
+
 
 1. having
-2. limit 
+
+在查询的结果集中查询用 having.
+
+for example,
+
+```mysql
+SELECT COUNT(CustomerID), Country
+FROM Customers
+GROUP BY Country
+HAVING COUNT(CustomerID) > 5;
+```
+
+
+
+1. limit 
+
+limit 用来限定起始位置和终了位置。
+
+```mysql
+select * from 'table_name' limit 1, 5;
+```
+
+第一个数值代表起始位置，第二个数字代表查询长度。
 
 1. distinct all
+
+去重
+
+```mysql
+select count(distinct 'field_name') from 'table_name';
+```
+
+
 
 ------
 # 十、多表查询
 
 1. union联合查询
-2. inner join内联查询
+
+The `UNION` operator is used to combine the result-set of two or more `SELECT` statements.
+
+```mysql
+select * from 'field_name1' union select 8 from 'field_name2';
+```
+
+You can use `distinct` after union to make row distinct.
+
+like this:
+
+```mysql
+select * from 'field_name1' union distinct select 8 from 'field_name2';
+```
+
+
+
+1. inner join内联查询
+
+通过两个表中的公共字段，在两张表之间建立连接。（主从关系）
+
+```mysql
+select 'field_name1', 'field_name2'
+from 'table_name1'
+inner join 'table_name2' on  'table_name1'.'field_name' = 'table_name2'.'field_name';
+```
 
 1. inner join注意事项
-2. left join 
+
+1. left join 
+
+以左表为基准，将两个表建立连接
+
+for example,
+
+```mysql
+select 'field_name1', 'field_name2'... 
+from 'table_name1' left join 'table_name2'
+on 'table_name1'.'field_name' = 'table_name2'.'field_name';
+```
 
 1. rigth join
-2. cross join
+
+以右表为基准，将两个表建立连接
+
+for example,
+
+```mysql
+select 'field_name1', 'field_name2'... 
+from 'table_name1' right join 'table_name2'
+on 'table_name1'.'field_name' = 'table_name2'.'field_name';
+```
+
+
+
+1. cross join
+
+将两个表的字段排列组合组成一个笛卡尔积输出。
 
 1. natural join
-2. 无公共同名字段的自然返回笛卡尔积
 
-1. using
-2. 哪一个实用？
+默认将两张表字段中名称完全相同的作为公共字段，建立连接。
+
+1. 无公共同名字段的自然返回笛卡尔积
+2. using
+
+
+
+1. 哪一个实用？
+
+一般来说用inner join， 为了保证两张表的信息都能显示出来。 
 
 ------
 # 十一、子查询
 
 1. 子查询基本语法
-2. in 和 not in 
+
+在查询语句中嵌套一个子查询。
+
+1. in 和 not in 
+
+一般来说，在where 后使用in(‘child statement ’)
 
 1. exists 和 not exists
-2. 基础结束语
+
+exists: 只要条件存在就显示; not exists:只要不存在就显示; 
+
+1. 基础结束语
+
+
 
 
 ------
@@ -830,20 +1083,98 @@ id int(10) primary key auto_increment comment 'This is the comment about this fi
 1. 开场
 2. view视图创建、使用以及作用
 
-1. 显示视图
-2. 更新和删除视图
+```mysql
+create view 'view_name' as
+select 'field_name1','field_name2'... 
+from 'table_name';
+```
+
+
+
+1. 显示视图  
+
+```mysql
+desc view 'view_name';
+```
+
+```mysql
+show create view 'view_name';
+```
+
+```mysql
+show table status where comment='view' \G
+```
+
+
+
+1. 更新和删除视图
+
+更新
+
+```mysql
+alter view 'view_name' as select...;
+```
+
+删除
+
+```mysql
+drop view 'view_name';
+```
+
+
 
 1. 视图算法： temptable, merge
+
+for example,
+
+```mysql
+create algorithm = temptable view 'view_name'as ...
+```
+
+temptable 临时算法
+
+merge 合并算法
 
 ## （二）transaction 事务
 
 1. 事务的提出
 2. transaction
 
+for example,
+
+```mysql
+start transaction;
+update 'table_name' set 'field_name' = 'field_name' + 100;
+rollback;
+commit;
+```
+
+执行rollback 可以回滚到transaction开始；
+
+
+
 1. rollback to point
-2. ACID
+
+类似与虚拟机快照；
+
+for example,
+
+```mysql
+start transaction;
+update 'table_name' set 'field_name' = 'field_name' + 100;
+savepoint point_one;
+insert into 'table' values(...);
+rollback to point_one;
+commit;
+```
+
+1. ACID
+
+atomicity 原子性,    consistency 一致性,    lsoation  隔离性,    durability  持久性     
 
 1. 注意事项
+
+**innoDB 中，才可以使用事务。**
 
 ## （三）索引
 
