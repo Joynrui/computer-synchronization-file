@@ -207,6 +207,8 @@
 
 #### System Command
 
+-   **su root**:切换到根用户。 
+
 -  **|** : 命令并行执行符。
 - **top** ：显示管理器。
 - **grep** ：利用正则表达式的文本搜索工具。
@@ -736,3 +738,57 @@ Linux has two net tools are **net-tools** and **iproute2**.
 
  
 
+## ssh login
+
+ssh 私密连接用非对称密钥的方式，对文件进行加密处理，远程登录。
+
+### Ubuntu open the ssh service
+
+```shell
+on host:
+sudo apt-get update
+sudo apt-get upgrade 
+sudo apt-get install openssh-server/ssh
+sudo systemctl enable ssh
+sudo systemctl start ssh
+sudo systemctl status ssh
+sudo ufw allow ssh
+sudo ufw enable
+sudo ufw status
+ifconfigure
+whoami
+on client:
+ssh username@ipaddress
+```
+
+
+
+### problem solved
+
+
+
+1.   **已更改公钥问题：**
+
+arnold@WSN:~$ ssh 10.18.46.111
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@ WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED! @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that the RSA host key has just been changed.
+The fingerprint for the RSA key sent by the remote host is
+08:98:a9:cc:f8:37:20:6b:b4:b1:6c:3a:15:b9:a9:92.
+Please contact your system administrator.
+Add correct host key in /home/arnold/.ssh/known_hosts to get rid of this message.
+Offending key in /home/arnold/.ssh/known_hosts:2
+RSA host key for 10.18.46.111 has changed and you have requested strict checking.
+Host key verification failed.
+
+​	*解决方法*：
+
+删除~/.ssh/known_hosts文件，或者如果你可以判断出known_hosts中原ssh服务器的公钥，删去那部分，
+
+然后后再次建立新的连接，即可获得新的公钥。
+
+ssh-keygen -R 192.168.2.129   在文件/.ssh/know_hosts中将192.168.2.129该行删除。
