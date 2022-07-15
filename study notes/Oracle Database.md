@@ -212,3 +212,5 @@ alter user yb_dev identified by yb_dev;# 修改密码，相当于重置密码
 ### 8.3 系统权限(System privileges)
 
 为用户分配权限创建表，创建用户，创建视图，创建存储过程等权限。
+
+
