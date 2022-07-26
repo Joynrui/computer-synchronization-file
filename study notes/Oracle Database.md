@@ -60,7 +60,7 @@
 
 ### 2.6 product
 
-​		Oracle RDBMS 软件存放位置。Relational Database Management System,关系型数据库。
+Oracle RDBMS 软件存放位置。Relational Database Management System,关系型数据库。
 
 
 
@@ -78,7 +78,17 @@
 
 示例用户，提供了一些学习oracle的操作数据表。
 
+### 3.4 HR 用户
 
+Oracle示例用户，用于学习。
+
+19c需要设置相关属性才能使用hr用户。
+
+参考如下：[为oracle19c创建hr样例数据库](https://www.yikakia.com/%E4%B8%BAoracle19c%E5%88%9B%E5%BB%BAhr%E6%A0%B7%E4%BE%8B%E6%95%B0%E6%8D%AE%E5%BA%93/)
+
+
+
+**普通用户可以有的最高权限是dba。数据库本身的最高权限用户是sys。**
 
 ## 4. Oracle 启动
 
@@ -146,9 +156,9 @@ oracle123
 
 ## 7. 创建用户，创建表空间，分配权限,  登录数据库，删除用户
 
-1. 创建用户：
+1. 创建用户：notice：**创建用户时建议不使用双引号，双引号会被记录进用户名**。本笔记使用双引号仅为区分statement单词。
 ```sql
-create user "username" identified by "password" ;
+create user "username" identified by "password";
 ```
 2. 修改密码：（optional）
 ```sql
@@ -212,5 +222,343 @@ alter user yb_dev identified by yb_dev;# 修改密码，相当于重置密码
 ### 8.3 系统权限(System privileges)
 
 为用户分配权限创建表，创建用户，创建视图，创建存储过程等权限。
+
+
+
+
+
+## 9.链接配置
+
+### 9.1 文件位置
+
+.\dbhome\network\admin       若安装数据库目录中包含product则为此目录
+
+.\dbhome\network   若数据库软件本体不在product中则为此目录
+
+### 9.2 sqlnet.ora
+
+名称解析，此文件用于链接的链接字符串。
+
+e.g. , 
+
+```
+NAMES.DIRECTORY_PATH= (TNSNAMES, EZCONNECT)
+```
+
+
+
+### 9.3 tnsnames.ora
+
+用在oracle client端，用户配置连接数据库的别名参数。
+
+e.g.,  
+
+```
+ORCL =      
+  (DESCRIPTION =
+    (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))
+    (CONNECT_DATA =
+      (SERVER = DEDICATED)
+      (SERVICE_NAME = orcl)
+    )
+  )
+```
+
+- ORCL: 客户端链接服务端使用的服务别名，注意顶行写。 
+
+- PROTOCOL: 客户端链接服务端的通讯协议。
+- HOST:服务端ip地址，主机名。
+- PORT: 数据库侦听端口号，1521是oracle默认使用的端口号。
+
+### 9.4 listener.ora
+
+用在oracle server端， 配置oracle的监听端口。
+
+e.g.,
+
+```
+LISTENER =
+  (DESCRIPTION_LIST =
+    (DESCRIPTION =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))
+      (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC1521))
+    )
+  )
+```
+
+- LISTENER:监听名称，可以配置多个监听，每个监听端口号不同。
+- PROTOCOL:监听协议。
+- HOST:本地ip或localhostname。
+- PORT:监听端口号。
+
+
+
+*Net Configuration Assistant 工具可以对listener.ora做简单修改*
+
+
+
+[Oracle中TNS的完整定义](https://www.cnblogs.com/xubao/p/14228634.html)：transparence Network Substrate透明网络底层，监听服务是它重要的一部分，不是全部，不要把TNS当作只是监听器。
+
+TNS是Oracle Net的一部分，专门用来管理和配置Oracle数据库和客户端连接的一个工具，在大多数情况下客户端和数据库要通讯，必须配置TNS，当然在少数情况下，不用配置TNS也可以连接Oracle数据库，比如通过JDBC。如果通过TNS连接Oracle，那么客户端必须安装Oracle client程序。
+
+Oracle当中，如果想访问某个服务器，必须要设置TNS，它不像SQL SERVER那样在客户端自动列举出在局域网内所有的在线服务器，只需在客户端选择需要的服务器，然后使用帐号与密码登录即可。而Oracle不能自动列举出网内的服务器，需要通过读取TNS配置文件才能列出经过配置的服务器名。
+
+
+
+**本地网络服务配置**
+
+
+
+
+
+## 10. 数据类型
+
+
+
+### 10.1 字符类型
+
+- oracle存储数据时，西文，数字用一个字节存储，汉字用三个字节存储。e.g., char(12) 可以保存四个汉字。
+
+1. **CHAR**：定长字符串，**会用空格填充来达到所设定的最大长度**。（非NULL） 最大长度**2000字节**。若创建表未给定长度则默认为1。
+2. **VARCHAR2**：变长字符串，**其长度由其实际值决定**。最大长度为**4000字节**。(最常用)
+3. **NVARCHAR2**：包含**UNICODE**格式数据的变长字符串，最大长度**4000字节**。
+
+### 10.2 数字类型
+
+1. **NUMBER:**  **NUMBER(P,S)**是最常见的数字类型。P是precison(精确)，精度，表示有效数字位数，最多不能超过38个有效数字。S是scale(刻度)，表示小数点的位数。
+2. **INTEGER:** INTEGER是NUMBER的子类型，等同于NUMBER(38,0), 用于存储整数。若插入更新的数值中有小数，则四舍五入。
+
+### 10.3 浮点类型
+
+1. **BINARY_FLOAT:** 32位，单精度浮点数。支持至少6位精度，每个BINARY_FLOAT的值需要5个字节，包括长度字节。
+2. **BINARY_DOUBLE:** BINARY_DOUBLE 64位双精度浮点数。每个值9个字节，包括长度字节。
+
+### 10.4 日期类型
+
+1. **DATE:** oracle日期类型存储以下信息：世纪，年，月，日，小时，分钟，秒。占用7个字节。
+2. **TIMESTAMP:** 7字节或12字节的定宽日期时间类型。与data不同，timestamp可以包含小数秒，小数最多保留9位。
+3. **TIMESTAMP WITH TIME ZONE:** timestamp变种，包含时区偏移量的值。
+4. **TIMESTAMP WITH LOCAL TIME ZONE:** 将时间数据以数据库时区进行规范化后储存。
+
+### 10.5 LOB类型
+
+1. **CLOB**  (Character Large Object
+
+二进制数据，存储单字节和多字节字符数据，最大长度4g
+
+2. **BLOB** （Binary Large Object）
+
+存储非结构化的进制数据大对象，可以被当作是没有字符集语义的比特流，一般是图像，声音，视频等文件。，最大4G
+
+3. **NCLOB** 数据类型
+
+存储unicode类型数据，最大长度4G
+
+### 10.6 LONG&RAW&LONG RAW 类型
+
+1. **LONG**
+
+它存储变长字符串，最大长度2G（2000兆字节，非2000兆字符）
+
+2. **LONG RAW**
+
+存储2G原始二进制数据，存放多媒体数据。
+
+3. **RAW** 
+
+存储二进制字符类型数据，必须制定长度。这种数据类型存储的数据不会发生字符集转换。可存放多媒体数据。
+
+
+
+##  11. 创建表
+
+### 11.1 oracle表命名规则 
+
+- **字母开头**
+- 长度不超过30个字符
+- 避免使用oracle的关键字
+- 只使用大小写字母数字和_#$
+
+### 11.2 使用带有特殊符号的表名
+
+创建表时oracle会自动转换大写，表名对大小写不敏感。
+
+**若定义表名需要有消写字母或特殊符号，则需要用双引号括起表名**。
+
+## 12. 约束
+
+### 12.1 主键约束 Primay key Constraint
+
+### 12.2 外键约束 Foreign key Constraint
+
+### 12.3 唯一约束 Unique Constraint
+
+### 12.4 检查约束 Check Constraint
+
+对该列数据的范围、格式的限制
+
+### 12.5 非空约束Not Null Constraint 
+
+
+
+
+
+## 13. 查询
+
+### 13.1 select
+
+1. select:  与mysql基本一致；允许select column 加减乘除。
+
+e.g.,
+
+```sql
+select employee_id, first_name, salary * 12 from employees;
+```
+
+
+
+2. 定义列别名
+
+使用 as 关键字，或可省略；
+
+e.g.,
+
+```sql
+select first_name as name, salary "salary number" from employees;
+```
+
+
+
+3. 连字运算符：
+
+  `||`  双竖线为连字符， 可以将两列 合并为一列输出
+
+e.g.,
+
+```sql
+select first_name || last_name from employees;
+```
+
+
+
+4. 文字字符串：
+
+连字符中间可以包含字符串，可以是数字。
+
+e.g., notice : 文字字符串只能用单引号
+
+```sql
+select first_name || last_name || ' is a ' || job_id  as "employee details" from employees;
+```
+
+
+
+5. 去除重复值：
+
+`distinct` 用于去重
+
+e.g., notice: distinct 写在select 之后， 对结果集的所有列有效。
+
+```sql
+select distinct department_id, last_name from employees;
+```
+
+ 
+
+### 13.2 where
+
+6. 限制输出：
+
+使用where，类mysql;
+
+e.g.,
+
+```sql
+select last_name, job_id, department_id from employees where department_id = 90;
+```
+
+notice:  oracle where 语句 中 不等于 可用 `!=, <>, ^=` 表示。 
+
+- ​	其他比较条件：
+
+| 操作               | 含义                 |
+| ------------------ | -------------------- |
+| BETWEEN ... AND... | 在两个值之间（包含） |
+| IN(set)            | 匹配一个任意值列表   |
+| LIKE               | 匹配一个字符模板     |
+| IS NULL            | 是一个空值           |
+
+>1. between A and B  会被转化为  >= A and <= B, 没有实质上的性能提升。
+>
+>2. in 只能用于 =  ，  多个in 条件用逗号隔开， 多个in会被转化为 = A or = B。
+>
+>3. like 写在 field后，字符串用单引号括起来，通配符包括多自通配符`%`和单字通配符`_`。
+>
+>    - escape关键字用于定义包含特殊字符的字符串
+>
+>    e.g.,
+>
+>    ```sql
+>    select last_name, job_id from employees where job_id like 'SA\_%' escape '\';
+>    ```
+>
+>4. IS NULL 
+>
+>    e.g.,
+>
+>    ```sql
+>    select last_name, job_id, commission_pct from employees where commission_pct is null;
+>    ```
+
+
+
+### 13.3 逻辑条件
+
+**AND OR NOT**
+
+- 逻辑条件的优先级： not > and > or, 语句中可以使用括号指定优先级。
+
+
+
+### 13.4 ORDER BY 排序
+
+类mysql, ASC升序；DESC降序。
+
+e.g.,
+
+```sql
+select hire_date, salary from employees order by hire_date, salary desc;
+```
+
+
+
+## $$ Error 记录
+
+- *ORA-01219*：这是因为物理上删除了A.DBF文件，但是在oracle系统中关联记录并没有删除。所以我们接下来做的就是使用“**alter database datafile 'E:\DBF\A.DBF' offline drop;**”语句删除oracle系统中的关联记录。
+
+solution: 
+
+>1. sysdba身份登录数据库；
+>
+>2. ```sql
+>    alter database open;
+>    ```
+>
+>    此时会报类似“**ORA-01157: 无法标识/锁定数据文件 12 - 请参阅 DBWR 跟踪文件ORA-01110: 数据文件 12: 'E:\DBF\A.DBF'**”的错误。
+>
+>3. ```sql
+>    alter database datafile 'E:\DBF\A.DBF' offline drop;
+>    ```
+>
+>4. 再次进行**alter database open;**操作，直到不报错为止即可。
+
+reason：**不要将.dbf文件手动删除，会造成此错误**。
+
+
+
+- *ORA-01034和ORA-27101*：
+
+参考如下：[解决：ORA-01034: ORACLE not available ORA-27101](https://blog.csdn.net/qq_35804654/article/details/72810066)
+
 
 

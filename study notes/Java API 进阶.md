@@ -1,16 +1,12 @@
-#  Java API Advance
+# Java API Advance
 
 ## I. Basic `API`
 
-### 1. `Scanner` 
+### 1. `Scanner`
 
-### 2. `Number` 
+### 2. `Number`
 
-
-
-
-
-### 3. `Math` 
+### 3. `Math`
 
 #### `DecimalFormat` class
 
@@ -22,59 +18,48 @@ eg: output fixed length of eight
 DecimalFormat df = new DecimalFormat("00000000");
 ```
 
-
-
 ### 4. `System`
-
-
-
-
 
 ## II. Unit Test  and main function
 
-1.  关于 Main function 
+1. 关于 Main function
 
-   ​	Java 中，main 方法 应是 一个项目的入口点，而不是用于测试新模块。
+   Java 中，main 方法 应是 一个项目的入口点，而不是用于测试新模块。
 
-   ​	main 方法应具备 **“逻辑控制语句少，且只做项目的程序入口点”** 的特点。
-
+   main 方法应具备**“逻辑控制语句少，且只做项目的程序入口点”** 的特点。
 2. 在项目中需要使用的“功能性控制语句”，必须将其从main 方法中剥离出来单独建立一个方法，以提高程序的复用性。
-
 3. 单元测试：主方法测试主要步骤为：
 
-    1） 本地测试；
+   1） 本地测试；
 
-    2） 调用方法；
+   2） 调用方法；
 
-    3） 检查输出，用肉眼可见的方式（打印结果）进行检查，查看是否符合预期；
+   3） 检查输出，用肉眼可见的方式（打印结果）进行检查，查看是否符合预期；
 
-    4） **预期结果和测试结果是通过人工计算的。**  
+   4） **预期结果和测试结果是通过人工计算的。**
 
    在项目开发当中，一般不使用在main function 当中进行测试，
+4. What's the JUnit?
 
-   ​	
-
-4. What's the JUnit?  
-
-   ​	**JUnit 5 = JUnit Platform + JUnit Jupiter + JUnit Vintage**     
+   **JUnit 5 = JUnit Platform + JUnit Jupiter + JUnit Vintage**
 
    Official  explanation：
 
-   ​     The **JUnit Platform** serves as a foundation for [launching testing frameworks](https://junit.org/junit5/docs/current/user-guide/#launcher-api) on the JVM.
+   The**JUnit Platform** serves as a foundation for [launching testing frameworks](https://junit.org/junit5/docs/current/user-guide/#launcher-api) on the JVM.
 
-   ​	“	JUnit  5  平台服务是在`JVM`上启动测试框架的基础。”
+   “	JUnit  5  平台服务是在 `JVM`上启动测试框架的基础。”
 
    JUnit 5 通过注释来实现单元测试。
 
-   ​		**`@Test`**
+   **`@Test`**
 
 **注意：正式应用当中，Test 通常单独列出一个文件夹用于存放Unit  Test.**
 
 5. 断言：
 
-   ​	用以测试单元的结果值与期望值是否相等。
+   用以测试单元的结果值与期望值是否相等。
 
-   ​	assertEpuals()方法；
+   assertEpuals()方法；
 
    ```java
    import org.junit.Assert;
@@ -93,20 +78,14 @@ DecimalFormat df = new DecimalFormat("00000000");
        }
    }
    ```
-   
-   
 
 ## III. String Builder
 
-​		注意：String类概念中明确指出，String 在被定义之后，其值是无法改变的，如果程序中出现了大量的String变量，运行时则会存在占用大量内存的情况，若不及时进行垃圾回收则会出现程序运行速度慢和内存不足的情形，而Java为了解决此问题，从而出现了 `StringBuilder()`方法。
-
-
-
-
+    注意：String类概念中明确指出，String 在被定义之后，其值是无法改变的，如果程序中出现了大量的String变量，运行时则会存在占用大量内存的情况，若不及时进行垃圾回收则会出现程序运行速度慢和内存不足的情形，而Java为了解决此问题，从而出现了`StringBuilder()`方法。
 
 ## IV. Exception   异常
 
-### 		介绍
+### 介绍
 
 **异常是程序中的一些错误，但并不是所有的错误都是异常，并且错误有时候是可以避免的。**
 
@@ -122,7 +101,7 @@ DecimalFormat df = new DecimalFormat("00000000");
 
 ### 异常类结构
 
-​		异常类： Thorwable 类. Error类. Exception 类。Error 与Exception 都继承自Thorwable.所有异常和错误实例都属于Thorwable子类。
+    异常类： Thorwable 类. Error类. Exception 类。Error 与Exception 都继承自Thorwable.所有异常和错误实例都属于Thorwable子类。
 
 Error 指非常严重的错误，通常无法通过修改代码来排除错误；Exception 一般指用户造成的错误，语法正确但存在异常。
 
@@ -134,24 +113,18 @@ Error 指非常严重的错误，通常无法通过修改代码来排除错误�
 
 　　未受检异常则是一些可以不进行捕捉的异常，这些异常一般是由运行时逻辑引发，这些异常可以不捕捉，也可以进行捕捉或抛出，如果未进行捕捉、抛出处理，那么一旦运行时引发了这些异常，那么会被JVM直接处理，它包括运行时异常和Error。
 
-
-
 1. **Runtime Exception     运行时异常**
 
-   ​	编译通过但运行时出现异常。
-
+   编译通过但运行时出现异常。
 2. 非运行时异常。
-
 
 ### 抛出异常
 
-​	异常的抛出需要使用throw关键字，抛出的是一个异常对象，一般我们采用下面的方式进行抛出
+    异常的抛出需要使用throw关键字，抛出的是一个异常对象，一般我们采用下面的方式进行抛出
 
 ```java
 throw new NullPointerException();
 ```
-
-​			
 
 ```java
 	@Test
@@ -173,28 +146,17 @@ throw new NullPointerException();
 ### 好的异常使用习惯
 
 - 1. 在写程序时，对可能会出现异常的部分通常要用try{...}catch{...}去捕捉它并对它进行处理；
-
   2. 用try{...}catch{...}捕捉了异常之后一定要对在catch{...}中对其进行处理，那怕是最简单的一句输出语句，或栈输入e.printStackTrace();
-
   3. 如果是捕捉IO输入输出流中的异常，一定要在try{...}catch{...}后加finally{...}把输入输出流关闭；
-
   4. 如果在方法体内用throw抛出了某种异常，最好要在方法名中加throws抛异常声明，然后交给调用它的上层方法进行处理。
 
 ## V. File stream 文件流
-
-
-
-
-
-
 
 ## VI. I/O stream  输入/输出流
 
 - 注意： FileInputStream, FileOutputStream, BufferedInputStream, BufferedOutputStream可以以**byte**类型操作任何文件；
 
   注意： FileReader（需要强制转换成char类型输出）, FileWriter, BufferedReader, BufferedWriter以**char**的形式对txt文件进行读取和写入。
-
-
 
 1. **文件读取流：FileInputStream**：按照byte的形式输出文件的每一个字符。（**FileOutputStream** is an outputstream for writing data/streams of raw bytes to file or storing data to file.）(此方法为原理，并非实际应用中所使用的方法)
 
@@ -211,9 +173,6 @@ throw new NullPointerException();
            fileInputStream.clos
        }
    ```
-
-   
-
 2. **文件输入流：FileOutputStream**:按照byte的形式输入文件的每一个字符。（**FileInputStream class** is useful to read data from a file in the form of a sequence of bytes.）(此方法为原理，并非实际应用中所使用的方法)
 
 ```java
@@ -227,8 +186,6 @@ public void outputFile() throws IOException {
         fileOutputStream.close();
     }
 ```
-
-
 
 ### 拷贝文件信息（先读取再写入）
 
@@ -250,8 +207,6 @@ public void copyFileBase() throws IOException {
     }
 ```
 
-
-
 - JDK9原有方法：
 
 1. **BufferedInputStream：**
@@ -267,8 +222,6 @@ public void bufferFileInputBase() throws IOException {
         bufferedInputStream.close();
     }
 ```
-
-
 
 2. **BufferedOutputStream**:
 
@@ -287,14 +240,10 @@ public void bufferFileInputBase() throws IOException {
     }
 ```
 
-
-
 3. **修饰模式，是一种动态地往一个类别中添加新的行为的。就功能而言，修饰模式相比生成更为灵活，这样可以给某个对象而不是整个类别添加一些功能。**
 
 - *通过使用修饰模式，可以在运行时扩充一个类别的功能。原理是：增加一个修饰类包裹原来的类别，包裹的方式是在修饰类的构造函数中将原来的类以参数的形式传入。装饰类实现新的功能，但是，在不需要用到新功能的地方，它可以直接调用原来的类别中的方法。修饰类必须和原来的类别有相同的接口。*
 - **修饰模式是类别继承的另外一种选择。类继承在编译时候增加行为，而装饰模式是在运行时增加行为。**
-
-
 
 3. **FileReader:**
 
@@ -312,8 +261,6 @@ public void bufferFileInputBase() throws IOException {
     }
 ```
 
-
-
 4. **FileWriter:**
 
 ```java
@@ -325,8 +272,6 @@ public void bufferFileInputBase() throws IOException {
         fileWriter.close();
     }
 ```
-
-
 
 5. **BufferedReader  :**
 
@@ -344,8 +289,6 @@ public void bufferFileInputBase() throws IOException {
     }
 ```
 
-
-
 6. **BufferedWriter:**
 
 ```java
@@ -357,14 +300,10 @@ public void bufferFileInputBase() throws IOException {
         bufferedWriter.write("The second Line.");
         bufferedWriter.close();
 
-    }				
+    }	
 ```
 
-
-
-------
-
-
+---
 
 ## VII. 字符集
 
@@ -372,13 +311,7 @@ public void bufferFileInputBase() throws IOException {
 
 GBK   国标字符集      字符编码转换      国际标准    Unicode  UTF - 8
 
-
-
-
-
-------
-
-
+---
 
 ## VIII. Multithreading
 
@@ -390,17 +323,11 @@ GBK   国标字符集      字符编码转换      国际标准    Unicode  UTF 
 4. **并发：** 一个cpu在执行一个程序时中断并开始执行另一个程序，称为支持并发。
 5. **并行:** 一个cpu可以同时用不同的进程执行不同的程序称为支持并行。
 
-
-
 ### 多线程的意义
 
 一个进程中多个线程对此进程中的共享变量进行操作。
 
-
-
 ### Java 多线程的基本实现demo
-
-
 
 **主线程**
 
@@ -432,8 +359,6 @@ public class SecondThread  extends Thread{
     }
 }
 ```
-
-
 
 - *提出问题： Java 仅支持类继承一个类，不能继承多个类，故在此提出一个常用的解决方案： 用一个类实现多个接口即可。*
 
@@ -472,8 +397,6 @@ public class SecondThread implements Runnable {
 }
 ```
 
-
-
 - 方式二：
 
 **主线程**
@@ -505,8 +428,6 @@ public class SecondThread implements Runnable {
     }
 }
 ```
-
-
 
 理解多线程的一个示例
 
@@ -542,11 +463,7 @@ public class Shoes implements Runnable {
 }
 ```
 
-
-
 ### Two thread types in Java
-
-
 
 #### Daemon Threads 守护线程
 
@@ -564,10 +481,6 @@ public class Shoes implements Runnable {
 
 3、守护线程又被称为“服务进程”“精灵线程”“后台线程”，是指在程序运行是在后台提供一种通用的线程，这种线程并不属于程序不可或缺的部分。 通俗点讲，任何一个守护线程都是整个JVM中所有非守护线程的“保姆”。
 
-
-
-
-
 **用户线程，就是应用程序里的自定义线程。**
 
 用户自定义线程
@@ -583,10 +496,6 @@ public class Shoes implements Runnable {
 需要注意的是，当在一个守护线程中产生了其它线程，那么这些新产生的线程默认还是守护线程，用户线程也是如此。
 
 **总结：通过Thread.setDaemon(false)设置为用户线程，通过Thread.setDaemon(true)设置为守护线程。**
-
-
-
-
 
 **一个演示：**
 
@@ -611,19 +520,13 @@ public class Main {
 }
 ```
 
-
-
-### Multithreading synchronized  
+### Multithreading synchronized
 
 **多线程同步问题和两种解决方案**   **synchronized   Lock**
-
-
 
 线程非安全不同步问题
 
 卖鞋案例
-
-
 
 ```
 public class Main {
@@ -635,8 +538,6 @@ public class Main {
     }
 }
 ```
-
-
 
 ```java
 public class Shoes implements Runnable {
@@ -662,8 +563,6 @@ public class Shoes implements Runnable {
 }
 
 ```
-
-
 
 **同步代码块**
 
@@ -706,8 +605,6 @@ public class Shoes implements Runnable {
 }
 
 ```
-
-
 
 **关于Lock API 的使用 **
 
@@ -752,20 +649,16 @@ public class Shoes implements Runnable {
 
 ```
 
+### Synchronized  和  Lock
 
-
-### Synchronized  和  Lock 
-
-| 类别     | **synchronized**                                             | **Lock**                                                     |
-| -------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| 存在层次 | Java的关键字，在jvm层面上                                    | 是一个类                                                     |
-| 锁的释放 | 1、以获取锁的线程执行完同步代码，释放锁 2、线程执行发生异常，jvm会让线程释放锁 | 在finally中必须释放锁，不然容易造成线程死锁                  |
-| 锁的获取 | 假设A线程获得锁，B线程等待。如果A线程阻塞，B线程会一直等待   | 分情况而定，Lock有多个锁获取的方式，具体下面会说道，大致就是可以尝试获得锁，线程可以不用一直等待 |
-| 锁状态   | 无法判断                                                     | 可以判断                                                     |
-| 锁类型   | 可重入 不可中断 非公平                                       | 可重入 可判断 可公平（两者皆可）                             |
-| 锁性能   | 少量同步                                                     | 大量同步                                                     |
-
-
+| 类别     | **synchronized**                                                         | **Lock**                                                                                   |
+| -------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| 存在层次 | Java的关键字，在jvm层面上                                                      | 是一个类                                                                                         |
+| 锁的释放 | 1、以获取锁的线程执行完同步代码，释放锁 2、线程执行发生异常，jvm会让线程释放锁 | 在finally中必须释放锁，不然容易造成线程死锁                                                      |
+| 锁的获取 | 假设A线程获得锁，B线程等待。如果A线程阻塞，B线程会一直等待                     | 分情况而定，Lock有多个锁获取的方式，具体下面会说道，大致就是可以尝试获得锁，线程可以不用一直等待 |
+| 锁状态   | 无法判断                                                                       | 可以判断                                                                                         |
+| 锁类型   | 可重入 不可中断 非公平                                                         | 可重入 可判断 可公平（两者皆可）                                                                 |
+| 锁性能   | 少量同步                                                                       | 大量同步                                                                                         |
 
 ### CPU 线程调度
 
@@ -775,14 +668,11 @@ public class Shoes implements Runnable {
 
 系统允许人为对线程进行优先级的设定。
 
-
-
 #### 线程状态
 
 1. **初始状态(new)**
 
    实现Runnable接口和继承Thread可以得到一个线程类，new一个实例出来，线程就进入了初始状态。
-
 2. **就绪状态(Runnable接口)(ready状态)**
 
 - 就绪状态只是说你资格运行，调度程序没有挑选到你，你就永远是就绪状态。
@@ -805,12 +695,8 @@ public class Shoes implements Runnable {
 - 处于这种状态的线程不会被分配CPU执行时间，不过无须无限期等待被其他线程显示地唤醒，在达到一定时间后它们会自动唤醒。
 
 6. **终止状态(terminated)**
-当线程的run()方法完成时，或者主线程的main()方法完成时，我们就认为它终止了。这个线程对象也许是活的，但是它已经不是一个单独执行的线程。线程一旦终止了，就不能复生。
-在一个终止的线程上调用start()方法，会抛出java.lang.IllegalThreadStateException异常。
-
-
-
-
+   当线程的run()方法完成时，或者主线程的main()方法完成时，我们就认为它终止了。这个线程对象也许是活的，但是它已经不是一个单独执行的线程。线程一旦终止了，就不能复生。
+   在一个终止的线程上调用start()方法，会抛出java.lang.IllegalThreadStateException异常。
 
 Java  的手段是抢占CPU的资源
 
@@ -860,13 +746,7 @@ public class MinPriorityThread implements Runnable{
 }
 ```
 
-
-
-
-
 **[CPU 线程调度的细节概念](https://www.cnblogs.com/flyinglion/p/15018009.html)**
-
-
 
 #### 线程插队
 
@@ -899,8 +779,6 @@ public class SonThread implements Runnable {
 }
 ```
 
-
-
 #### 线程休眠
 
 ```java
@@ -912,8 +790,6 @@ Thread.sleep(1000);//毫秒
 ```java
 Thread.yield();
 ```
-
-
 
 #### 线程通信
 
@@ -1006,10 +882,6 @@ public class Customer extends Thread {
 product.notifyAll();
 ```
 
-
-
-
-
 ### Generic 泛型
 
 #### Generic programming
@@ -1017,8 +889,6 @@ product.notifyAll();
 **Speciality:**  Generic programming makes you program can multiplex objects of various types. Generic add a limit when you cite a class.
 
 Generic type parameters will give you a prompt when you want to pass the parameters. Generic is a clear way that it makes the program have a compile error rather than a runtime cast exception. It makes the program easier to understand and safer.
-
-
 
 #### ? Wildcard type
 
@@ -1054,9 +924,10 @@ public class UpperBoundedWildcardsTest {
 
 - Lower Bounded Wildcards:
 
-It is expressed using the wildcard character (‘?’), followed by the super keyword, followed by its lower bound: <? super A>. 
+It is expressed using the wildcard character (‘?’), followed by the super keyword, followed by its lower bound: <? super A>.
 
 ```java
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -1079,14 +950,13 @@ public class LowerBoundedWildcardsTest {
         System.out.println(list);
     }
 }
+
 ```
-
-
 
 - Unbounded Wildcards:
 
 ```java
-mport java.util.Arrays;
+import java.util.Arrays;
 import java.util.List;
 
 public class UnboundedWildcardsTest {
@@ -1105,9 +975,7 @@ public class UnboundedWildcardsTest {
 }
 ```
 
-
-
-**notice：** 
+**notice：**
 
  **E** - Element (在集合中使用，因为集合中存放的是元素)
 
@@ -1121,10 +989,6 @@ public class UnboundedWildcardsTest {
 
 **？** - 表示不确定的java类型
 
-
-
-
-
 ### Java 集合框架
 
 Java 集合大致可以分为两大体系，一个是 `Collection`，另一个是 `Map`；
@@ -1134,19 +998,13 @@ Java 集合大致可以分为两大体系，一个是 `Collection`，另一个�
 
 **java.util.Collection 下的接口和继承类关系简易结构图：**
 
-![img](http://www.justdojava.com/assets/images/2019/java/image-jay/c25904af60394296a36c41d0c3749ab4.jpg) 	
+![img](assets/Java API 进阶.assets/c25904af60394296a36c41d0c3749ab4.jpg)
 
 **java.util.Map 下的接口和继承类关系简易结构图：**
 
-![ ](http://www.justdojava.com/assets/images/2019/java/image-jay/4c0ea9d4d39c4ab09ed7e81ac76993d1.jpg)
-
-
+![img](assets/Java API 进阶.assets/4c0ea9d4d39c4ab09ed7e81ac76993d1.jpg)
 
 来源：[初探集合框架图](http://www.justdojava.com/2019/09/16/java-collection-1/)
-
-
-
-
 
 #### ArrayList
 
@@ -1163,8 +1021,6 @@ public void ArrayListTest() {
         System.out.println(arrayList1);
     }
 ```
-
-
 
 2. addAll() :  将一个集合添加在另一个集合内
 
@@ -1219,8 +1075,6 @@ public void arrayList2() {
     }
 ```
 
-  
-
 5. contains() :Returns `true` if this list contains the specified element.
 
 ```java
@@ -1236,8 +1090,6 @@ public void arrayList4() {
     }
 ```
 
-
-
 6. get():  获取某一下标的值
 
 ```java
@@ -1252,13 +1104,11 @@ public void arrayList5() {
     }
 ```
 
-
-
 7. size() :集合的容量
 
 ```java
 public void arrayList6() {
-        ArrayList<Integer> arrayList = new ArrayList<>();
+        ArrayList `<Integer>` arrayList = new ArrayList<>();
         arrayList.add(1);
         arrayList.add(2);
         arrayList.add(3);
@@ -1267,20 +1117,18 @@ public void arrayList6() {
             System.out.println(arrayList.get(i) + 10);
         }
 
-        for (Integer value: arrayList) {
+    for (Integer value: arrayList) {
             System.out.println(value + 50);
         }
 
     }
 ```
 
-
-
 8. indexOf () : 在集合中查找某一元素，返回下标。
 
 ```java
- public void arraylist7() {
-        ArrayList<String> arrayList = new ArrayList<>();
+public void arraylist7() {
+        ArrayList`<String>` arrayList = new ArrayList<>();
         arrayList.add("MaxCroft");
         arrayList.add(".SunShineY");
         arrayList.add("Joynrui");
@@ -1289,8 +1137,6 @@ public void arrayList6() {
         System.out.println(arrayList.indexOf("MaxCroft"));
     }
 ```
-
-  
 
 9. lastIndexOf() :在集合中查找某一元素，返回最后一个匹配元素的下标。
 
@@ -1306,8 +1152,6 @@ public void arrayList8() {
     }
 ```
 
-
-
 10. isEmpty() : 判断一个集合是否为空
 
 ```java
@@ -1320,8 +1164,6 @@ public void arrayList8() {
         System.out.println(arrayList.isEmpty());
     }
 ```
-
-
 
 11. remove() : 删除元素
 
@@ -1337,8 +1179,6 @@ public void arrayList10()  {
         System.out.println(arrayList);
     }
 ```
-
-
 
 12. removeAll() : 在一个集合中删除另一个集合所包含的全部元素，另一个集合不受影响。
 
@@ -1360,9 +1200,8 @@ public void arrayList11() {
     }
 ```
 
-
-
 13. retainAll() : Retains only the elements in this list that are contained in the specified collection.
+
 ```java
 public void arrayList12() {
     ArrayList<String> arrayList = new ArrayList<>();
@@ -1379,8 +1218,6 @@ public void arrayList12() {
 }
 ```
 
-
-
 14. set() : Replaces the element at the specified position in this list with the specified element.
 
 ```java
@@ -1395,8 +1232,6 @@ public void arraylist13() {
     }
 ```
 
-
-
 15. sort() : 元素排序
 
 ```java
@@ -1410,8 +1245,6 @@ public void arrayList14() {
         System.out.println(arrayList);
     }
 ```
-
-
 
 16. subList() :  Returns a view of the portion of this list between the specified `fromIndex`, inclusive, and `toIndex`, exclusive.
 
@@ -1429,15 +1262,7 @@ public void arrayList15() {
     }
 ```
 
-
-
 #### LinkedList
-
-
-
-
-
-
 
 #### Iterator
 
@@ -1446,19 +1271,13 @@ public void arrayList15() {
 
 [来源网站](https://www.jianshu.com/p/bbb220824c9a)
 
-
-
 **1.在形式上**
 
 for的形式是：
  `for（int i=0;i<arr.size();i++）{...}`
 
-
-
 foreach的形式是：
  `for（int　i：arr）{...}`
-
-
 
 iterator的形式是：
 
@@ -1470,23 +1289,15 @@ while(it.hasNext()) {
 }
 ```
 
-
-
 **2.条件上**
 
 - for需要知道集合或数组的大小，而且需要是有序的，不然无法遍历；
 - foreach和iterator都不需要知道集合或数组的大小，他们都是得到集合内的每个元素然后进行处理；
 
-
-
-
-
 **3.多态差别**
 
 for和foreach都需要先知道集合的类型，甚至是集合内元素的类型，即需要访问内部的成员，不能实现态；
  **iterator**是一个**接口**类型，他不关心集合或者数组的类型，而且他还能随时修改和删除集合的元素，举个例子：
-
-
 
 ```csharp
 public void display（Iterator<object> it）{
@@ -1498,33 +1309,21 @@ public void display（Iterator<object> it）{
 
 当我们需要遍历不同的集合时，我们只需要传递集合的iterator（如arr.iterator()）看懂了吧，这就是iterator的好处，他不包含任何有关他所遍历的序列的类型信息，能够将遍历序列的操作与序列底层的结构分离。迭代器统一了对容器的访问方式。这也是接口的解耦的最好体现。
 
-
-
 **4.用法差别**
 
 - for循环一般用来处理比较简单的有序的，可预知大小的集合或数组
 - foreach可用于遍历任何集合或数组，而且操作简单易懂，他唯一的不好就是需要了解集合内部类型
 - iterator是最强大的，他可以随时修改或者删除集合内部的元素，并且是在不需要知道元素和集合的类   型的情况下进行的（原因可参考第三点：多态差别），当你需要对不同的容器实现同样的遍历方式时，迭代器是最好的选择！
 
-
-
 **5.效率差别**
 
 同样遍历一个集合，iterator和foreach用时不相上下。for循环用时最少。
 
-
-
 ***注意： for循环中尽量不适用Iterator;  Iterator有自己的remove方法。***
-
-
-
-
 
 #### Lambda expression    (Anonymous Classes)
 
 *Java SE 8 new feature*
-
-
 
 #### HashSet
 
@@ -1532,11 +1331,7 @@ HashSet is from the Set class.
 
 Hash function,散列函数，一种储存数据的方式。
 
-
-
-
-
-​	Java HashSet class is used to create a collection that uses a hash table for storage. It inherits the AbstractSet class and implements Set interface. 
+    Java HashSet class is used to create a collection that uses a hash table for storage. It inherits the AbstractSet class and implements Set interface.
 
 1. **The important points about Java HashSet class are:**
 
@@ -1548,13 +1343,9 @@ Hash function,散列函数，一种储存数据的方式。
 - HashSet is the best approach for search operations.
 - The initial default capacity of HashSet is 16, and the load factor is 0.75**.**
 
-
-
 2. **Difference between List and Set**
 
 A list can contain duplicate elements whereas Set contains unique elements only.
-
-
 
 example :
 
@@ -1575,9 +1366,7 @@ public void hashSetTest() {
     }
 ```
 
-
-
-#### LinkedHashSet 
+#### LinkedHashSet
 
 按顺序输出元素
 
@@ -1594,11 +1383,7 @@ public void hashSetTest() {
     }
 ```
 
-
-
 #### Map
-
-
 
 1. HashMap,  put,  Set,  Map.Entry<K， V>的使用
 
@@ -1617,8 +1402,6 @@ public void hashMaoTest() {
     System.out.println(entrySet);
 }
 ```
-
-
 
 2. Entry 与Map 转换成 Set 之后进行遍历(HashMap遍历方法之一)
 
@@ -1639,7 +1422,7 @@ public void hashMaoTest() {
 		// Create an entrySet object to transform the hashMap object.
          Set<Map.Entry<Integer, Double>> entrySet = hashMap.entrySet();
         System.out.println(entrySet);
-		
+
         Iterator<Map.Entry<Integer, Double>> iterator = entrySet.iterator();
    		// sift out
         while (iterator.hasNext()) {
@@ -1653,13 +1436,9 @@ public void hashMaoTest() {
     }
 ```
 
-
-
-
-
 ### JDBC
 
-#### concept 
+#### concept
 
  **Java数据库连接**，（**Java Database Connectivity**，简称**JDBC**）是[Java语言](https://zh.wikipedia.org/wiki/Java语言)中用来规范[客户端](https://zh.wikipedia.org/wiki/客户端)程序如何来访问[数据库](https://zh.wikipedia.org/wiki/数据库)的[应用程序接口](https://zh.wikipedia.org/wiki/应用程序接口)，提供了诸如查询和更新数据库中数据的方法。JDBC是面向[关系型数据库](https://zh.wikipedia.org/wiki/关系型数据库)的。
 
@@ -1704,9 +1483,7 @@ public class JdbcDemo {
 }
 ```
 
-
-
-**NOTICE: **  
+**NOTICE: **
 
 关于MySQL 8.0 的URL连接不通问题，虽然连接数据库配置都没错，jar包也有，但是还是报错。
 首先第一个报错是系统安全性和时区配置的问题，MySQL8.0不同于之前的版本，存在安全检测的问题，
@@ -1730,7 +1507,7 @@ public class JdbcDemo {
 
 [原文链接](https://blog.csdn.net/qq_43511405/article/details/108565216)
 
-#### Example2 for JDBC:  
+#### Example2 for JDBC:
 
 ```java
 import java.sql.*;
@@ -1772,8 +1549,6 @@ public class JdbcDemo2 {
 }
 ```
 
-
-
 #### JDBCUtilsPackaging
 
 - step 1: Create a java class "`JdbcUtils`" to package "`jdbc`" function.
@@ -1790,13 +1565,11 @@ password=123456
 driver = com.mysql.cj.jdbc.Driver
 ```
 
-
-
 - step 3:  Private the configuration in `JdbcUtils`.
 - step 4: Through the static code block, pre-execute the configuration items of the read configuration file for preprocessing.
-- step 5: 
+- step 5:
 
-#### exampleFor`JDBCUtils`:
+#### exampleFor `JDBCUtils`:
 
 ```java
 import java.io.InputStream;
@@ -1813,7 +1586,7 @@ public class JdbcUtils {
     static {
         try {
             // JdbcUtils.class.getClassLoader(); (available or not)
-            
+      
             InputStream inputStream = ClassLoader.getSystemResourceAsStream("db.properties");
             // The Properties class represents a persistent set of properties. The Properties can be saved to a stream or loaded from a stream. Each key and its corresponding value in the property list is a string.
             Properties properties = new Properties();
@@ -1856,9 +1629,7 @@ public class JdbcUtils {
 }
 ```
 
-
-
-#### Update 
+#### Update
 
   (insert, delete, update) (**have some question, it should be modified**)
 
@@ -1897,11 +1668,7 @@ public class JdbcTest {
 
 ```
 
-
-
 #### The latest  demo for insert, delete, update.
-
-
 
 - *JdbcTest file*
 
@@ -2090,17 +1857,11 @@ public class JdbcUtils {
 
 ```
 
-
-
-
-
 #### Encoding problem.
 
 - System encoding.
 - IDE encoding.
 - MySQL encoding.
-
-
 
 #### PreparedStatement 和问号占位符（用户手动输入数据库数据信息）
 
@@ -2111,10 +1872,7 @@ public class JdbcUtils {
   转义前：select * from user where name = ‘张三’ or 1=’1’；
 
   转义后： select * from user where name = ‘张三\’ or 1 = \’1’
-
-- notice:  Use `PreparedStatement` to replace all the `Statements`.    
-
-
+- notice:  Use `PreparedStatement` to replace all the `Statements`.
 - example for `PreparedStatement`:
 
 1. test file    (insert)
@@ -2169,8 +1927,6 @@ public class JdbcDemo3 {
 
 ```
 
-
-
 2. test file (delete)
 
 ```java
@@ -2216,8 +1972,6 @@ public class JdbcDemo3 {
 }
 
 ```
-
-
 
 3. test file (update)
 
@@ -2270,10 +2024,6 @@ public class JdbcDemo3 {
 }
 
 ```
-
-
-
-
 
 2. JdbcUtils file
 
@@ -2342,37 +2092,19 @@ public class JdbcUtils {
 }
 ```
 
-
-
-
-
 #### Student information management system  demo
-
-
-
-
-
-
-
-### 
 
 ### Java 人脸识别
 
 completion
 
-### Android Hacker 
+### Android Hacker
 
-
-
-### Android 嵌入Linux 
-
-
+### Android 嵌入Linux
 
 ### IOS Hacker
 
 IOS越狱
-
-
 
 ### IOS 嵌入 Linux
 

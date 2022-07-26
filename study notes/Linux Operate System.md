@@ -742,7 +742,7 @@ Linux has two net tools are **net-tools** and **iproute2**.
 
 ssh 私密连接用非对称密钥的方式，对文件进行加密处理，远程登录。
 
-### Ubuntu open the ssh service
+### Open the ssh service on Ubuntu
 
 ```shell
 on host:
