@@ -532,6 +532,187 @@ select hire_date, salary from employees order by hire_date, salary desc;
 
 
 
+
+
+##  14. 函数
+
+### 14.1 函数类型
+
+#### 14.1.1 单行函数
+
+**单行函数仅对单个函数进行运算，并且每行返回一个结果。**
+
+>- 可能需要一个或多个参数
+>- 可以修改结果集的数据类型
+>- 可以嵌套
+>- 可能返回一个与参数不同类型的数据值
+>- 能在 SELECT, WHERE 和 ORDER BY 子句中
+
+
+
+##### 字符函数
+
+单行字符函数接收字符数据作为输入，可以返回字符值和数字值。
+
+
+
+- 大小写处理函数
+
+| 函数                      | 作用                       | 结果       |
+| ------------------------- | -------------------------- | ---------- |
+| **LOWER('SQL Course')**   | 所有字符转换成小写         | sql course |
+| **UPPER('SQL Course')**   | 所有字符转换成大写         | SQL COURSE |
+| **INITCAP('SQL Course')** | 每个单词首字母大写其他小写 | Sql Course |
+
+- 字符串处理函数
+    - dual表：一张只有一个字段，一行记录的表。亦称伪表，不存储主题数据。其目的是当前不需要从具体的表中取得数据仅为了显示输入的值时，满足select语句格式。 
+
+
+| **函数**                        | **作用**                                                     | **结果**       |
+| ------------------------------- | ------------------------------------------------------------ | -------------- |
+| **CONCAT('Hello', 'World')**    | 链接字符串                                                   | HelloWorld     |
+| **SUBSTR('HelloWorld', 1, 5)**  | 截取子串，arg2可以为负数，-1为最后一位，-2为倒数第二位       | Hello          |
+| **LENGTH('HelloWorld')**        | 获取字符串长度                                               | 10             |
+| **INSTR('Hello World', 'W')**   | 获取字符位置。对于重复出现的字符，INSTR重载为('HelloWorld', 'l', 3[起始位置], 2[出现次数]),返回4 | 6              |
+| **LPAD(salary, 10, '*')**       | 在字符串左侧添加字符，arg2为字符串总长度（添加之后）         | *\*\*\*\*24000 |
+| **RPAD(salary, 10, '*')**       | 在字符串右侧添加字符                                         | 24000*\*\*\*\* |
+| **TRIM('H' FROM 'HelloWorld')** | 头尾剪切字符。默认头尾都剪切，剪切字符前加 both为头尾剪切，leading为剪切串头，trailing为剪切串尾。对大小写敏感。 | elloWorld      |
+
+补充示例：
+
+TRIM(both 'H' FROM 'HelloWorld')
+
+TRIM(leading 'H' FROM 'HelloWorld')
+
+TRIM(trailing 'H' FROM 'HelloWorld')
+
+
+
+##### 数字函数
+
+- **ROUND(arg1, arg2)**: 四舍五入。
+
+e.g., ROUND(198.568)  结果为 199；round(198.568, 2) 结果为 198.57； round(198.568,-2) 结果为200。
+
+- **TRUNC(arg1，arg2)**:  截断指定小数位，不做四舍五入处理。
+
+e.g., TRUNC(198.568) 结果为 198； TRUNC(198.568, 2) 结果为 198.56；TRUNC(198.568, -1) 结果为190。
+
+- **MOD(arg1,arg2)**: 取余,取模
+
+e.g.,MOD(被除数，除数)
+
+
+
+
+
+##### 日期函数
+
+**SYSDATE** 是一个日期函数，返回当前服务器设备的日期时间。
+
+sysdate不需要参数，使用可以直接写成 `select sysdate from dual;`。
+
+- 日期的计算：
+
+1. 日期加减一个数结果是一个日期值；
+
+```sql
+select sysdate - 1 from dual;
+select sysdate + 2 from dual;
+```
+
+
+
+2. 两个日期相减结果是日期之间的天数；
+
+```sql
+select sysdate - hire_date from employees;  # 返回雇佣天数
+```
+
+
+
+3. 用小时数除以24，可以将小时数加在日期上，返回一个日期数。																																																																		
+
+```sql
+select sysdate - 48/24 from dual; # 返回当前系统时间的未来两天
+select sysdate - 36/24 from dual; # 返回当前系统时间的未来两天
+```
+
+
+
+**其他日期函数**
+
+| 函数               | 说明               |
+| ------------------ | ------------------ |
+| **MONTHS_BETWEEN** | 两个日期之间的月数 |
+| **ADD_MONTHS**     | 加月份到日期       |
+| **NEXT_DAY**       | 下个星期几是几号   |
+| **LAST_DAY**       | 指定月的最后一天   |
+| **ROUND**          | 四舍五入日期       |
+| **TRUNC**          | 截断日期           |
+
+
+
+complement:
+
+1. months_between(date1, date2): 计算date1 和 date2 之间的月数。其结果可以是正数也可以是负数。如果date1大于date2，结果是正数。反之结果为负数。
+
+​		date为日期类型
+
+2. add_months(date, n): 添加n个日历月到date。n的值必须是整数，但可以是负数。
+
+​		n为整数
+
+3. next)day(date, 'char' or integer): 计算在date之后的下一个周('char')的指定天的日期。char的值可能是一个表示一天的数或者是一个字符串。如果使用数字表示星期，1从星期一开始，数字范围1~7。
+4. last_day(date): 计算包含date的月的最后一天的日期。
+5. round(date, 'format'): 返回用格式化模式format四舍五入到指定单位的date，如果格式模式format被忽略，date将被四舍五入到最近的天。 
+
+​		round可以有以下用法：round(sysdate, 'yy')精确到年，round(sysdate,'mm')精确到月，round(sysdate,'dd')精确到日。
+
+3. trunc(date,'format'): 返回用格式化模式format截断到指定单位的date。如果格式模式format被忽略，date被截断到最近的天。 
+
+
+
+
+
+
+
+
+
+#### 14.1.2 聚合函数
+
+聚合函数操作成组的行，每个组返回一个结果，也称组函数。
+
+
+
+### 14.2 数据类型转换
+
+#### 14.2.1 隐式数据类型转换
+
+原始数据没有进行转换时，系统会根据需要自动进行数据类型转换，即隐式转换。
+
+- 直接赋值转换
+
+| 从                | 到       |
+| ----------------- | -------- |
+| varrchar2 or char | number   |
+| varchar2 or char  | date     |
+| number            | varchar2 |
+| date              | varchar2 |
+
+- 表达式赋值转换
+
+| 从               | 到     |
+| ---------------- | ------ |
+| varchar2 or char | number |
+| varchar2 or char | date   |
+
+*隐式转换的性能问题和可读问题非常严重，隐式转换时索引失效导致数据库性能下降；可读性也因是隐式导致操作员不易清楚数据转换的实际情况。*
+
+
+
+
+
 ## $$ Error 记录
 
 - *ORA-01219*：这是因为物理上删除了A.DBF文件，但是在oracle系统中关联记录并没有删除。所以我们接下来做的就是使用“**alter database datafile 'E:\DBF\A.DBF' offline drop;**”语句删除oracle系统中的关联记录。
