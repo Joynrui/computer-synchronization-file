@@ -1045,9 +1045,85 @@ The recursive routine is always being removed completely. Generally speaking, re
 
 #### 3.7.2 Array implement of Queue
 
+```java
+package chapter3;
+
+import java.util.Scanner;
+
+/**
+ * This class used to study some queue implement.
+ */
+public class MyQueue {
+
+    // Initial array to store the queue
+    // 默认将数组左侧设为队头，将数组右侧设为队列尾。队列从头出队（删除元素），从尾入队（添加元素）。
+    int[] capacity;
+    // currentSize is the length of the queue.
+    private int size = 0;
+    // the pointer of the queue front.
+    private int front = 0;
+    // the pointer of the queue rear.
+    private int back = 0;
+
+    public void inputCapacityLength(){
+        System.out.println("please input the length of the Capacity:");
+        Scanner sc = new Scanner(System.in);
+        int CapacityLength = sc.nextInt();
+        capacity = new int[CapacityLength];
+    }
+    // 默认状态下队列为空， 所以 front == rear == 0.
+    // insert element. Only insert one element at the same time.
+    // 添加元素，操作队尾，即数组左
+    // 首先将队列大小+1即向右扩大，然后将back（队尾指针）+1（向右移动），
+    // 再将队尾元素赋值为e.
+    public void enqueue(int e) {
+        // 判断队列是否为满，为满则抛出异常，退出方法;如果不为满，则正常添加元素
+        capacity[back] = e;
+        size++;
+        back++;
+    }
+
+    // remove element. Only remove one element at the same time.
+    public int dequeue() {
+        size--;
+        front++;
+
+        return capacity[front];
+    }
+
+    public boolean isFull() {
+        if (size == capacity.length) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static void main(String[] args) {
+        MyQueue q = new MyQueue();
+        Scanner scn = new Scanner(System.in);
+        q.inputCapacityLength();
+        for (int i = q.front; i < q.back - 1; i++) {
+            int element = scn.nextInt();
+            q.enqueue(element);
+        }
+
+        // 遍历数组capacity，将每一位元素都输出
+        for (int i = 0; i < q.capacity.length; i++) {
+            System.out.println(i);
+        }
+
+        System.out.println();
+        q.dequeue();
+
+        for (int i = q.front; i < q.back; i++) {
+            System.out.println(q.capacity[i]);
+        }
+    }
+}
+```
 
 
-##### LinkedList implement Queue
 
 
 
@@ -1158,7 +1234,7 @@ keyword: nodes are operators,  leaves are operands.
 
 
 
-### The Search Tree ADT - Binary Search Trees
+### 4.3 The Search Tree ADT - Binary Search Trees
 
 The property that makes a binary tree into a binary search tree is that for every node X, in the tree, the values of all the items in its left subtree are smaller than the item in X, and the values of all the items in its right subtree are larger than the item in X.
 
@@ -1365,8 +1441,69 @@ public class BinarySearchTree<T extends Comparable<? super T>> {
 }
 ```
 
+------
+
 
 
 #### 4.3.2 `findMax` method and `findMin` method 
 
 Noice how we carefully handle the degenerate case of an empty tree and **it's always especially crucial in recursive programs**. 
+
+*Code was implemented above.*
+
+#### 4.3.3 insert method
+
+*Code was implemented above.*
+
+#### 4.3.4 remove method
+
+*Code was implemented above.*
+
+
+
+- lazy deletion:
+
+>When an element is to be deleted,it isleft in the tree and merely marked as being deleted. This is especially popular if duplicate items are present, because then the field that keeps count of the frequency of appearance can be decremented. If the number of real nodes in the tree is the same as the number of "deleted" nodes, then the depth of the tree is ongly expected to go up by a small constant, so there is a very small time penalty associated with lazy deletion. Also, if a deleted item is reinserted, the overhead of allocating a new cell is avoided.
+
+#### 4.3.5 Average-Case Analysis
+
+- Internal path length: all of the deepth about nodes in a tree.
+- 删除操作中，可以通过随机选取右子树的最小元素或左子树的最大元素来代替被删除的以消除这种不平衡问题。
+
+#### 4.4 AVL tree
+
+- Adelson-Velskii Landis tree is a binary search tree with a balance condition.The balance condition must be easy to maintain, and it ensures that the depth of the tree is O(logN). The simplest idea is to require that the left and right subtrees have the same height.
+- An AVL tree is identical to a binary search tree, except that for every node in the tree, the height of the left and right subtrees can differ by at most 1. (The height of an empty tree is defined to be −1.)一颗AVL树是其每个节点的左子树和右子树的高度最多差一的二叉查找树（空树高度定义为-1）。
+- Height information is kept for each node (in the node structure).
+
+
+
+*AVL 树与斐波那契数密切相关*
+
+>设AVL树的高度为*h*，最少节点数S(h)为
+>$$
+>S(h) = S(h-1) + S(h-2) + 1
+>$$
+>对于h=0，S(h) = 1; h = 1, S(h)= 2;
+
+
+
+##### Rotation 旋转
+
+为了平衡AVL树，可以使用**旋转**来控制查找二叉树的结构以满足AVL树的条件。
+
+插入操作和删除操作都会改变AVL树的平衡条件，这里先讨论插入操作。
+
+After an insertion, only nodes that are on the path from the insertion point to the root might have their balance altered because only those nodes have their subtrees altered. As we follow the path up to the root and update the balancing information, we may find a node whose new balance violates the AVL condition. We will show how to rebalance the tree at the first (i.e., deepest) such node.
+
+Let us call the node that must be rebalanced α. Since any node has at most two children, and a height imbalance requires that α’s two subtrees’ height differ by two, it is easy to see that a violation might occur in four cases: 
+
+1.  An insertion into the left subtree of the left child of α. 
+2.  An insertion into the right subtree of the left child of α. 
+3.  An insertion into the left subtree of the right child of α. 
+4.  An insertion into the right subtree of the right child of α
+
+
+
+
+

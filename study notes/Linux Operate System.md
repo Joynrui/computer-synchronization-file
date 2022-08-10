@@ -761,6 +761,101 @@ on client:
 ssh username@ipaddress
 ```
 
+### Using ssh on windows terminal
+
+```shell
+ssh username@ip_address
+```
+
+
+
+## Raspberry pi 
+
+Current Model B profile:
+
+username: *max*       password: *max*      static ip address: *192.168.137.200*
+
+
+
+1. showdown system
+
+```shell
+sudo poweroff # 关闭电源
+sudo shutdown -h now # 立刻关机
+sudo shutdown -r now # 立刻重启
+sudo shutdown -h +2  # 两分钟后关机
+```
+
+
+
+#### problem solution
+
+- [换源参考1](https://zhuanlan.zhihu.com/p/98079246)
+
+- [换源参考2](https://blog.csdn.net/qq_41071754/article/details/113731699)
+
+-  raspberry pi OS cmdline.txt 
+
+>Linux内核会接收到在启动期间传递的[命令行](https://so.csdn.net/so/search?q=命令行&spm=1001.2101.3001.7020)参数。在树莓派中这些参数是在boot分区目录下的一个文件中被定义，这个文件就是cmdline.txt。用户可以使用编辑器编辑这个文件。
+>
+>在内核启动时传递给内核的命令行，可以使用cat /proc/cmdline查看。这些信息和cmdline.txt并不完全一样。因为固件在启动内核之前可以对这个文件的内容进行修改。
+>
+>命令行选项
+>
+>有很多命令行参数，其中一些事可以被内核定义的，其他的一些事内核正在使用的代码使用。
+>
+>cmdline.txt中标准的命令行条目：
+>
+>console, root, rootfstype, elevator, quiet;
+>
+>![img](assets/Linux Operate System.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTAyOTkxMzM=,size_16,color_FFFFFF,t_70.png)
+>
+>[cmdline.txt配置](https://elinux.org/RPi_cmdline.txt)
+
+
+
+- 树莓派raspberry pi OS 网线连接win11电脑，win11电脑arp -a 表中以太网段192.168.137.X找不到raspberry pi OS 中写好的静态地址192.168.137.200, 配置文件boot/cmdline.txt。但却可以ping和ssh连接的问题。
+
+
+
+##### resolv.conf文件
+
+ */etc/resolv.conf*
+
+resolv.conf是resolver类库使用的配置文件，每当一个程序需要通过域名来访问internet上面的其它主机时，需要利用该类库将域名转换成对应的IP，然后才可进行访问.
+
+它是DNS客户机配置文件，用于设置DNS[服务器](https://cloud.tencent.com/product/cvm?from=10680)的IP地址及DNS域名，还包含了主机的域名搜索顺序。该文件是由[域名解析](https://cloud.tencent.com/product/cns?from=10680)器（resolver，一个根据主机名解析IP地址的库）使用的配置文件。它的格式很简单，每行以一个关键字开头，后接一个或多个由空格隔开的参数。
+
+ resolv.conf的关键字主要有四个，分别是：
+
+```javascript
+nameserver //定义DNS服务器的IP地址 
+domain //定义本地域名 
+search //定义域名的搜索列表 
+sortlist //对返回的域名进行排序
+```
+
+一个/etc/resolv.conf的示例：
+
+```javascript
+domain  51osos.com
+search  www.51osos.com  51osos.com
+nameserver 202.102.192.68
+nameserver 202.102.192.69
+```
+
+最主要是nameserver关键字，如果没指定nameserver就找不到DNS服务器，其它关键字是可选的。 nameserver表示解析域名时使用该地址指定的主机为域名服务器。其中域名服务器是按照文件中出现的顺序来查询的,且只有当第一个nameserver没有反应时才查询下面的nameserver。	
+
+- domain：声明主机的域名。很多程序用到它，如邮件系统；当为没有域名的主机进行DNS查询时，也要用到。如果没有域名，主机名将被使用，删除所有在第一个点( .)前面的内容。 
+
+- search:   它的多个参数指明[域名查询](https://dnspod.cloud.tencent.com/)顺序。当要查询没有域名的主机，主机将在由search声明的域中分别查找。 domain和search不能共存；如果同时存在，后面出现的将会被使用。
+
+- sortlist:  允许将得到域名结果进行特定的排序。它的参数为网络/掩码对，允许任意的排列顺序。
+
+
+
+
+
 
 
 ### problem solved

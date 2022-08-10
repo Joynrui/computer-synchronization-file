@@ -772,11 +772,29 @@ select to_char(sysdate, 'yyyy') from dual;
 | SS                 | 秒（0-59）                              |
 | SSSSS              | 午夜之后的秒(0-86399)                   |
 
+在格式串中允许添加特殊字符，如 :  - 等。若要添加汉字或字母，则需要用双引号括起来。
 
+e.g.,
 
+```sql
+select to_char(sysdate, 'y,yyy"年"MM"月"DD"日 and" hh24-mi:ss') from dual;
+```
 
+指定后缀来影响数字显示
+
+| element      | illustrate                       |
+| ------------ | -------------------------------- |
+| TH           | 序数（DDTH 显示为4TH）           |
+| SP           | 拼写出数字（DDSP 显示为 FOUR）   |
+| SPTH or THSP | 拼写出序数（DDSPTH显示为FOURTH） |
 
   
+
+
+
+
+
+
 
 ## $$ Error 记录
 
