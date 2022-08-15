@@ -1451,9 +1451,13 @@ Noice how we carefully handle the degenerate case of an empty tree and **it's al
 
 *Code was implemented above.*
 
+
+
 #### 4.3.3 insert method
 
 *Code was implemented above.*
+
+
 
 #### 4.3.4 remove method
 
@@ -1465,10 +1469,18 @@ Noice how we carefully handle the degenerate case of an empty tree and **it's al
 
 >When an element is to be deleted,it isleft in the tree and merely marked as being deleted. This is especially popular if duplicate items are present, because then the field that keeps count of the frequency of appearance can be decremented. If the number of real nodes in the tree is the same as the number of "deleted" nodes, then the depth of the tree is ongly expected to go up by a small constant, so there is a very small time penalty associated with lazy deletion. Also, if a deleted item is reinserted, the overhead of allocating a new cell is avoided.
 
+
+
 #### 4.3.5 Average-Case Analysis
 
 - Internal path length: all of the deepth about nodes in a tree.
 - 删除操作中，可以通过随机选取右子树的最小元素或左子树的最大元素来代替被删除的以消除这种不平衡问题。
+
+
+
+------
+
+
 
 ### 4.4 AVL tree
 

@@ -209,7 +209,7 @@ $ git push -u origin main
 ```
       git fetch --all
       git reset  --hard origin/main 
-      git pullx
+      git pull
 ```
 
 
