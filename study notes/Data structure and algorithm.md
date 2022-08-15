@@ -1470,7 +1470,7 @@ Noice how we carefully handle the degenerate case of an empty tree and **it's al
 - Internal path length: all of the deepth about nodes in a tree.
 - 删除操作中，可以通过随机选取右子树的最小元素或左子树的最大元素来代替被删除的以消除这种不平衡问题。
 
-#### 4.4 AVL tree
+### 4.4 AVL tree
 
 - Adelson-Velskii Landis tree is a binary search tree with a balance condition.The balance condition must be easy to maintain, and it ensures that the depth of the tree is O(logN). The simplest idea is to require that the left and right subtrees have the same height.
 - An AVL tree is identical to a binary search tree, except that for every node in the tree, the height of the left and right subtrees can differ by at most 1. (The height of an empty tree is defined to be −1.)一颗AVL树是其每个节点的左子树和右子树的高度最多差一的二叉查找树（空树高度定义为-1）。
@@ -1488,7 +1488,7 @@ Noice how we carefully handle the degenerate case of an empty tree and **it's al
 
 
 
-##### Rotation 旋转
+#### Rotation 旋转
 
 为了平衡AVL树，可以使用**旋转**来控制查找二叉树的结构以满足AVL树的条件。
 
@@ -1505,5 +1505,33 @@ Let us call the node that must be rebalanced α. Since any node has at most two 
 
 
 
+```
+										*    --->  alpha
+									  /   \
+									 *     *
+								    / \   / \
+								   *   * *   *
+								   1   2 3   4
+```
 
 
+
+情况一：插入发生在”外边“， 即左-左or右-右。该情况使用single rotation 单旋转。
+
+情况二：插入发生在“内部”，即左-右or右-左。该情况使用double rotation 双旋转。
+
+
+
+#### 4.4.1 single rotation 
+
+对一颗子树的三个节点进行旋转，目的是将不平衡的子树的高度降低，从而满足AVL树的条件。
+
+
+
+#### 4.4.2 double rotation
+
+
+
+
+
+[AVL树的单双旋转](https://blog.csdn.net/PacosonSWJTU/article/details/50522677)
