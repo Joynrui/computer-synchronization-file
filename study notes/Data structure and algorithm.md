@@ -1534,16 +1534,135 @@ Let us call the node that must be rebalanced α. Since any node has at most two 
 
 
 
+**旋转涉及两个问题：旋转轴和旋转方向；**
+
+- **单旋转：**旋转轴为 不满足AVL条件的最小树的树根的**相应孩子节点**；
+- **多旋转：**旋转轴为 不满足AVL条件的最小树的树根的**相应孙子节点**；
+
+
+
+**判断单双旋转的方法：**
+
+- 单旋转：插入点不介于**不满足AVL条件的树根**和**树根对应孩子节点**之间；
+- 双旋转：插入点介于**不满足AVL条件的树根**和**树根对应孩子节点**之间；
+
+
+
 #### 4.4.1 single rotation 
 
-对一颗子树的三个节点进行旋转，目的是将不平衡的子树的高度降低，从而满足AVL树的条件。
+**左左旋转（顺时针旋转）**： 从插入点回溯到第一个不满足AVL条件的节点；本例中，插入点是10， 而第一个不满足AVL条件的节点是30；将回溯路径上的节点除节点30外，上移一层，节点30下移一层；
+
+- case1
+
+>1. 
+>
+>![image-20220815173747825](assets/Data structure and algorithm.assets/image-20220815173747825.png)
+>2. 
+>
+>![image-20220815173022974](assets/Data structure and algorithm.assets/image-20220815173022974.png)
+> *（这是一个左右双旋转特例，当不符合AVL条件的树根和插入点的父节点只有一个子节点，且相反方向的子节点，当然了，插入点要介于树根和插入点父节点之间的话，才满足 双旋转特例的条件）*
+
+
+
+*Attention 1）*因为10 小于 20 且 小于30； 所以通过一次单旋转就可以完成；**也即是， 左左单旋转时， 不满足AVL条件的最小树的根应该下移，该树的其他节点上移，而不管 该树的左子树的右孩子 或者存在 或者 不存在，在旋转过程中，都要把该左子树的的右孩子添加以作为最小树根的左孩子，因为即使不存在，添加null 也不影响最后的旋转效果**。
+
+
+
+- case2
+
+>![img](assets/Data structure and algorithm.assets/20160115112014725.png)
+
+
+
+
+
+
+
+------
+
+
+
+**右右旋转（逆时针旋转）：** 从插入点回溯到第一个不满足AVL条件的节点；本例中，插入点是10， 而第一个不满足AVL条件的节点是30；将回溯路径上的节点除节点30外，上移一层，节点30下移一层；
+
+
+
+- case1
+
+>1. 
+>  ![image-20220815174522113](assets/Data structure and algorithm.assets/image-20220815174522113.png)
+>
+>2. ![img](assets/Data structure and algorithm.assets/20160115112111995.png) 
+>
+>  *（这是一个右左双旋转特例，当不符合AVL条件的树根和插入点的父节点只有一个子节点，且相反方向的子节点，当然了，插入点要介于树根和插入点父节点之间的话，才满足 双旋转特例的条件）*
+
+
+
+*Attention 2）*因为10 小于 20 且 小于30； 所以通过一次单旋转就可以完成；**也即是， 右右单旋转时， 不满足AVL条件的最小树的根应该下移，该树的其他节点上移，而不管 该树的右子树的左孩子 或者存在 或者 不存在，在旋转过程中，都要把该右子树的左孩子添加以作为最小树根的右孩子，因为即使不存在，添加null 也不影响最后的 旋转效果**。
+
+- case2
+
+>![img](assets/Data structure and algorithm.assets/20160115112132131.png)
+
+
+
+- case3
+>为什么经过右右单旋转就可以修正成为 AVL 树；因为 new point = 13 不在 4 和 7 之间， 所以一次单旋转就可以了，无需双旋转；**也就是说，new point 介于 不满足AVL条件的树根 和 其 孩子 之间的话，那么就需要双旋转， 否则， 只需要单旋转就可以了。**
+>
+>![img](assets/Data structure and algorithm.assets/20160115112145195.png)
+
+
+
+>**Conclusion of single rotation）单旋转有两个属性： 轴 和 旋转方向
+>C1）单旋转的轴： 相信你也看到了， 单旋转的轴显然是不符合AVL条件的树根的直接孩子；
+>	C1.1）左左单旋转的轴：是不符合AVL条件的树根的左孩子；
+>	C1.2）右右单旋转的轴：是不符合AVL条件的树根的右孩子；
+>C2）旋转方向：
+>	C2.1）左左单旋转方向：顺时针方向；
+>	C2.2）右右单旋转方向：逆时针方向；**
 
 
 
 #### 4.4.2 double rotation
 
+**左右双旋转：** （先左左单旋转，再右右单旋转； 即先顺时针旋转，后逆时针旋转）
+
+- case 1
+
+>因为47 介于 40 和 50 之间， 所以肯定需要双旋转；
+>
+>1. 
+>
+>![img](assets/Data structure and algorithm.assets/20160115112456063.png)
+>
+>2. 
+>
+>![img](assets/Data structure and algorithm.assets/20160115112509931.png)
+>
+>
 
 
 
+**右左双旋转：**先将节点15向上提，还是不满足AVL树的条件，再把节点7向上提；（先右右单旋转，再左左单旋转； 即先逆时针旋转，后顺时针旋转）
+>1. 
+>![img](assets/Data structure and algorithm.assets/20160115112404540.png)
+>2. 
+>
+>![img](assets/Data structure and algorithm.assets/20160115112357064.png)
+>
+>
 
-[AVL树的单双旋转](https://blog.csdn.net/PacosonSWJTU/article/details/50522677)
+
+
+>**Conclusion of double rotations） 双旋转有两个属性： 轴 和 旋转方向
+>C1）双旋转的轴：相信你也看到了，双旋转的轴显然是插入点的直接父节点；（除了两个特例）双旋转的轴显然是插入点的直接父节点（除了两个特例， 而两个特例的轴是插入点本身）
+>	C1.1）左右单旋转的轴：插入点的父节点；
+>	C1.2）右左单旋转的轴：插入点的父节点；
+>C2）旋转方向：
+>	C2.1）左右单旋转方向：先右右单旋转，再左左单旋转；即先逆时针旋转，再顺时针旋转；
+>	C2.2）右左单旋转方向：先左左单旋转，再右右单旋转；即先顺时针旋转，再逆时针旋转；**
+
+![img](assets/Data structure and algorithm.assets/20160115112338331.png)
+
+[来源：AVL树的单双旋转](https://blog.csdn.net/PacosonSWJTU/article/details/50522677)
+
+[参考视频](https://www.bilibili.com/video/BV1dr4y1j7Mz/?spm_id_from=333.788&vd_source=954d877e1b30cd12d08f2441fae54cff)
