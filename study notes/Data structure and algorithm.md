@@ -1574,7 +1574,18 @@ Let us call the node that must be rebalanced α. Since any node has at most two 
 
 
 
+**左左单旋转的java实现：**
 
+```java
+private AvlNode<T> rotateWithLeftChild(AvlNode<T> k2) {
+        AvlNode<T> k1 = k2.left;
+        k2.left = k1.right;
+        k1.right = k2;
+        k2.height = Math.max(height(k2.left), height(k2.right)) + 1;
+        k1.height = Math.max(height(k1.left), k2.height) + 1;
+        return k1;
+    }
+```
 
 
 
@@ -1612,6 +1623,21 @@ Let us call the node that must be rebalanced α. Since any node has at most two 
 
 
 
+**右右单旋转的java实现**
+
+```java
+private AvlNode<T> rotateWithRightChild(AvlNode<T> k4) {
+        AvlNode<T> k3 = k4.right;
+        k4.right = k3.left;
+        k3.left = k4;
+        k4.height = Math.max(height(k3.right), height(k3.left)) + 1;
+        k3.height = Math.max(height(k4.right), k4.height) + 1;
+        return k3;
+    }
+```
+
+
+
 >**Conclusion of single rotation）单旋转有两个属性： 轴 和 旋转方向
 >C1）单旋转的轴： 相信你也看到了， 单旋转的轴显然是不符合AVL条件的树根的直接孩子；
 >	C1.1）左左单旋转的轴：是不符合AVL条件的树根的左孩子；
@@ -1634,6 +1660,17 @@ Let us call the node that must be rebalanced α. Since any node has at most two 
 >
 >![img](assets/Data structure and algorithm.assets/20160115112456063.png)
 >
+>```java
+>private doubleRotateWithLeftChild(AvlNode 50) {
+>    // step 1, 2
+>    50.left(40) = rotateWithRightChild(AvlNode 50.left(40));
+>    // step 3
+>    return rotateWithLeftChild(50);
+>}
+>```
+>
+>
+>
 >2. 
 >
 >![img](assets/Data structure and algorithm.assets/20160115112509931.png)
@@ -1651,6 +1688,15 @@ Let us call the node that must be rebalanced α. Since any node has at most two 
 >
 >
 
+**右左双旋转java实现**
+
+```java
+private AvlNode<T> doubleRotateWithRightChild(AvlNode<T> k6) {
+        k6.right = rotateWithLeftChild(k6.right);
+        return rotateWithRightChild(k6);
+    }
+```
+
 
 
 >**Conclusion of double rotations） 双旋转有两个属性： 轴 和 旋转方向
@@ -1665,4 +1711,184 @@ Let us call the node that must be rebalanced α. Since any node has at most two 
 
 [来源：AVL树的单双旋转](https://blog.csdn.net/PacosonSWJTU/article/details/50522677)
 
+#### *参考
+
 [参考视频](https://www.bilibili.com/video/BV1dr4y1j7Mz/?spm_id_from=333.788&vd_source=954d877e1b30cd12d08f2441fae54cff)
+
+**参考1**
+
+![img](assets/Data structure and algorithm.assets/260px-AVL_Tree_Example-16609014480463.gif)
+
+**参考2**
+
+![avl树旋转的图形描述。](assets/Data structure and algorithm.assets/Tree_Rebalancing.png)
+
+
+- 代码实现
+
+code structure:
+
+1. private static class **AvlNode**<T>
+2. private int **height**(AvlNode<T> t)
+3. private AvlNode<T> **rotateWithLeftChild**(AvlNode<T> k2)
+4. private AvlNode<T> **rotateWithRightChild**(AvlNode<T> k4)
+5. private AvlNode<T> **doubleRotateWithLeftChild**(AvlNode<T> k5)
+6. private AvlNode<T> **doubleRotateWithRightChild**(AvlNode<T> k6)
+7. private static final int **ALLOWED_IMBALANCE** = 1;
+8. private AvlNode<T> **balance**(AvlNode<T> t)
+9. private AvlNode<T> **insert**(T x, AvlNode<T> t)
+
+```java
+package chapter4;
+
+import java.lang.*;
+
+public class AVLTree<T extends Comparable<? super T>> {
+    // AVL tree node
+    private static class AvlNode<T> {
+        // Constructors
+        AvlNode(T theElement) {
+            this(theElement, null, null);
+        }
+
+        AvlNode(T theElement, AvlNode<T> lt, AvlNode<T> rt) {
+            element = theElement;
+            left = lt;
+            right = rt;
+            height = 0;
+        }
+
+        T element;
+        AvlNode<T> left;
+        AvlNode<T> right;
+        int height;
+    }
+
+    // return height of node t, or -1, if null.(The height of empty tree is defined as -1)
+    // private int height(AvlNode<T> t)
+    private int height(AvlNode<T> t) {
+        return t == null ? -1 : t.height;
+    }
+
+    /**
+     * Rotate binary tree node with left child.
+     * For AVL trees, this is a single rotation for case 1(left-left rotation or right-right rotation).
+     * Update height, then return new root.
+     *
+     * @param k2 AvlNode
+     * @return AvlNode
+     */
+    private AvlNode<T> rotateWithLeftChild(AvlNode<T> k2) {
+        AvlNode<T> k1 = k2.left;
+        k2.left = k1.right;
+        k1.right = k2;
+        k2.height = Math.max(height(k2.left), height(k2.right)) + 1;
+        k1.height = Math.max(height(k1.left), k2.height) + 1;
+        return k1;
+    }
+
+    /**
+     * Rotate binary tree node with right child.
+     * For case 1
+     * Update height, then return new root.
+     *
+     * @param k4 AvlNode
+     * @return AvlNode
+     */
+    private AvlNode<T> rotateWithRightChild(AvlNode<T> k4) {
+        AvlNode<T> k3 = k4.right;
+        k4.right = k3.left;
+        k3.left = k4;
+        k4.height = Math.max(height(k3.right), height(k3.left)) + 1;
+        k3.height = Math.max(height(k4.right), k4.height) + 1;
+        return k3;
+    }
+
+    /**
+     * DoubleRotate binary tree node: first left child
+     * with its right child; then node k5 with new left child.
+     * For AVL trees, this is a double rotation for case 2(left-right rotation).
+     * Update heights, then return new root.
+     *
+     * @param k5
+     * @return AvlNode
+     */
+    private AvlNode<T> doubleRotateWithLeftChild(AvlNode<T> k5) {
+        k5.left = rotateWithRightChild(k5.left);
+        return rotateWithLeftChild(k5);
+    }
+
+    /**
+     * DoubleRotate binary tree node: first right child
+     * with its right child; then node k6 with new left child.
+     * For case 2(right-left rotation).
+     * Update heights, then return new root.
+     *
+     * @param k6 AvlNode
+     * @return AvlNode
+     */
+    private AvlNode<T> doubleRotateWithRightChild(AvlNode<T> k6) {
+        k6.right = rotateWithLeftChild(k6.right);
+        return rotateWithRightChild(k6);
+    }
+
+    private static final int ALLOWED_IMBALANCE = 1;
+
+    // Assume t is either balanced or within one of being balanced
+    private AvlNode<T> balance(AvlNode<T> t) {
+        // dispose empty tree
+        if (t == null) {
+            return null;
+        }
+
+        if (height(t.left) - height(t.right) > ALLOWED_IMBALANCE) {
+            if (height(t.left.left) >= height(t.left.right)) {
+                // l-l single rotation
+                t = rotateWithLeftChild(t);
+            } else {
+                // l-r double rotation
+                t = doubleRotateWithLeftChild(t);
+            }
+        } else {
+            if (height(t.right) - height(t.left) > ALLOWED_IMBALANCE) {
+                if (height(t.right.right) >= height(t.right.left)) {
+                    // r-r single rotation
+                    t = rotateWithRightChild(t);
+                } else {
+                    // r-l double rotation
+                    t = doubleRotateWithRightChild(t);
+                }
+            }
+        }
+        t.height = Math.max(height(t.left), height(t.right)) + 1;
+        return t;
+    }
+
+    /**
+     * Internal method to insert into a subtree.
+     *
+     * @param x the item of insert
+     * @param t the node that the roots the subtree.
+     * @return the new root of the subtree.
+     */
+    private AvlNode<T> insert(T x, AvlNode<T> t) {
+        // dispose empty tree
+        if (t == null) {
+            return new AvlNode<>(x, null, null);
+        }
+
+        int compareResult = x.compareTo(t.element);
+        if (compareResult < 0) {
+            t.left = insert(x, t.left);
+        } else if (compareResult > 0) {
+            t.right = insert(x,t.right);
+        } else {
+            // Duplicate do nothing
+        }
+
+        return balance(t);
+    }
+}
+
+```
+
