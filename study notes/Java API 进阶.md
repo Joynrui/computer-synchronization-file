@@ -45,7 +45,7 @@ DecimalFormat df = new DecimalFormat("00000000");
 
    Official  explanation：
 
-   The**JUnit Platform** serves as a foundation for [launching testing frameworks](https://junit.org/junit5/docs/current/user-guide/#launcher-api) on the JVM.
+   The **JUnit Platform** serves as a foundation for [launching testing frameworks](https://junit.org/junit5/docs/current/user-guide/#launcher-api) on the JVM.
 
    “	JUnit  5  平台服务是在 `JVM`上启动测试框架的基础。”
 
@@ -59,7 +59,7 @@ DecimalFormat df = new DecimalFormat("00000000");
 
    用以测试单元的结果值与期望值是否相等。
 
-   assertEpuals()方法；
+   `assertEpuals()`方法；
 
    ```java
    import org.junit.Assert;
@@ -89,7 +89,7 @@ DecimalFormat df = new DecimalFormat("00000000");
 
 **异常是程序中的一些错误，但并不是所有的错误都是异常，并且错误有时候是可以避免的。**
 
-比如说，你的代码少了一个分号，那么运行出来结果是提示是错误 java.lang.Error；如果你用System.out.println(11/0)，那么你是因为你用0做了除数，会抛出 java.lang.ArithmeticException 的异常。
+比如说，你的代码少了一个分号，那么运行出来结果是提示是错误` java.lang.Error`；如果你用`System.out.println(11/0)`，那么你是因为你用0做了除数，会抛出` java.lang.ArithmeticException `的异常。
 
 异常发生的原因有很多，通常包含以下几大类：
 
@@ -154,11 +154,17 @@ throw new NullPointerException();
 
 ## VI. I/O stream  输入/输出流
 
-- 注意： FileInputStream, FileOutputStream, BufferedInputStream, BufferedOutputStream可以以**byte**类型操作任何文件；
+- 注意： `FileInputStream, FileOutputStream, BufferedInputStream, BufferedOutputStream`可以以**byte**类型操作任何文件；
 
-  注意： FileReader（需要强制转换成char类型输出）, FileWriter, BufferedReader, BufferedWriter以**char**的形式对txt文件进行读取和写入。
+  注意： `FileReader`（需要强制转换成char类型输出）, `FileWriter, BufferedReader, BufferedWriter`以**char**的形式对txt文件进行读取和写入。
 
-1. **文件读取流：FileInputStream**：按照byte的形式输出文件的每一个字符。（**FileOutputStream** is an outputstream for writing data/streams of raw bytes to file or storing data to file.）(此方法为原理，并非实际应用中所使用的方法)
+
+
+**将数据从外存中读取到内存中的称为输入流，将数据从内存写入外存中的称为输出流。**
+
+
+
+1. **文件输入流：`FileInputStream`**：按照byte的形式，将外存中的数据读取进内存中，且在monitor上显示文件的每一个字符。（**`OutputStream`** is an output stream for writing data/streams of raw bytes to file or storing data to file.）(此方法为原理，并非实际应用中所使用的方法)
 
    ```java
    public void inputFile() throws IOException {
@@ -166,21 +172,21 @@ throw new NullPointerException();
            FileInputStream fileInputStream = new FileInputStream("file/readFile.txt");
            int by = 0;
            while ((by = fileInputStream.read()) != -1) {
-               //fileInputStream默认以比特输出文件，故用强制转换成字节输出
+               //fileInputStream默认以比特读取文件，故用强制转换成字节读取
                System.out.print((char) by);
            }
            // 使用读取流后使用close()方法关闭该流
-           fileInputStream.clos
+           fileInputStream.close();
        }
    ```
-2. **文件输入流：FileOutputStream**:按照byte的形式输入文件的每一个字符。（**FileInputStream class** is useful to read data from a file in the form of a sequence of bytes.）(此方法为原理，并非实际应用中所使用的方法)
+2. **文件输出流：`FileOutputStream`**:按照byte的形式，将内存中的数据写入外存中。（**`FileInputStream class`** is useful to read data from a file in the form of a sequence of bytes.）(此方法为原理，并非实际应用中所使用的方法)`
 
 ```java
 public void outputFile() throws IOException {
         FileOutputStream fileOutputStream = new FileOutputStream("file/writedFile.txt");
         byte[] bytes = "Max_Croft".getBytes();
         for (int x = 0; x < bytes.length; x++) {
-            //FileOutputStream默认以比特写入文件，故用强制转换使其以字节di
+            //FileOutputStream默认以比特写入文件，故用强制转换使其以字节输出
             System.out.print((char) bytes[x]);
         }
         fileOutputStream.close();
@@ -209,7 +215,7 @@ public void copyFileBase() throws IOException {
 
 - JDK9原有方法：
 
-1. **BufferedInputStream：**
+1. **`BufferedInputStream`：**
 
 ```java
 public void bufferFileInputBase() throws IOException {
@@ -223,7 +229,7 @@ public void bufferFileInputBase() throws IOException {
     }
 ```
 
-2. **BufferedOutputStream**:
+2. **`BufferedOutputStream`**:
 
 ```java
 //使用bufferedFileOutputStream()复制文件
@@ -245,7 +251,7 @@ public void bufferFileInputBase() throws IOException {
 - *通过使用修饰模式，可以在运行时扩充一个类别的功能。原理是：增加一个修饰类包裹原来的类别，包裹的方式是在修饰类的构造函数中将原来的类以参数的形式传入。装饰类实现新的功能，但是，在不需要用到新功能的地方，它可以直接调用原来的类别中的方法。修饰类必须和原来的类别有相同的接口。*
 - **修饰模式是类别继承的另外一种选择。类继承在编译时候增加行为，而装饰模式是在运行时增加行为。**
 
-3. **FileReader:**
+3. **`FileReader`:**
 
 ```java
  //字符流  用于读取和谐写入文本文件
@@ -261,7 +267,7 @@ public void bufferFileInputBase() throws IOException {
     }
 ```
 
-4. **FileWriter:**
+4. **`FileWriter`:**
 
 ```java
 @Test
@@ -273,7 +279,7 @@ public void bufferFileInputBase() throws IOException {
     }
 ```
 
-5. **BufferedReader  :**
+5. **`BufferedReader`  :**
 
 ```java
 @Test
@@ -289,7 +295,7 @@ public void bufferFileInputBase() throws IOException {
     }
 ```
 
-6. **BufferedWriter:**
+6. **`BufferedWriter`:**
 
 ```java
  @Test
@@ -351,6 +357,7 @@ GBK   国标字符集      字符编码转换      国际标准    Unicode  UTF 
 ```java
 public class SecondThread  extends Thread{
     // 重写Thread中的run方法
+    // Thread中的run方法没有形参，重写时也不能带形参
     @Override
     public void run(){
         while(true){
@@ -493,9 +500,11 @@ public class Shoes implements Runnable {
 
 在Java语言中，守护线程一般具有较低的优先级，它并非只由JVM内部提供，用户在编写程序时也可以自己设置守护线程，例如将一个用户线程设置为守护线程的方法就是在调用start()方法启动线程之前调用对象的setDaemon(true)方法，若将以上括号里的参数设置为false，则表示的是用户进程模式。
 
-需要注意的是，当在一个守护线程中产生了其它线程，那么这些新产生的线程默认还是守护线程，用户线程也是如此。
+需要注意的是，**当在一个守护线程中产生了其它线程，那么这些新产生的线程默认还是守护线程**，用户线程也是如此。
 
-**总结：通过Thread.setDaemon(false)设置为用户线程，通过Thread.setDaemon(true)设置为守护线程。**
+**总结：通过`Thread.setDaemon(false)`设置为用户线程，通过`Thread.setDaemon(true)`设置为守护线程。**
+
+
 
 **一个演示：**
 
@@ -673,30 +682,39 @@ public class Shoes implements Runnable {
 1. **初始状态(new)**
 
    实现Runnable接口和继承Thread可以得到一个线程类，new一个实例出来，线程就进入了初始状态。
+   
 2. **就绪状态(Runnable接口)(ready状态)**
 
-- 就绪状态只是说你资格运行，调度程序没有挑选到你，你就永远是就绪状态。
+- 就绪状态只是说你有资格运行，调度程序没有挑选到你，你就永远是就绪状态。
 - 调用线程的start()方法，此线程进入就绪状态。
 - 当前线程sleep()方法结束，其他线程join()结束，等待用户输入完毕，某个线程拿到对象锁，这些线程也将进入就绪状态。
 - 当前线程时间片用完了，调用当前线程的yield()方法，当前线程进入就绪状态。
 - 锁池里的线程拿到对象锁后，进入就绪状态。
 - **运行中**：线程调度程序从可运行池中选择一个线程作为当前线程时线程所处的状态。这也是线程进入运行状态的唯一的一种方式。
 
+
+
 3. **阻塞状态(blocked)**
 
 - 阻塞状态是线程阻塞在进入synchronized关键字修饰的方法或代码块(获取锁)时的状态。
+
+
 
 4. **等待(waiting)**
 
 - 处于这种状态的线程不会被分配CPU执行时间，它们要等待被显式地唤醒，否则会处于无限期等待的状态。
 
+
+
 5. **超时等待(timed waiting)**
 
 - 处于这种状态的线程不会被分配CPU执行时间，不过无须无限期等待被其他线程显示地唤醒，在达到一定时间后它们会自动唤醒。
 
+
+
 6. **终止状态(terminated)**
    当线程的run()方法完成时，或者主线程的main()方法完成时，我们就认为它终止了。这个线程对象也许是活的，但是它已经不是一个单独执行的线程。线程一旦终止了，就不能复生。
-   在一个终止的线程上调用start()方法，会抛出java.lang.IllegalThreadStateException异常。
+   在一个终止的线程上调用start()方法，会抛出`java.lang.IllegalThreadStateException`异常。
 
 Java  的手段是抢占CPU的资源
 
@@ -882,15 +900,15 @@ public class Customer extends Thread {
 product.notifyAll();
 ```
 
-### Generic 泛型
+## IX.Generic 泛型
 
-#### Generic programming
+### Generic programming
 
 **Speciality:**  Generic programming makes you program can multiplex objects of various types. Generic add a limit when you cite a class.
 
 Generic type parameters will give you a prompt when you want to pass the parameters. Generic is a clear way that it makes the program have a compile error rather than a runtime cast exception. It makes the program easier to understand and safer.
 
-#### ? Wildcard type
+### ? Wildcard type
 
 - Upper Bounded Wildcards：
 
@@ -989,7 +1007,11 @@ public class UnboundedWildcardsTest {
 
 **？** - 表示不确定的java类型
 
-### Java 集合框架
+
+
+
+
+## X. Java 集合框架
 
 Java 集合大致可以分为两大体系，一个是 `Collection`，另一个是 `Map`；
 
@@ -1037,7 +1059,6 @@ public void arrayList1(){
     System.out.println(arrayList2);
     arrayList1.addAll(0, arrayList2);
     System.out.println(arrayList1);
-
 }
 ```
 
@@ -1436,13 +1457,38 @@ public void hashMaoTest() {
     }
 ```
 
-### JDBC
+#### TreeMap
 
-#### concept
+**Methods in the TreeMap Class**
+
+| Method                                                       | Action Performed                                             |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| [clear()](https://www.geeksforgeeks.org/treemap-clear-method-in-java/) | The method removes all mappings from this TreeMap and clears the map. |
+| [clone()](https://www.geeksforgeeks.org/treemap-clone-method-in-java/) | The method returns a shallow copy of this TreeMap.           |
+| [containsKey(Object key)](https://www.geeksforgeeks.org/treemap-containskey-method-in-java/) | Returns true if this map contains a mapping for the specified key. |
+| [containsValue(Object value)](https://www.geeksforgeeks.org/treemap-containsvalue-method-in-java/) | Returns true if this map maps one or more keys to the specified value. |
+| [entrySet()](https://www.geeksforgeeks.org/treemap-entryset-method-in-java/) | Returns a set view of the mappings contained in this map.    |
+| [firstKey()](https://www.geeksforgeeks.org/java-util-treemap-firstentry-firstkey-java/) | Returns the first (lowest) key currently in this sorted map. |
+| [get(Object key)](https://www.geeksforgeeks.org/treemap-get-method-in-java/) | Returns the value to which this map maps the specified key.  |
+| [headMap(Object key_value)](https://www.geeksforgeeks.org/treemap-headmap-method-in-java/) | The method returns a view of the portion of the map strictly less than the parameter key_value. |
+| [keySet()](https://www.geeksforgeeks.org/treemap-keyset-method-in-java/) | The method returns a Set view of the keys contained in the treemap. |
+| [lastKey()](https://www.geeksforgeeks.org/treemap-lastkey-method-in-java/) | Returns the last (highest) key currently in this sorted map. |
+| [put(Object key, Object value)](https://www.geeksforgeeks.org/treemap-put-method-in-java/) | The method is used to insert a mapping into a map.           |
+| [putAll(Map map)](https://www.geeksforgeeks.org/treemap-putall-method-in-java/) | Copies all of the mappings from the specified map to this map. |
+| [remove(Object key)](https://www.geeksforgeeks.org/treemap-remove-method-in-java/) | Removes the mapping for this key from this TreeMap if present. |
+| [size()](https://www.geeksforgeeks.org/treemap-size-method-in-java/) | Returns the number of key-value mappings in this map.        |
+| [subMap((K startKey, K endKey)](https://www.geeksforgeeks.org/treemap-submap-method-in-java/) | The method returns the portion of this map whose keys range from startKey, inclusive, to endKey, exclusive. |
+| [values()](https://www.geeksforgeeks.org/treemap-values-method-in-java/) | Returns a collection view of the values contained in this map. |
+
+
+
+## XI. JDBC
+
+### concept
 
  **Java数据库连接**，（**Java Database Connectivity**，简称**JDBC**）是[Java语言](https://zh.wikipedia.org/wiki/Java语言)中用来规范[客户端](https://zh.wikipedia.org/wiki/客户端)程序如何来访问[数据库](https://zh.wikipedia.org/wiki/数据库)的[应用程序接口](https://zh.wikipedia.org/wiki/应用程序接口)，提供了诸如查询和更新数据库中数据的方法。JDBC是面向[关系型数据库](https://zh.wikipedia.org/wiki/关系型数据库)的。
 
-#### example for JDBC
+### example for JDBC
 
 ```java
 package jdbc;
@@ -1507,7 +1553,7 @@ public class JdbcDemo {
 
 [原文链接](https://blog.csdn.net/qq_43511405/article/details/108565216)
 
-#### Example2 for JDBC:
+### Example2 for JDBC:
 
 ```java
 import java.sql.*;
@@ -1549,7 +1595,7 @@ public class JdbcDemo2 {
 }
 ```
 
-#### JDBCUtilsPackaging
+### JDBCUtilsPackaging
 
 - step 1: Create a java class "`JdbcUtils`" to package "`jdbc`" function.
 - step 2: Create a properties file named "`db`" to write configuration.
@@ -1569,7 +1615,7 @@ driver = com.mysql.cj.jdbc.Driver
 - step 4: Through the static code block, pre-execute the configuration items of the read configuration file for preprocessing.
 - step 5:
 
-#### exampleFor `JDBCUtils`:
+### Example For `JDBCUtils`:
 
 ```java
 import java.io.InputStream;
@@ -1629,7 +1675,7 @@ public class JdbcUtils {
 }
 ```
 
-#### Update
+### Update
 
   (insert, delete, update) (**have some question, it should be modified**)
 
@@ -1668,7 +1714,7 @@ public class JdbcTest {
 
 ```
 
-#### The latest  demo for insert, delete, update.
+### The latest  demo for insert, delete, update.
 
 - *JdbcTest file*
 
@@ -1781,6 +1827,7 @@ public class JdbcTest {
 - *db.properties*
 
 ```java
+// jdbc:<_database>://<address>:<port>/<database_name>
 url=jdbc:mysql://localhost:3306/test?characterEncoding=utf8&useSSL=false
 user=root
 password=123456
@@ -1857,13 +1904,19 @@ public class JdbcUtils {
 
 ```
 
-#### Encoding problem.
+### Encoding problem.
 
 - System encoding.
 - IDE encoding.
 - MySQL encoding.
 
-#### PreparedStatement 和问号占位符（用户手动输入数据库数据信息）
+
+
+
+
+### PreparedStatement 和问号占位符
+
+-------（用户手动输入数据库数据信息）
 
 - **PreparedStatement是如何防止sql注入的？**
 
@@ -2092,20 +2145,132 @@ public class JdbcUtils {
 }
 ```
 
-#### Student information management system  demo
+### Student information management system  demo
 
-### Java 人脸识别
+
+
+
+
+## XII. Java GUI
+
+### AWT and Swing
+
+- `AWT`，package `java.awt;`Abstract Window Toolkit, 抽象窗口工具包。AWT调用系统自带的**原生GUI接口**，产生对应的窗口显示界面； 
+
+- `Swing`，package `javax.swing`; `javax` 意为 java的扩展包（expand）。 Swing 在AWT的基础上，将窗口界面的对应接口集成在了开发包中，而不直接调用系统GUI接口。（Swing是SUN公司为了与Adobe的 Adobe Flash 的竞品，flash相较于Swing能创更炫酷的窗口界面）
+
+- 绝大多数的Swing组件都以 J 开头，eg：`JButton`、`JFrame`;  AWT库中有Frame类，用于描述顶层Swing版本的类`JFrame`窗口； 
+
+Emphasis: 
+
+-  All of the Swing components should depends on event dispatch thread, it's control thread,负责将鼠标点击，按键等事件传递给用户接口组件。
+
+```java
+EventQueue.invokeLater(() -> {
+    statments
+});
+```
+
+- eg.., simple Frame test: Display a black frame/window 
+
+```java
+package swing.test;
+
+import java.awt.*;
+import javax.swing.*;
+
+/**
+ *  a simple GUI Frame / Window example. Used JFrame in javax.swing
+ */
+public class SimpleFrameTest {
+    public static void main(String[] args) {
+        // event dispatch thread, all of the swing components should depend on event dispatch thread.
+        EventQueue.invokeLater(() -> {
+            SimpleFrame frame = new SimpleFrame();
+            // close window
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            // make the frame(窗体) visible.
+            frame.setVisible(true);
+        });
+    }
+
+    static class SimpleFrame extends JFrame {
+        private static final int DEFAULT_WIDTH = 300;
+        private static final int DEFAULT_HEIGHT = 200;
+
+        public SimpleFrame() {
+            setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        }
+    }
+}
+```
+
+
+
+- Common method in`JFrame`
+
+> - `setLocation(x，y)`, `setBound(x, y, width, height)`:  Location设置窗体位置， x, y 为像素点位置 （0，0） 位置是屏幕的左上角; Bound设置窗体位置和大小，（x, y）为像素点，（0，0） 位置是屏幕的左上角，width  height 为窗体的宽高; 两种方法都隶属Component 类；
+> - `setIconImage()`: 设置窗口系统 标题栏、任务切换窗口等位置显示哪个图标；
+> - `setTitle()`: 设置标题栏的文字；
+> - `setResizable()`: 利用一个`boolean` 值确定是否允许用户改变窗体大小。 
+
+
+
+- AWT 和 Swing 的窗体的组件类的继承层次：
+
+![image-20220918175621640](assets/Java API 进阶.assets/image-20220918175621640.png)
+
+​																								
+
+*notice: Component 是所有GUI类的父类*
+
+- 关于get/set 的约定， 有一个例外：对于类型`boolean` 的属性，获取方法以is开头；
+
+eg.,
+
+```java
+// 对于 resizable property
+public boolean isResizable();
+public void setsetResizable(boolean resizable);
+```
+
+
+
+
+
+- 创建窗口前需要确定屏幕的像素数量，通过调用 Toolkit类的静态方法 `getDefaultToolkit()` 得到一个Toolkit的对象（Toolkit类包含大量与原生窗口系统统交互的方法）；然后调用`getScreenSize()`方法，这个方法以Dimension对象的形式反扣屏幕的大小； Dimension 对象同时用公共实例变量width 和 height 保存屏幕宽度和高度。然后用屏幕大小的一个适当的百分数指定窗体的大小。
+
+```java
+Toolkit kit = Toolkit.getDerfaultToolkit();
+Dimension screenSize = kit.getScreenSize();
+int screenWidth = screenSize.width;
+int screenHeight = screenSize.height;
+setSize(screenWidth / 2, sceenHeight / 2);
+```
+
+另外，还提供窗体图标：
+
+```java
+Image img = new ImageIcon("icon.gif"),getImage();
+setIconImage(img);
+```
+
+
+
+
+
+## Java 人脸识别
 
 completion
 
-### Android Hacker
+## Android Hacker
 
-### Android 嵌入Linux
+## Android 嵌入Linux
 
-### IOS Hacker
+## IOS Hacker
 
 IOS越狱
 
-### IOS 嵌入 Linux
+## IOS 嵌入 Linux
 
 ish

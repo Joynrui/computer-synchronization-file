@@ -436,7 +436,7 @@ notice: Character string should be bracketed into a single quote or double quote
 2. 一次性插入多条数据
 
 ```mysql
-INSERT INITO 'tbale_name' VALUES(value1, value2,...), (value1, value2,...);
+INSERT INTO 'table_name' VALUES(value1, value2,...), (value1, value2,...);
 ```
 
 3. 删除数据

@@ -886,4 +886,4 @@ Host key verification failed.
 
 然后后再次建立新的连接，即可获得新的公钥。
 
-ssh-keygen -R 192.168.2.129   在文件/.ssh/know_hosts中将192.168.2.129该行删除。
+**ssh-keygen -R 192.168.2.129**   在文件/.ssh/know_hosts中将192.168.2.129该行删除。

@@ -765,15 +765,9 @@ public class MyLinkedList<T> implements Iterable<T> {
 
 #### 3.6.2 Implementation of Stacks
 
-
-
 **Linked List Implementation of Stacks**
 
-
-
 **Array Implementation of Stacks**
-
-
 
 
 
@@ -1162,7 +1156,7 @@ A tree consists of  N nodes and N-1 edges.
 - **ancestor**: If there is a path from n1 to n2, then n1 is an ancestor of n2.
 - **proper ancestor**: If n1 is not equal to n2, then n1 is the true ancestor of n2 and n2 is the true descendant of n1
 
-
+- 度：结点拥有的子树的个数为度；一个树的度为所有结点中最高的度。
 
 ------
 
@@ -1723,8 +1717,7 @@ private AvlNode<T> doubleRotateWithRightChild(AvlNode<T> k6) {
 
 ![avl树旋转的图形描述。](assets/Data structure and algorithm.assets/Tree_Rebalancing.png)
 
-
-- 代码实现
+#### rotation 代码实现
 
 code structure:
 
@@ -1891,4 +1884,286 @@ public class AVLTree<T extends Comparable<? super T>> {
 }
 
 ```
+
+
+
+
+
+### 4.5 Splay tree
+
+**伸展树**, 是一种能够自我平衡的二叉查找树，它能在均摊O(log n)的时间内完成基于伸展(Splay)操作的插入、查找、修改和删除操作。
+
+(它保证从空树开始连续M次对树的操作最多花费O(**M**log n)的时间。一般来说，当M次操作的序列的总的最坏运行时间为O(Mf(N))时，就称它的摊还（均摊amortized）运行时间为O(f(N))。)
+
+伸展树最显著的**缺点**是它有可能会变成一条链。即使以“只读”方式（例如通过查找操作）访问伸展树，其结构也可能会发生变化。这使得伸展树在多线程环境下会变得很复杂。具体而言，如果允许多个线程同时执行查找操作，则需要额外的维护和操作。
+
+**在伸展树上的一般操作都基于伸展操作**：假设想要对一个二叉查找树执行一系列的查找操作，为了使整个查找时间更小，被查频率高的那些条目就应当经常处于靠近树根的位置。于是想到设计一个简单方法，在每次查找之后对树进行調整，把被查找的条目搬移到离树根近一些的地方。伸展树应运而生。伸展树是一种自调整形式的二叉查找树，它会沿着从某个节点到树根之间的路径，通过一系列的旋转把这个节点搬移到树根去。
+
+- *它的优势在于不需要记录用于平衡树的冗余信息。*
+
+#### 4.5.2 splaying
+
+每次旋转操作由三个因素决定：
+
+- *x*是其父节点*p*的左儿子还是右儿子；
+- *p*是否为根；
+- *p*是其父节点*g*（*x*的祖父节点）的左儿子还是右儿子。
+
+在每次旋转操作后，设置*p*的儿子为*x*是很重要的。如果*p*为空，那么*x*显然就是根节点了。
+
+共有三种旋转操作，每种都有右旋（Zig）和左旋（Zag）两种情况。为了简单起见，对每种旋转操作只展示一种情况。这些旋转操作是：
+
+
+
+1. **Zig**：当*p*为根节点时进行。Zig通常只在伸展操作的最后一步进行。
+
+![Splay tree zig.svg](assets/Data structure and algorithm.assets/709px-Splay_tree_zig.svg.png)
+
+2. **Zig-zig**和**Zag-zag**：当*p*不为根节点且*x*和*p*都为左儿子或都为右儿子时进行。下图为*x*和*p*都为左儿子时的情况（即Zig-zig），需先将*p*右旋到*g*的位置，再将*x*右旋到*p*的位置。
+
+![Zigzig.gif](assets/Data structure and algorithm.assets/Zigzig.gif)
+
+3. **Zig-zag**和**Zag-zig**：当*p*不为根节点且*x*为左儿子而*p*为右儿子时进行，反之亦然。下图为前述情况（即Zig-zag），需先将*x*左旋到*p*到的位置，再将*x*右旋到*g*的位置。
+
+![Zigzag.gif](assets/Data structure and algorithm.assets/Zigzag.gif)
+
+
+
+**连接(join)**
+
+>给出两棵树S和T，且S的所有元素都比T的元素要小。下面的步骤可以把它们连接成一棵树：
+>
+>- 伸展S中最大的节点。现在这个节点变为S的根节点，且没有右儿子。
+>- 令T的根节点变为其右儿子。
+
+
+
+**分割(split)**
+
+>给出一棵树和一个元素*x*，返回两棵树：一棵中所有的元素均小于等于x，另一棵中所有的元素大于*x*。下面的步骤可以完成这个操作：
+>
+>- 伸展*x*。这样的话x成为了这棵树的根所以它的左子树包含了所有比*x*小的元素，右子树包含了所有比*x*大的元素。
+>
+>- 把*x*的右子树从树中分割出来。
+
+
+
+**插入(insert)**
+
+>插入操作是一个比较复杂的过程，具体步骤如下: 我们假定要插入的值为k。
+>
+>如果当前树为空，则直接插入根。
+>
+>如果当前节点的权值等于k则增加当前节点的大小并更新节点和父亲的信息，将当前节点进行splay操作。
+>
+>否则按照二叉查找树的性质向下找，找到空节点就插入即可，当然在最后还要进行一次splay操作。
+
+
+
+ **删除(delete)**
+
+>令要删除的节点为x，对x进行一次splay操作将其移动到根节点的位置。
+>
+>若x的大小大于1，则将x的大小减一然后结束删除操作。
+>
+>否则将x删除然后执行join操作合并x的左右子树并重新指定根。
+
+
+
+ **查找(find)**
+
+如同一般的查找树的查找方式。
+
+
+
+
+
+### 4.6 traversal 
+
+BInary Search tree 对信息有排序功能，所以按顺序输出也很简单。
+
+
+
+- inorder traversal
+
+```java
+	/**
+	 * Print the tree contents in sorted order.
+	 */
+	public void printTree() {
+        if(isEmpty()) {
+            System.out.println("Empty tree");
+        } else {
+            printTree(root);
+        }
+    }
+
+	/**
+	 * Internal method to print subtree in sorted order.
+	 * It's inorder traversal.
+	 * @param t the node that roots the subtree.
+	 */
+	private void printTree(BinaryNode<T> t) {
+        if( t != null) {
+            printTree(t.left);
+            System.out.println(te.element);
+            printTree(t.right);
+		}
+    }
+```
+
+
+
+- postorder traversal
+
+e.g., compute the height of a subtree with postorder traversal
+
+```java
+	/**
+	 * Internal method to compute height of a subtree.
+	 * @param t the node that roots the subtree.
+	 */
+```
+
+
+
+
+
+- preorder traversal
+
+- level-order traversal
+
+深度为d的节点遍历完成后遍历深度为d + 1的节点。
+
+### 4.7 B-Trees
+
+为了缩短硬盘的访问时间，减少硬盘的访问次数，尝试进行一次完整的查找操作，二叉查找树的硬盘访问次数接近1.38log N 次，而AVL树已经将次数减少到了最优情况。为了解决这个问题，便出现了B-Trees。
+
+
+
+- Definition in wikipedia
+
+According to [Knuth](https://en.wikipedia.org/wiki/Donald_Knuth)'s definition, a B-tree of order *m* is a tree which satisfies the following properties:[[7\]](https://en.wikipedia.org/wiki/B-tree#cite_note-FOOTNOTEKnuth1998483-7)
+
+1. Every node has at most ***m*** children.
+2. Every internal node has at least ⌈***m*/2**⌉ children.
+3. Every non-leaf node has at least **two** children.
+4. All leaves appear on the same level and carry no information.
+5. A non-leaf node with *k* children contains ***k*−1** keys.
+
+
+
+- Definition in this book
+
+A B-tree of order M is an M-ary tree with the following properties: 
+
+1. The data items are stored at leaves. 
+2. The nonleaf nodes store up to **M − 1** keys to guide the searching; key **i** represents the smallest key in subtree **i + 1**. 
+3. The root is either a leaf or has between **two** and **M** children.
+
+4. All nonleaf nodes (except the root) have between **M/2** and **M** children.
+5. All leaves are at the same depth and have between **L/2** and **L** data items.**L** 是所有树叶都在相同的深度上的最大数据项数。
+
+
+
+
+
+------
+
+### 4.8 Sets and Maps in the standard Library
+
+#### 4.8.1 Sets
+
+#### 4.8.2 Maps
+
+#### 4.8.3 The implementation of TreeSet and TreeMap
+
+A TreeMap is based upon a red-black tree data structure.
+
+#### 4.8.4 利用Map的相似单词的高效存储方式
+
+Sorted Map impelementation
+
+```java
+package chapter4;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+public class MapTestInstance<T extends Comparable<? super T>> {
+    /**
+     * Computes a map in which the keys are words and values are Lists of words
+     * that differ in only one character from the corresponding key.
+     * Uses an efficient algorithm that is O(NlogN) with a TreeMap.
+     */
+    public static Map<String, List<String>> computeAdjacentWords(List<String> words) {
+        // Create the map container we need
+        Map<String, List<String>> adjWords = new TreeMap<>();
+        Map<Integer, List<String>> wordsByLength = new TreeMap<>();
+
+        // Group the words by their length
+        for (String w : words) {
+            update(wordsByLength, w.length(), w);
+        }
+
+        // Work on each group separately
+        for (Map.Entry<Integer, List<String>> entry : wordsByLength.entrySet()) {
+            List<String> groupsWords = entry.getValue();
+            int groupNum = entry.getKey();
+
+            // Work on each position in each group
+            for (int i = 0; i < groupNum; i++) {
+                /**
+                 *  Remove one charcater in specified position, computing representative.
+                 *  Words with same representative are adjacent, so first populate a map ...
+                 */
+                Map<String, List<String>> repToWord = new TreeMap<>();
+
+                for (String str : groupsWords) {
+                    String rep = str.substring(0, i) + str.substring(i + 1);
+                    update(repToWord, rep, str);
+                }
+
+                // and then look for map values with more than one string
+                for (List<String> wordClique : repToWord.values()) {
+                    if (wordClique.size() >= 2) {
+                        for (String s1 : wordClique) {
+                            for (String s2 : wordClique) {
+                                if (s1 != s2) {
+                                    update(adjWords, s1, s2);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return adjWords;
+    }
+
+    /**
+     * update the words
+     *
+     * @param m
+     * @param key
+     * @param value
+     * @param <T>
+     */
+    private static <T> void update(Map<T, List<String>> m, T key, String value) {
+        List<String> lst = m.get(key);
+        if (lst == null) {
+            lst = new ArrayList<>();
+            m.put(key, lst);
+        }
+        lst.add(value);
+    }
+}
+```
+
+
+
+  
 
