@@ -2167,3 +2167,14 @@ public class MapTestInstance<T extends Comparable<? super T>> {
 
   
 
+
+
+
+
+## Hash
+
+
+
+### 5.1 Definition of hash founction
+
+A Hashing function contains two fields: **Data Field**  and  **Value Field**. Data field means **key**(关键字)。

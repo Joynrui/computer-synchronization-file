@@ -291,7 +291,7 @@ Query OK, 0 rows affected (0.01 sec)
 4. 正规创建表
 
 ```mysql
-CREATE TABLE IF NOT ESISTS students(
+CREATE TABLE IF NOT EXISTS students(
 id INT NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'primary_key',
 name VARCHAR(30) NOT NULL COMMENT 'students name',
 telephone VARCHAR(20) DEFAULT 'unknown' COMMENT 'telephone_number',
