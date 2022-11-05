@@ -2173,8 +2173,33 @@ public class MapTestInstance<T extends Comparable<? super T>> {
 
 ## Hash
 
+Hash function only supports a subset of methods for binary search trees. But hash give a " constant mean time " to execute methods like insert, delete and search.
 
 
-### 5.1 Definition of hash founction
 
-A Hashing function contains two fields: **Data Field**  and  **Value Field**. Data field means **key**(关键字)。
+### 5.1/2 Definition of hash founction
+
+A Hashing item contains two fields: **Data Field**  and  **Value Field**. Data field means **key**(关键字); Value field means store value.
+
+The structure of hash like map  strurcture, but the key in the hash uses a diverse way to determine the key of value. The Key is uncertain, and it's possible to have collision(冲突) in the table(a range about hash, also **tableSize**)
+
+
+
+-  We often ensure the range of `tableSize` is prime number(素数). The reason why is that we ought to  avoid when the ones digit of the keyword is 0.
+
+
+
+- Horner's Method(horner法则): 
+
+![6a5a1d414da2da224268322d0a9225034a4945ae](E:\synchronization_files\study notes\Data structure and algorithm.assets\6a5a1d414da2da224268322d0a9225034a4945ae.svg)
+
+
+
+###  5.3 Separate chaining 
+
+分离链接法，is to keep a list of all elements that hash to the same value. We can use the standard library list implementations.
+
+![image-20221105175624812](E:\synchronization_files\study notes\Data structure and algorithm.assets\image-20221105175624812.png)
+
+
+
