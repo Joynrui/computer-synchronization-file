@@ -2191,7 +2191,7 @@ The structure of hash like map  strurcture, but the key in the hash uses a diver
 
 - Horner's Method(horner法则): 
 
-![6a5a1d414da2da224268322d0a9225034a4945ae](E:\synchronization_files\study notes\Data structure and algorithm.assets\6a5a1d414da2da224268322d0a9225034a4945ae.svg)
+![6a5a1d414da2da224268322d0a9225034a4945ae](Data%20structure%20and%20algorithm.assets/6a5a1d414da2da224268322d0a9225034a4945ae-16676997140617.svg)
 
 
 
@@ -2199,7 +2199,7 @@ The structure of hash like map  strurcture, but the key in the hash uses a diver
 
 分离链接法，is to keep a list of all elements that hash to the same value. We can use the standard library list implementations.
 
-![image-20221105175624812](E:\synchronization_files\study notes\Data structure and algorithm.assets\image-20221105175624812.png)
+![image-20221106095319840](Data%20structure%20and%20algorithm.assets/image-20221106095319840.png)
 
 
 
