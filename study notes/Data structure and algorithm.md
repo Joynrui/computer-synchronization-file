@@ -288,7 +288,7 @@ eg： algorithm 4  p30
 
 
 
-## Lists, stacks, and queues 表、栈和队列  
+## Lists, stacks, and queues
 
 
 
@@ -493,6 +493,14 @@ public class MyArrayList<E> implements Iterable<E> {
 }
 
 ```
+
+
+
+#### Static Array JVM operation Mark Sweep GC 标记清除算法
+
+
+
+#### Dynamic Array Amortized Analysis 平摊分析
 
 
 
@@ -2200,6 +2208,469 @@ The structure of hash like map  strurcture, but the key in the hash uses a diver
 分离链接法，is to keep a list of all elements that hash to the same value. We can use the standard library list implementations.
 
 ![image-20221106100136013](assets/Data%20structure%20and%20algorithm.assets/image-20221106100136013.png)
+
+
+
+####  Implementation of Separate Chaining hash table
+
+```java
+package chapter5;
+
+import java.util.LinkedList;
+import java.util.List;
+
+public class SeparateChainingHashTable<AnyType> {
+    // prime number
+    private static final int DEFAULT_TABLE_SIZE = 101;
+
+    public SeparateChainingHashTable() {
+        this(DEFAULT_TABLE_SIZE);
+    }
+
+    /**
+     * Construct the hash table
+     *
+     * @param size approximate table size.
+     */
+    public SeparateChainingHashTable(int size) {
+        // Every Node is LinkedList.
+        theLists = new LinkedList[nextPrime(size)];
+        for (int i = 0; i < theLists.length; i++) {
+            theLists[i] = new LinkedList<>();
+        }
+    }
+
+    /**
+     * Insert into the hash table.If the item is already present,then do nothing.
+     *
+     * @param element the item to insert.
+     */
+    public void insert(AnyType element) {
+        List<AnyType> whichList = theLists[myHash(element)];
+
+        if (!whichList.contains(element)) {
+            whichList.add(element);
+
+            if (++currentSize > theLists.length) {
+                rehash();
+            }
+        }
+    }
+
+    /**
+     * Remove an item from the hash table.
+     *
+     * @param element the item to remove.
+     */
+    public void remove(AnyType element) {
+        List<AnyType> whichList = theLists[myHash(element)];
+        if (whichList.contains(element)) {
+            whichList.remove(element);
+            currentSize--;
+        }
+    }
+
+    /**
+     * Find an item in the hash table
+     *
+     * @param element the item to search for.
+     * @return true if element is not found.
+     */
+    public boolean contain(AnyType element) {
+        List<AnyType> whichList = theLists[myHash(element)];
+        return whichList.contains(element);
+    }
+
+    /**
+     * Make the hash table logically empty
+     */
+    public void makeEmpty() {
+        for (int i = 0; i < theLists.length; i++) {
+            theLists[i].clear();
+        }
+        currentSize = 0;
+    }
+
+    private List<AnyType>[] theLists;
+
+    private int currentSize;
+
+    /**
+     * Different hash method has different rehash framework, but purpose is same.
+     */
+    private void rehash() {
+        List<AnyType>[] oldList = theLists;
+        // Create new double-sized, empty table
+        theLists = new List[nextPrime(2 * theLists.length)];
+        for (int j = 0; j < theLists.length; j++) {
+            theLists[j] = new LinkedList<>();
+        }
+
+        // Copy table over
+        currentSize = 0;
+        for (int i = 0; i < oldList.length; i++) {
+            for (AnyType item : oldList[i]) {
+                insert(item);
+            }
+        }
+    }
+
+
+    private int myHash(AnyType x) {
+        int hashValue = x.hashCode();
+        hashValue %= theLists.length;
+        if (hashValue < 0) {
+            hashValue += theLists.length;
+        }
+        return hashValue;
+    }
+
+    /**
+     * Give the next prime number after n.
+     *
+     * @param n the begin number
+     * @return primeNumber Next prime number after n.
+     */
+    private static int nextPrime(int n) {
+        int primeNumber = 0;
+        int number = 0;
+
+        while (true) {
+            number++;
+            if (isPrime(number)) {
+                break;
+            }
+        }
+        primeNumber = number;
+        return primeNumber;
+    }
+
+    /**
+     * Make the judgement about prime number
+     *
+     * @param n which number wants to judging.
+     * @return ture of false
+     */
+    private static boolean isPrime(int n) {
+        boolean isPrime = false;
+        if (n <= 1) {
+            isPrime = false;
+        } else {
+            // When i > n/2, the number is not prime number.
+            for (int i = 2; i < n / 2; i++) {
+                if (n % i == 0) {
+                    isPrime = false;
+                } else {
+                    isPrime = true;
+                }
+            }
+        }
+        return isPrime;
+    }
+}
+
+```
+
+
+
+
+
+- **load factor** :  装填因子
+
+![54f4df2a2e6ee7fbf72b571bee6d3459bf02059d](assets/Data%20structure%20and%20algorithm.assets/54f4df2a2e6ee7fbf72b571bee6d3459bf02059d.svg)
+
+- n is the number of entries occupied in the hash table.
+- k is the number of buckets.
+
+
+
+- The general rule for separate chaining hashing is to make the table size about as large as the number of elements expected (in other words, let λ ≈ 1).
+
+
+
+ 
+
+###  5.4 Hash table without link list
+
+Generally, the load factor should be below λ = 0.5 for a hash table that doesn’t use separate chaining. 
+$$
+h_1(x) = (hash(x) + f(i)) modTableSize
+$$
+
+
+####  5.4.1 Linear Probing
+
+Linear Probing, 线性探测， f  is a linear function of i, typically **f(i) = i**. Prob the space as a linear way to find a storage we used. 
+
+It's a resolution strategy of collision.Linear Probing occurs **Primary Clustering**(一次聚集) when insert element sometimes.  
+
+- ( hash( key )  +  i ) mod N
+
+- Expected proding number in one insert operation: 
+
+$$
+\frac{1}{2}(1 + \frac{1}{(1 - λ)})
+$$
+
+- Unsuccessful search proding number :
+
+$$
+\frac{1}{2}(1 + \frac{1}{(1 - λ)^2})
+$$
+
+
+
+
+
+####  5.4.2 Quadratic Probing
+
+Quadratic probing, 二次探测，平方探测， f is  a quadratic function of i, typically **f(i) = i^2**. 
+
+- ( hash( key )  +  i^2 ) mod N
+
+**Theorem定理 5.1** 
+
+If quadratic probing is used, and the table size is prime, then a new element can always be inserted if the table is at least **half empty**.
+
+
+
+The implepmentation of Quadratic probing (non-link)
+
+```java
+package chapter5;
+
+
+/**
+ * QuadraticProbingHashTable is the implementation of Quadratic probing. Each entry in the array of HashEntry
+ * references is either:
+ * 1. null.
+ * 2. Not null. and the entry is active(isActive is true).
+ * 2. Not null. and the entry is marked deleted(isActive is false).
+ *
+ * @param <AnyType>
+ */
+public class QuadraticProbingHashTable<AnyType> {
+    public QuadraticProbingHashTable() {
+        this(DEFAULT_TABLE_SIZE);
+    }
+
+    public QuadraticProbingHashTable(int size) {
+        allocateArray(size);
+        makeEmpty();
+    }
+
+    /**
+     * Make the Hash table logically empty.
+     */
+    public void makeEmpty() {
+        currentSize = 0;
+        for (int i = 0; i < array.length; i++) {
+            array[i] = null;
+        }
+    }
+
+    /**
+     * Find an item in the hash table.
+     *
+     * @param x the item to search for.
+     * @return the matching item.
+     */
+    public boolean contains(AnyType x) {
+        int currentPos = findPos(x);
+        return isActive(currentPos);
+    }
+
+    /**
+     * Insert into the hash table. If the item is already present, do nothing.
+     *
+     * @param x the item to insert.
+     */
+    public void insert(AnyType x) {
+        // insert x as active.
+        int currentPos = findPos(x);
+
+        if (isActive(currentPos)) {
+            return;
+        }
+
+        array[currentPos] = new HashEntry<>(x, true);
+
+        //Rehash
+        if (currentPos > array.length / 2) {
+            rehash();
+        }
+    }
+
+    /**
+     * Remove from the hash table.
+     *
+     * @param x the item to remove.
+     */
+    public void remove(AnyType x) {
+        int currentPos = findPos(x);
+        if (isActive(currentPos)) {
+            array[currentPos].isActive = false;
+        }
+    }
+
+    private static class HashEntry<AnyType> {
+        // the element
+        public AnyType element;
+        // false if marked deleted
+        public boolean isActive;
+
+        public HashEntry(AnyType e) {
+            this(e, true);
+        }
+
+        public HashEntry(AnyType e, boolean i) {
+            element = e;
+            isActive = i;
+        }
+    }
+
+    // size supposed to be a prime number
+    private static final int DEFAULT_TABLE_SIZE = 11;
+
+    // The array of elements
+    private HashEntry<AnyType>[] array;
+    // The number of occupied cells
+    private int currentSize;
+
+    /**
+     * Internal method to allocate array.
+     *
+     * @param arraySize the size of the array.
+     */
+    private void allocateArray(int arraySize) {
+        array = new HashEntry[nextPrime(arraySize)];
+    }
+
+    /**
+     * Return true if currentPos exists and is active.
+     *
+     * @param currentPos the result of a call to findPos.
+     * @return true if currentPos is active.
+     */
+    private boolean isActive(int currentPos) {
+        return array[currentPos] != null && array[currentPos].isActive;
+    }
+
+    /**
+     * Method that performs quadratic probing resolution on half-empty table.
+     * (collision resolution) There are something wrong in this quick method. It's look like fast because avoid to use
+     * multiply or divide. When the number larger than half-empty table, it will throwing StackOverFlowError Exception.
+     * Sometime the hash table should fill out before expand operate.
+     *
+     * @param x the item to search for.
+     * @return the position where the search terminates.
+     */
+    private int findPos(AnyType x) {
+        int offset = 1;
+        int currentPos = myhash(x);
+
+        // Quadratic probing quick method. Don't change order of this two condition.
+        while (array[currentPos] != null &&
+                !array[currentPos].element.equals(x)) {
+            currentPos += offset;
+            offset += 2;
+            if (currentPos >= array.length) {
+                currentPos -= array.length;
+            }
+        }
+        return currentPos;
+    }
+
+    /**
+     * Expand the hash table.
+     */
+    private void rehash() {
+        HashEntry<AnyType>[] oldArray = array;
+        // Create a new double-sized, empty table
+        allocateArray(2 * oldArray.length);
+        currentSize = 0;
+        // Copy table over
+        for (HashEntry<AnyType> entry : oldArray) {
+            if (entry != null && entry.isActive) {
+                insert(entry.element);
+            }
+        }
+    }
+
+    private int myhash(AnyType x) {
+        int hashVal = x.hashCode();
+        hashVal %= array.length;
+        if (hashVal < 0) {
+            hashVal += array.length;
+        }
+        return hashVal;
+    }
+
+    /**
+     * Give the next prime number after n.
+     *
+     * @param n the begin number
+     * @return primeNUmber  Next prime number after n.
+     */
+    private static int nextPrime(int n) {
+        int primeNumber = 0;
+        int number = 0;
+
+        while (true) {
+            number++;
+            if (isPrime(number)) {
+                break;
+            }
+        }
+        primeNumber = number;
+        return primeNumber;
+    }
+
+    /**
+     * Make the judgement about prime number
+     *
+     * @param n which number wants to 1judging.
+     * @return true or false
+     */
+    private static boolean isPrime(int n) {
+        boolean isPrime = false;
+        if (n <= 1) {
+            isPrime = false;
+        } else {
+
+            for (int i = 2; i < n / 2; i++) {
+                if (n % i == 0) {
+                    isPrime = false;
+
+                } else {
+                    isPrime = true;
+                }
+            }
+        }
+        return isPrime;
+    }
+}
+```
+
+
+
+
+
+####  5.4.3 Double Hashing
+
+
+
+###  5.5 ReHashing
+
+
+
+Rehashing can be implemented in several ways with quadratic probing. 
+
+1. Rehash as soon as the table is half full.
+2. Rehash only when an insertion fails.
+3.  **Middle-of-the-road** strategy:  is to rehash when the table reaches a certain load factor. Since performance does degrade as the load factor increases, the third strategy, implemented with a good cutoff, could be best
+
+
 
 
 
