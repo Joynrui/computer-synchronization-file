@@ -2222,7 +2222,7 @@ The structure of hash like map  strurcture, but the key in the hash uses a diver
 
 ###  5.3 Separate chaining 
 
-分离链接法，is to keep a list of all elements that hash to the same value. We can use the standard library list implementations.
+分离链接法，is <font color = red>to keep a list of all elements that hash to the same value</font>. We can use the standard library list implementations.
 
 ![image-20221106100136013](assets/Data%20structure%20and%20algorithm.assets/image-20221106100136013.png)
 
@@ -2417,11 +2417,19 @@ $$
 
 ####  5.4.1 Linear Probing
 
-Linear Probing, 线性探测， f  is a linear function of i, typically **f(i) = i**. Prob the space as a linear way to find a storage we used. 
+Linear Probing, 线性探测， **f**  is a linear function of i, typically **f(i) = i**. Prob the space as a linear way to find a storage we used. 
 
 It's a resolution strategy of collision.Linear Probing occurs **Primary Clustering**(一次聚集) when insert element sometimes.  
 
-- ( hash( key )  +  i ) mod N
+- calculate:
+
+$$
+h_i(x)\text{ }=\text{ }(hash(x)+f(i))\text{ }mod\text{ }TableSize
+$$
+
+
+
+
 
 - Expected proding number in one insert operation: 
 
@@ -2429,7 +2437,7 @@ $$
 \frac{1}{2}(1 + \frac{1}{(1 - λ)})
 $$
 
-- Unsuccessful search proding number :
+- Unsuccessful search proding number (Worst case) :
 
 $$
 \frac{1}{2}(1 + \frac{1}{(1 - λ)^2})

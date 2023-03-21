@@ -2259,6 +2259,254 @@ setIconImage(img);
 
 
 
+
+
+## XIII. Annotation 
+
+Java **Annotation** is a tag that represents the *metadata* i.e. attached with class, interface, methods or fields to indicate some additional information which can be used by java compiler and JVM.
+
+Annotations in Java are used to provide additional information, so it is an alternative option for XML and Java marker interfaces.
+
+
+
+### Meta-annotation
+
+There are five annotation types in the `java.lang.annotation` package called **meta-annotations**. These annotation types are used to annotate other annotation types.
+
+
+- <font color=green>@Documented</font>
+If a member is annotated with a type itself marked as `@Documented`, then that member will be documented as annotating that type.
+
+- <font color=green>@Inherited</font>
+Exactly as the name sounds, an `@Inherited` annotation type is inherited by subclasses of an annotated type.
+
+- <font color=green>@Retention</font>
+The `@Retention` meta-annotation specifies how long an annotation type should be retained. The value attribute is one of the `java.lang.annotation.RetentionPolicy` `enum`constants. 
+
+1. <font color=blue>`RetentionPolicy.SOURCE` </font>: The annotation will not be included in the class file. This is useful for annotations which are intended for the compiler only.
+	2. <font color=blue>`RetentionPolicy.CLASS`</font> : The annotation will be included in the class file, but cannot be read reflectively.
+3. <font color=blue>`RetentionPolicy.RUNTIME` </font>: The annotation can be reflected at runtime. If no @Retention policy is specified, it defaults to `RetentionPolicy.CLASS`.
+
+- <font color=green>@Target</font>
+
+  The `@Target` meta-annotation determines what may be marked by the annotation. The value attribute is one or more of the `java.lang.annotation.ElementType` `enum` constants. 
+  Those constants are <font color=blue>`ElementType.ANNOTATION_TYPE`</font>, <font color=blue>`CONSTRUCTOR`</font>, <font color=blue>`FIELD`</font>, <font color=blue>`LOCAL_VARIABLE`, </font><font color=blue>`METHOD`</font>, <font color=blue>`PACKAGE`</font>, <font color=blue>`PARAMETER`</font>,<font color=blue>`TYPE`</font>.
+
+- <font color=green>@Repeatable</font>
+
+  A `@Repeatable` annotation type is repeatable - i.e. can be specified multiple times on the same class. This meta-annotation was added in Java 8.
+
+
+
+### Custom Annotation
+
+Use `@Interface` creates custom annotation, it inherit `java.lang.annotation.Annotation` interface. 
+
+e.g.,
+
+
+
+```java
+
+
+
+public class MaxCroft{
+    
+    @CustomAnnotation(name = Sunshine, identify = 10)
+    public void test1() {
+    }
+    
+    //When the paraemeterName is value, it can be blank by default. 
+    @CustomAnnotation2()
+    public void test2() {    
+    }
+    
+}
+
+@Target({ElementType.TYPE, EleementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@interface CustomAnnotaion(){
+    // annotation parameter: parameterType + paremeterName();
+    // default is used to mark the default value about parameter.
+    String name() default "";
+    // Represent not exist when default value equals to -1; (likewise indexof())
+	int identify() -1;    
+}
+
+@Target({ElementType.TYPE, ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@interface CusnomAnnotation2(){
+    // default parameterName is value.
+    // you can used in other class's method with the annotation as no parameter.
+    // if you change others name, that will report error.
+    String value();
+}
+```
+
+
+
+
+
+## XIV. Reflection
+
+ There is a `Class` object will be created when a class loaded in the memory, the class **has and only has one Class object** in a runtime process.  
+
+
+
+Refection is that account for the object attribute can be gotten by use Class object in runtime. If you want to get object attribute, you should new an object what you use in general, but you can also use Class to get attributes. Object could use `getClass()` to <font color=red>reflect</font> itself class and get the attributes, constructor or methods form the class.
+
+ And there are three ways to reflect class:
+
+1. <font color=red>`Class.forName(“fullName”)`</font>
+2. <font color=red>`entityObject.getClass()`</font>
+3. <font color=red>`className.class ("classConstant")`</font>
+4. basic class like Integer, Double...(except String )have a  attribute <font color="blue">`TYPE`</font>: <font color=red>`Integer.TYPE`</font>
+
+- But, reflection has a  critical problem is too slow. Reflection class predicate the runtime could longer than before(don't use reflection).
+
+e.g.,
+
+```java
+package reflection;
+
+public class ReflectionTest1 {
+    public static void main(String[] args) throws ClassNotFoundException {
+        ReflectObject reflectObject = new ReflectObjectSon();
+		
+        // If you know the object itself
+        Class<? extends ReflectObject> c1 = reflectObject.getClass();
+        System.out.println(c1.hashCode());
+		
+        // If you know the package about object
+        Class<?> c2 = Class.forName("reflection.ReflectObjectSon");
+        System.out.println(c2.hashCode());
+
+        // If you know the class name
+        Class<ReflectObjectSon> c3 = ReflectObjectSon.class;
+        System.out.println(c3.hashCode());
+
+        //Get super class
+		Class<? super ReflectObjectSon> c3Superclass = c3.getSuperclass();
+        System.out.println(c3Superclass);
+        
+        // Basic class uses TYPE
+        Class<Integer> c4 = Integer.TYPE;
+        System.out.println(c4.hashCode());
+		System.out.println(c4);
+
+    }
+}
+
+class ReflectObject {
+    private final int id = 1;
+
+    public int getId() {
+        return id;
+    }
+}
+
+class ReflectObjectSon extends ReflectObject {
+    private final int id = 2;
+    public int getId() {
+        return id;
+    }
+}
+```
+
+
+
+output:
+
+```shell
+// three ways to get the same class 
+866191240
+866191240
+866191240
+// The super class of c3
+class reflection.ReflectObject
+// Integer hashcode
+707806938
+// Integer class
+int 
+```
+
+
+
+- All the class of class
+
+```java
+// class
+Class c1 = Object.class;
+// interface
+Class c2 = Comparable.class;
+// one-dimensional array
+Class c3 = String[].class;
+// two-dimensional array
+Class c4 = int[][].class;
+// annotation 
+Class c5 = Override.class;
+// eunm 
+Class c6 = ElementType.class;
+// basic class
+Class c7 = Integer.class;
+// void
+Class c8 = void.class;
+// Class
+Class c9 = Class.class;
+
+// the same type of the array and the different length about array is the same class
+int[] arr1 = new int[10];
+int[] arr2 = new int[100];
+```
+
+
+
+- attention : **static program block was compiled with JVM at the front of runtime**   
+
+
+
+#### When does class initialization occur?
+
+- active reference (must occur class initialization)
+    - when JVM start, it will initialize the class has main method
+    - new an object for a class
+    - invoke static member (except final constant variable) and static method
+    - use methods from package `java.lang.reflect` to reflect invoke
+    - when you initialize  a class, if the father of it hasn't  be initialized, it will initialize parent first
+
+- passive reference(don't occur class initialization)
+    - when you access a static domain, the class will be initialized only to declare the domain. For example, when a child refers to a parent about its static variables, it's not to initialize child class
+    - define class reference via array, it haven't to initialize class.
+    - Reference const does not initialize this class(Constants are stored in the constant pool of the calling class during the linking phase)
+
+### XV. POJO and Java Bean
+
+There are all entity with a little different aspect.
+
+1. POJO: In [software engineering](https://en.wikipedia.org/wiki/Software_engineering), a **plain old Java object** (**POJO**) is an ordinary [Java](https://en.wikipedia.org/wiki/Java_(programming_language)) [object](https://en.wikipedia.org/wiki/Object_(computer_science)), not bound by any special restriction. The term was coined by [Martin Fowler](https://en.wikipedia.org/wiki/Martin_Fowler_(software_engineer)), Rebecca Parsons and Josh MacKenzie in September 2000:[[1\]](https://en.wikipedia.org/wiki/Plain_old_Java_object#cite_note-bliki-1) from wikipedia
+
+​		In addition, there is a fact:
+
+>
+> An acronym for: Plain Old Java Object.
+>
+> The term was coined while Rebecca Parsons, Josh MacKenzie and I were preparing for a talk at a conference in September 2000. In the talk we were pointing out the many benefits of encoding business logic into regular java objects rather than using Entity Beans. We wondered why people were so against using regular objects in their systems and concluded that it was because simple objects **lacked a fancy name**. So we gave them one, and it's caught on very nicely. 
+>
+
+1. Bean: In computing based on the [Java](https://en.wikipedia.org/wiki/Java_(programming_language)) Platform, **JavaBeans** is a technology developed by [Sun Microsystems](https://en.wikipedia.org/wiki/Sun_Microsystems) and released in 1996, as part of [JDK](https://en.wikipedia.org/wiki/Java_Development_Kit) 1.1.
+
+    The 'beans' of JavaBeans are classes that encapsulate one or more [objects](https://en.wikipedia.org/wiki/Object_(computer_science)) into a single standardized object (the bean). This standardization allows the beans to be handled in a more generic fashion, allowing easier [code reuse](https://en.wikipedia.org/wiki/Code_reuse) and [introspection](https://en.wikipedia.org/wiki/Type_introspection).
+
+    As part of the standardization, all beans must be [serializable](https://en.wikipedia.org/wiki/Serialization), have a [zero-argument constructor](https://en.wikipedia.org/wiki/Nullary_constructor), and allow access to properties using [getter and setter methods](https://en.wikipedia.org/wiki/Mutator_method).
+
+- <font color=red>`hashcode()` </font>method can be used by confirm two object is the same class as `hashcode()` is equally.  
+
+
+
+
+
+
+
 ## Java 人脸识别
 
 completion
