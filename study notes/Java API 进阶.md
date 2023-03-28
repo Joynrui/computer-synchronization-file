@@ -2465,7 +2465,7 @@ int[] arr2 = new int[100];
 
 
 
-#### When does class initialization occur?
+### When does class initialization occur?
 
 - active reference (must occur class initialization)
     - when JVM start, it will initialize the class has main method
@@ -2479,7 +2479,82 @@ int[] arr2 = new int[100];
     - define class reference via array, it haven't to initialize class.
     - Reference const does not initialize this class(Constants are stored in the constant pool of the calling class during the linking phase)
 
-### XV. POJO and Java Bean
+
+
+### Get runtime strutures
+
+When you get a Class object of a entity,you can get the structure details via some methods. 
+
+e.g.,
+
+```java
+public class test{
+    public static void main(String[] args){
+        Class c1 = Class.forName("com.max.reflection.User");
+        // get the name of class
+        // get full name
+        c1.getName();
+        // get simple name
+        c1.getSimpleName();
+        
+        // get public attributes only
+        Field[] fields = c1.getFields();
+        // get all the attributes include private 
+        fields = c1.getDeclaredFields();
+        for (Field field: fields) {
+            System.out.println(field);
+        }
+        
+        // get value of attributes which you select
+        Field name = c1.getDeclaredField("name");
+        
+        // get all the methods of class and extended class 
+        Method[] methods = c1.getMethods();
+        for (Method method: methods) {
+            System.out.println(method);
+        }
+        
+        // get methods in class 
+        methods = c1.getDeclaredMehtods();
+        for (Method method: methods) {
+			System.out.println();
+        }
+        
+        // get method which you select
+        // getMethod("name", parameterTypes);
+        // Because of overloading, getMethod() can via parameterTypes to distinguish the method that it could use
+        Method getName = c1.getMethod("getName", null);
+		Method setName = c1.getMehtod("setName", String.class);        		
+        // get public constructor  
+        Constructor[] constructors = c1.getConstructors();
+        for (Constructor constructor: constructors) {
+			System.out.println(constructor);
+        }
+        
+        // get all the public and private constructors 
+        constructors = c1.getDeclaredConstrutors();
+        for (Constructor constructor: constructors) {
+            Sytem.out.println(constructor);
+        }
+        
+        // get the constructor which you select
+        Constructor constructor = c1.getDeclaredConstructor(String.class, int.class, int.class);
+        System.out.println(constructor);
+    }
+}
+```
+
+
+
+ 
+
+
+
+
+
+
+
+## XV. POJO and Java Bean
 
 There are all entity with a little different aspect.
 
