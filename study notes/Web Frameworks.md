@@ -171,6 +171,22 @@ The mapping of Java classes to database tables is implemented by the configurati
 
 
 
+Use the Hibernate, you should import the jars it needs. (from official website)
+
+
+
+How Hibernate works (before version 5.0)
+
+![Lightbox](assets/Web%20Frameworks.assets/HBArchi.png)
+
+
+
+[hibernate bootastrapping ways](https://www.baeldung.com/hibernate-5-bootstrapping-api)
+
+ [What is the difference between Configuration vs ServiceRegistry vs StandardServiceRegistry?](https://stackoverflow.com/questions/67300459/what-is-the-difference-between-configuration-vs-serviceregistry-vs-standardservi)
+
+
+
 **Hibernate Query Language (HQL)**
 
 - Database Independent Query
@@ -263,8 +279,19 @@ The mapping file name conventionally, should be **class_name.hbm.xml.** There ar
 - **id :** It is the subelement of class. It specifies the primary key attribute in the class.
 - **generator :** It is the sub-element of id. It is used to generate the primary key. There are many generator classes such as assigned, increment, hilo, sequence, native etc. We will learn all the generator classes later.
 - **property :** It is the sub-element of class that specifies the property name of the Persistent class.
+- **discriminator**：The <discriminator> element is required for polymorphic persistence using the <font color=red>table-per-class-hierarchy mapping strategy</font>. It declares a discriminator column of the table. The discriminator column contains marker values that tell the persistence layer what subclass to instantiate for a particular row. A restricted set of types can be used: string, character, integer, byte, short, boolean, yes_no, true_false.
 
+e.g.,discriminator declared like this,
 
+```xml
+<discriminator column="discriminator_column" type="discriminator_type" force="true|false" insert="true|false" formula="arbitrary sql expression" />
+```
+
+>1. `column` (optional - defaults to `class`): the name of the discriminator column.
+>2. type (optional - defaults to string): a name that indicates the Hibernate type
+>3. `force` (optional - defaults to `false`): "forces" Hibernate to specify the allowed discriminator values, even when retrieving all instances of the root class.
+>4. `insert` (optional - defaults to `true`): set this to `false` if your discriminator column is also part of a mapped composite identifier. It tells Hibernate not to include the column in SQL `INSERTs`.
+>5. `formula` (optional): an arbitrary SQL expression that is executed when a type has to be evaluated. It allows content-based discrimination.
 
 e.g.,  employee.hbm.xml
 
@@ -296,14 +323,13 @@ The configuration file contains information about the database and mapping file.
 
 ```xml
 <?xml version='1.0' encoding='UTF-8'?>  
-<!DOCTYPE hibernate-configuration PUBLIC  
-          "-//Hibernate/Hibernate Configuration DTD 5.3//EN"  
-          "http://hibernate.sourceforge.net/hibernate-configuration-5.3.dtd">  
+<!DOCTYPE hibernate-configuration PUBLIC 
+  "-//Hibernate/Hibernate Configuration DTD 3.0//EN" 
+  "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">  
   
 <hibernate-configuration>  
   
     <session-factory>  
-        <property name="hbm2ddl.auto">update</property>  
         <property name="dialect">org.hibernate.dialect.Oracle9Dialect</property>  
         <property name="connection.url">jdbc:oracle:thin:@localhost:1521:xe</property>  
         <property name="connection.username">system</property>  
@@ -324,6 +350,8 @@ It's an Oracle database configuration.
 4. Create the class that retrieves or stores the object
 
 In this class, we are simply storing the employee object to the database.
+
+Begin with `standardServiceRegistryBuilder().configurtion("hibernate.cfg.xml").build();`
 
 ```java
 package com.max.mypackage;    
@@ -354,6 +382,7 @@ public class StoreData {
         e1.setFirstName("Max");    
         e1.setLastName("Croft");    
 
+        // session.persist(e1);
         session.save(e1);  
         t.commit();  
         System.out.println("successfully saved");    
@@ -363,6 +392,27 @@ public class StoreData {
 	}    
 }   
 ```
+
+Attention: There are two methods to store the session, `save()` and `persist()`;
+
+1. Save()
+
+    1. **Returns** generated Id after saving. Its return type is **Serializable**;
+    2. **Saves** the changes to the database outside of the transaction;
+    3. Assigns the generated id to the entity you are persisting;
+    4. `session.save()` for a detached object will **create a new row** in the table.
+2. Persist()
+    1. **Does not return** generated Id after saving. Its return type is **void**;
+    2. **Does not save** the changes to the database outside of the transaction;
+    3. Assigns the generated Id to the entity you are persisting;
+    4. `session.persist()` for a detached object will throw a `PersistentObjectException`, as it is not allowed.
+
+
+
+All these are tried/tested on Hibernate v4.0.1.
+
+
+
 
 
 
@@ -379,6 +429,10 @@ public class StoreData {
 #### Implementation with XML
 
 You can create the ".hbm.xml"  file to mapping persistent class, such as the example shows before. 
+
+Hibernate mapping Generator tools :**XDoclet, Middlegen, AndroMDA** 
+
+
 
 
 
@@ -439,9 +493,270 @@ public class Employee {
 
 
 
+#### Generator Class
+
+All the generator classes implements the **org.hibernate.id.IdentifierGenerator interface**.
 
 
 
+**generator class value**
+
+To set the values of generate class like this:
+
+```xml
+<id name="identify">
+    <generator class="value"></generator>
+    
+</id>
+```
+
+
+
+1. **assigned**: It is the default generator strategy if there is no <generator> element . In this case, application assigns the id.
+2. **increment**: It generates the unique id only if no other process is inserting data into this table. It generates **short**, **int** or **long** type identifier. If a table contains an identifier then the application considers its maximum value else the application consider that the first generated identifier is 1. 
+3. **sequence**: It uses the sequence of the database. if there is no sequence defined, it creates **a sequence automatically** e.g. in case of Oracle database, it creates a sequence named HIBERNATE_SEQUENCE. *In case of Oracle, DB2, SAP DB, Postgre SQL or McKoi, it uses sequence but it uses generator in interbase.*
+
+​		For defining your own sequence, use the param subelement of generator.
+
+```xml
+.....  
+ <id ...>  
+  <generator class="sequence">  
+      <param name="sequence">your_sequence_name</param>  
+  </generator>  
+ </id>  
+ .....  
+```
+
+4. **hilo**: It uses high and low algorithm to generate the id of type short, int and long. 
+
+5. **native**: It uses identity, sequence or hilo depending on the database vendor.     Database ventor is a central repository of supplier information that can be accessed and shared by authorized users within an organization. 
+
+6. identity: It is used in *Sybase*, *My SQL*, *MS SQL Server*, *DB2* and *HypersonicSQL* to support the id column. The returned id is of type short, int or long. It is responsibility of database to generate unique identifier.
+7. seqhilo: It uses high and low algorithm on the specified sequence name. The returned id is of type short, int or long.
+8. **uuid**: It uses 128-bit UUID algorithm to generate the id. The returned id is of type String, unique within a network (because IP is used). The UUID is represented in hexadecimal digits, 32 in length.
+9. guid: It uses GUID generated by database of type string. It works on *MS SQL Server* and *MySQL*.
+10. **select**: It uses the primary key returned by the database trigger.
+11. **foreign**: It uses the id of another associated object, mostly used with <one-to-one> association.
+12. sequence-identity: It uses a special sequence generation strategy. It is supported in Oracle 10g drivers only.
+
+
+
+
+
+#### SQL Dialect 
+
+The dialect specifies the **type of database used in hibernate so that hibernate generate appropriate type of SQL statements.** For connecting any hibernate application with the database, it is required to provide the configuration of SQL dialect.
+
+
+
+Syntax of SQL Dialect(Oracle)
+
+```xml
+<property name="dialect">org.hibernate.dialect.Oracle9Dialect</property>  
+```
+
+MySQL:
+
+```xml
+<property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>  
+```
+
+Different type of the database has different dialect class.
+
+
+
+There are many Dialects classes defined for RDBMS in the **org.hibernate.dialect** package. They are as follows: 
+
+| RDBMS                | Dialect                                       |
+| :------------------- | :-------------------------------------------- |
+| Oracle (any version) | `org.hibernate.dialect.OracleDialect`         |
+| Oracle9i             | `org.hibernate.dialect.Oracle9iDialect`       |
+| Oracle10g            | `org.hibernate.dialect.Oracle10gDialect`      |
+| MySQL                | `org.hibernate.dialect.MySQLDialect`          |
+| MySQL with InnoDB    | `org.hibernate.dialect.MySQLInnoDBDialect`    |
+| MySQL with MyISAM    | `org.hibernate.dialect.MySQLMyISAMDialect`    |
+| DB2                  | `org.hibernate.dialect.DB2Dialect`            |
+| DB2 AS/400           | `org.hibernate.dialect.DB2400Dialect`         |
+| DB2 OS390            | `org.hibernate.dialect.DB2390Dialect`         |
+| Microsoft SQL Server | `org.hibernate.dialect.SQLServerDialect`      |
+| Sybase               | `org.hibernate.dialect.SybaseDialect`         |
+| Sybase Anywhere      | `org.hibernate.dialect.SybaseAnywhereDialect` |
+| PostgreSQL           | `org.hibernate.dialect.PostgreSQLDialect`     |
+| SAP DB               | `org.hibernate.dialect.SAPDBDialect`          |
+| Informix             | `org.hibernate.dialect.InformixDialect`       |
+| HypersonicSQL        | `org.hibernate.dialect.HSQLDialect`           |
+| Ingres               | `org.hibernate.dialect.IngresDialect`         |
+| Progress             | `org.hibernate.dialect.ProgressDialect`       |
+| Mckoi SQL            | `org.hibernate.dialect.MckoiDialect`          |
+| Interbase            | `org.hibernate.dialect.InterbaseDialect`      |
+| Pointbase            | `org.hibernate.dialect.PointbaseDialect`      |
+| FrontBase            | `org.hibernate.dialect.FrontbaseDialect`      |
+| Firebird             | `org.hibernate.dialect.FirebirdDialect`       |
+
+
+
+
+
+#### Hibernate logging by Log4j 
+
+Logging enables the programmer to write the log details into a file permanently. Log4j and Logback frameworks can be used in hibernate framework to support logging.
+
+There are two ways to perform logging using log4j:
+
+1. **By log4j.xml file (or)**
+2. **By log4j.properties file**
+
+
+
+- Levels of Logging
+
+| Levels  | Description                                           |
+| :------ | :---------------------------------------------------- |
+| OFF     | This level is used to turn off logging.               |
+| WARNING | This is a message level that indicates a problem.     |
+| SEVERE  | This is a message level that indicates a failure.     |
+| INFO    | This level is used for informational messages.        |
+| CONFIG  | This level is used for static configuration messages. |
+
+
+
+
+
+- There are two ways to perform logging using log4j using xml file:
+    1. Load the log4j jar files with hibernate
+    2. Create the log4j.xml file inside the src folder (parallel with hibernate.cfg.xml file)
+
+
+
+log4j.xml 
+
+All of the log details in this xml file.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">  
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"  
+    debug="false">  
+<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">  
+ <layout class="org.apache.log4j.PatternLayout">  
+  <param name="ConversionPattern" value="[%d{dd/MM/yy hh:mm:ss:sss z}] %5p %c{2}: %m%n" />  
+ </layout>  
+</appender>  
+    <appender name="ASYNC" class="org.apache.log4j.AsyncAppender">  
+        <appender-ref ref="CONSOLE" />  
+        <appender-ref ref="FILE" />  
+</appender>  
+<appender name="FILE" class="org.apache.log4j.RollingFileAppender">  
+    <param name="File" value="C:/javatpointlog.log" />  
+    <param name="MaxBackupIndex" value="100" />  
+ <layout class="org.apache.log4j.PatternLayout">  
+  <param name="ConversionPattern" value="[%d{dd/MM/yy hh:mm:ss:sss z}] %5p %c{2}: %m%n" />  
+</layout>  
+</appender>  
+    <category name="org.hibernate">  
+        <priority value="DEBUG" />  
+    </category>  
+    <category name="java.sql">  
+        <priority value="debug" />  
+    </category>  
+    <root>  
+        <priority value="INFO" />  
+        <appender-ref ref="FILE" />  
+    </root>  
+</log4j:configuration>  
+```
+
+
+
+log4j.properties file
+
+Use log4j properties
+
+```properties
+# Direct log messages to a log file  
+log4j.appender.file=org.apache.log4j.RollingFileAppender  
+log4j.appender.file.File=C:\\javatpointhibernate.log  
+log4j.appender.file.MaxFileSize=1MB  
+log4j.appender.file.MaxBackupIndex=1  
+log4j.appender.file.layout=org.apache.log4j.PatternLayout  
+log4j.appender.file.layout.ConversionPattern=%d{ABSOLUTE} %5p %c{1}:%L - %m%n  
+   
+# Direct log messages to stdout  
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender  
+log4j.appender.stdout.Target=System.out  
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout  
+log4j.appender.stdout.layout.ConversionPattern=%d{ABSOLUTE} %5p %c{1}:%L - %m%n  
+   
+# Root logger option  
+log4j.rootLogger=INFO, file, stdout  
+   
+# Log everything. Good for troubleshooting  
+log4j.logger.org.hibernate=INFO  
+   
+# Log all JDBC parameters  
+log4j.logger.org.hibernate.type=ALL  
+```
+
+
+
+
+
+
+
+#### Inheritance Mapping
+
+We can map the inheritance hierarchy classes with the table of the database. There are three inheritance mapping strategies defined in the hibernate:
+
+1. Table Per Hierarchy
+
+In table per hierarchy mapping, single table is required to map the whole hierarchy, an extra column (known as discriminator column) is added to identify the class. But nullable values are stored in the table .
+
+2. Table Per Concrete class
+
+In case of table per concrete class, tables are created as per class. But duplicate column is added in subclass tables.
+
+3. Table Per Subclass
+
+In this strategy, tables are created as per class but related by foreign key. So there are no duplicate columns.
+
+
+
+1. Table Per Hierarchy
+
+Hierarchy structure use <subclass> to implement. One xml file record all of the Hierarchy class include parent class and subclasses.
+
+It is mainly used to distinguish the record. To specify this, **discriminator** subelement of class must be specified.
+
+e.g.,
+
+```xml
+<?xml version='1.0' encoding='UTF-8'?>  
+<!DOCTYPE hibernate-configuration PUBLIC 
+  "-//Hibernate/Hibernate Configuration DTD 3.0//EN" 
+  "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+  
+<hibernate-mapping>  
+<class name="com.max.mypackage.Employee" table="emp121" discriminator-value="emp">  
+	<id name="id">  
+		<generator class="increment"></generator>  
+	</id>  
+  
+	<discriminator column="type" type="string"></discriminator>  
+	<property name="name"></property>  
+            
+	<subclass name="com.max.mypackage.Regular_Employee" discriminator-value="reg_emp">  
+		<property name="salary"></property>  
+		<property name="bonus"></property>  
+	</subclass>  
+            
+	<subclass name="com.max.mypackage.Contract_Employee" discriminator-value="con_emp">  
+		<property name="pay_per_hour"></property>  
+		<property name="contract_duration"></property>  
+	</subclass>  
+</class>  
+</hibernate-mapping>  
+```
 
 
 

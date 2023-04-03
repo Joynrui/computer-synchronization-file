@@ -547,6 +547,8 @@ Rollback statement **allows you to rollback or undo one more statements that hav
 |    DOUBLE    | 8 Bytes                                  | (-1.797 693 134 862 315 7 E+308，-2.225 073 858 507 201 4 E-308)，0，(2.225 073 858 507 201 4 E-308，1.797 693 134 862 315 7 E+308) | 0，(2.225 073 858 507 201 4 E-308，1.797 693 134 862 315 7 E+308) | 双精度浮点数值 |
 |   DECIMAL    | 对DECIMAL(M,D) ，如果M>D，为M+2否则为D+2 | 依赖于M和D的值                                               | 依赖于M和D的值                                               | 小数值         |
 
+notice: decimal(x, y) : x is the precision of the number (**range of the number digit** (bit)), y is the scale (**digit after the decimal** (dot)).   
+
 
 
 - **日期和时间类型**
@@ -575,6 +577,34 @@ Rollback statement **allows you to rollback or undo one more statements that hav
 | MEDIUMTEXT | 0-16 777 215 bytes    | 中等长度文本数据                |
 | LONGBLOB   | 0-4 294 967 295 bytes | 二进制形式的极大文本数据        |
 | LONGTEXT   | 0-4 294 967 295 bytes | 极大文本数据                    |
+
+
+
+- mysql mapping to java datatype
+
+| MySQL Type    | Java Type            |
+| ------------- | -------------------- |
+| CHAR          | String               |
+| VARCHAR       | String               |
+| LONGVARCHAR   | String               |
+| NUMERIC       | java.math.BigDecimal |
+| DECIMAL       | java.math.BigDecimal |
+| BIT           | boolean              |
+| TINYINT       | byte                 |
+| SMALLINT      | short                |
+| INTEGER       | int                  |
+| BIGINT        | long                 |
+| REAL          | float                |
+| FLOAT         | double               |
+| DOUBLE        | double               |
+| BINARY        | byte[]               |
+| VARBINARY     | byte[]               |
+| LONGVARBINARY | byte[]               |
+| DATE          | java.sql.Date        |
+| TIME          | java.sql.Time        |
+| TIMESTAMP     | java.sql.Tiimestamp  |
+
+​       
 
 
 
