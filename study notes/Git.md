@@ -87,17 +87,19 @@ git push
 git pull
 ```
 
-##    Git Local Repo initialization
+
+
+## Git Local Repository initialization
 
 1. Step 1:
 
-- initialize the git local repository
+- initialize the git local repository（if you have a local project and want to push to the remote repository, use it）
 
 ```
 git init
 ```
 
-- clone a project form the remote repository
+- clone a project form the remote repository (if you have a remote project and want to pull back to local repository first time, use it)
 
 ```
 git clone "ssh key or URL "
