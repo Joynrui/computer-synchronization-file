@@ -243,10 +243,11 @@ CREATE DATABASE IF NOT EXISTS test CHARSET=GBK;
 
 
 
-7. 修改数据库字符编码
+7. **修改数据库字符编码**
 
 ```mysql
 ALTER DATABASE test CHARSET=UTF8MB4; 
+ALTER DATABASE bookdb DEFAULT CHARSET SET utf8mb4;
 ```
 
 
@@ -270,6 +271,12 @@ Database changed
 
 ```mysql
 SHOW TABLES;
+```
+
+- 修改表字符集
+
+```mysql
+ALTER TABLE table_name CONVERT TO CHARACTER SET utf8mb4;
 ```
 
 

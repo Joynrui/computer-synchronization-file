@@ -212,11 +212,11 @@ high level architecture of Hibernate with **mapping file** and **configuration f
 
 
 
-#### Elements of Hibernate Architecture
+#### H1.1 Elements of Hibernate Architecture
 
 - <font color=red>`SessionFactory`</font>: The `SessionFactory`is a factory of session and client of <font color=red>`ConnectionProvider`</font>. It holds second level cache *(optional)* of data. The `org.hibernate.SessionFactory` interface provides factory method to get the object of Session.
 - <font color=red>`Session`</font>: The `session` object provides an interface between the application and data stored in the database. It is a short-lived object and wraps the JDBC connection. It is factory of Transaction, Query and Criteria. It holds a first-level cache *(mandatory)* of data. The `org.hibernate.Session` interface provides methods to **insert, update and delete the object**. It also provides factory methods for Transaction, Query and Criteria.
-- <font color=red>`transacton`</font>: The `transaction` object specifies the atomic unit of work. It is *optional*. The `org.hibernate.Transaction` interface provides methods for transaction management.
+- <font color=red>`transaction`</font>: The `transaction` object specifies the atomic unit of work. It is *optional*. The `org.hibernate.Transaction` interface provides methods for transaction management.
 - <font color=red>`ConnectionProvider`</font>: It is a factory of JDBC connections. It abstracts the application from <font color=red>`DriverManager`</font>or <font color=red>`DataSource`.</font> It is *optional*.
 
 - <font color=red>`TransactionFactory`</font>: It is a factory of Transaction. It is *optional*.
@@ -268,18 +268,56 @@ public void setLastName(String lastName) {
 
 
 
-
+##### elements in hbm.xml
 
 2. Create the mapping file for Persistent class
 
 The mapping file name conventionally, should be **class_name.hbm.xml.** There are many elements of the mapping file.
 
-- **hibernate-mapping :** It is the root element in the mapping file that contains all the mapping elements.
-- **class :** It is the sub-element of the hibernate-mapping element. It specifies the Persistent class.
-- **id :** It is the subelement of class. It specifies the primary key attribute in the class.
-- **generator :** It is the sub-element of id. It is used to generate the primary key. There are many generator classes such as assigned, increment, hilo, sequence, native etc. We will learn all the generator classes later.
-- **property :** It is the sub-element of class that specifies the property name of the Persistent class.
-- **discriminator**：The <discriminator> element is required for polymorphic persistence using the <font color=red>table-per-class-hierarchy mapping strategy</font>. It declares a discriminator column of the table. The discriminator column contains marker values that tell the persistence layer what subclass to instantiate for a particular row. A restricted set of types can be used: string, character, integer, byte, short, boolean, yes_no, true_false.
+- <font color=gree>**hibernate-mapping**</font>: It is the root element in the mapping file that contains all the mapping elements.
+- <font color="gree">**class**</font> : It is the sub-element of the hibernate-mapping element. It specifies the Persistent class.
+- <font color=gree>**id** </font>: It is the subelement of class. It specifies the primary key attribute in the class.
+- <font color=gree>**generator**</font> : It is the sub-element of id. It is used to generate the primary key. There are many generator classes such as assigned, increment, hilo, sequence, native etc. We will learn all the generator classes later.（generator will be describing in *H1.4*）
+- <font color=gree>**property**</font> : It is the sub-element of class that specifies the property name of the Persistent class.
+
+>1. **`name`**: the name of the property, with an initial lowercase letter.
+>2. **`column`** (optional - defaults to the property name): the name of the mapped database table column. This can also be specified by nested `<column>` element(s).
+>3. **`type`** (optional): a name that indicates the Hibernate type.
+>4. `update, insert` (optional - defaults to `true`): specifies that the mapped columns should be included in SQL `UPDATE` and/or `INSERT` statements. Setting both to `false` allows a pure "derived" property whose value is initialized from some other property that maps to the same column(s), or by a trigger or other application.
+>5. `formula` (optional): an SQL expression that defines the value for a *computed* property. Computed properties do not have a column mapping of their own.
+>6. **`unique`** (optional): enables the DDL generation of a unique constraint for the columns. Also, allow this to be the target of a `property-ref`.
+>7. `lazy` (optional - defaults to `false`): specifies that this property should be fetched lazily when the instance variable is first accessed. It requires build-time bytecode instrumentation.
+>8. **`not-null` **(optional): enables the DDL generation of a nullability constraint for the columns.
+>9. **`optimistic-lock` **(optional - defaults to `true`): specifies that updates to this property do or do not require acquisition of the optimistic lock. In other words, it determines if a version increment should occur when this property is dirty.
+>10. `generated` (optional - defaults to `never`): specifies that this property value is actually generated by the database. See the discussion of [generated properties](https://docs.jboss.org/hibernate/core/3.3/reference/en/html/mapping.html#mapping-generated) for more information.
+>11. `access` (optional - defaults to `property`): the strategy Hibernate uses for accessing the property value.
+
+- <font color=gree>**properties**</font>: The `<properties>` element allows the definition of a named, logical grouping of the properties of a class. The most important use of the construct is that it allows a combination of properties to be the target of a `property-ref`. It is also a convenient way to define a multi-column unique constraint. 
+
+>1. `name`: the logical name of the grouping. It is *not* an actual property name.
+>
+>2. `insert`: do the mapped columns appear in SQL `INSERTs`?
+>3. `update`: do the mapped columns appear in SQL `UPDATEs`?
+>4. `optimistic-lock` (optional - defaults to `true`): specifies that updates to these properties either do or do not require acquisition of the optimistic lock. It determines if a version increment should occur when these properties are dirty.
+>5. `unique` (optional - defaults to `false`): specifies that a unique constraint exists upon all mapped columns of the component.
+
+e.g., simple properties
+
+```xml
+<class name="Person"> 
+	<id name="personNumber"/> 
+... 
+	<properties name="name" unique="true" update="false"> 
+		<property name="firstName"/> 
+		<property name="initial"/> 
+		<property name="lastName"/> 
+	</properties> 
+</class>
+```
+
+
+
+- <font color=gree>**discriminator**</font>：The `<discriminator>` element is required for polymorphic persistence using the <font color=red>table-per-class-hierarchy mapping strategy</font>. It declares a discriminator column of the table. The discriminator column contains marker values that tell the persistence layer what subclass to instantiate for a particular row. A restricted set of types can be used: string, character, integer, byte, short, boolean, yes_no, true_false.
 
 e.g.,discriminator declared like this,
 
@@ -426,7 +464,7 @@ All these are tried/tested on Hibernate v4.0.1.
 
 
 
-#### Implementation with XML
+#### H1.2 Implementation with XML
 
 You can create the ".hbm.xml"  file to mapping persistent class, such as the example shows before. 
 
@@ -436,7 +474,7 @@ Hibernate mapping Generator tools :**XDoclet, Middlegen, AndroMDA**
 
 
 
-#### Implementation with Java Annotation
+#### H1.3 Implementation with Java Annotation
 
 You can also use annotation to mapping the persistent class.
 
@@ -493,7 +531,7 @@ public class Employee {
 
 
 
-#### Generator Class
+#### H1.4 Generator Class
 
 All the generator classes implements the **org.hibernate.id.IdentifierGenerator interface**.
 
@@ -544,7 +582,7 @@ To set the values of generate class like this:
 
 
 
-#### SQL Dialect 
+#### H1.5 SQL Dialect
 
 The dialect specifies the **type of database used in hibernate so that hibernate generate appropriate type of SQL statements.** For connecting any hibernate application with the database, it is required to provide the configuration of SQL dialect.
 
@@ -598,7 +636,7 @@ There are many Dialects classes defined for RDBMS in the **org.hibernate.dialect
 
 
 
-#### Hibernate logging by Log4j 
+#### H1.6 Hibernate logging by Log4j
 
 Logging enables the programmer to write the log details into a file permanently. Log4j and Logback frameworks can be used in hibernate framework to support logging.
 
@@ -704,27 +742,19 @@ log4j.logger.org.hibernate.type=ALL
 
 
 
-#### Inheritance Mapping
+#### H1.7 Inheritance Mapping
 
 We can map the inheritance hierarchy classes with the table of the database. There are three inheritance mapping strategies defined in the hibernate:
 
-1. Table Per Hierarchy
+##### Table Per Hierarchy
 
-In table per hierarchy mapping, single table is required to map the whole hierarchy, an extra column (known as discriminator column) is added to identify the class. But nullable values are stored in the table .
-
-2. Table Per Concrete class
-
-In case of table per concrete class, tables are created as per class. But duplicate column is added in subclass tables.
-
-3. Table Per Subclass
-
-In this strategy, tables are created as per class but related by foreign key. So there are no duplicate columns.
+In table per hierarchy mapping, single table is required to map the whole hierarchy, an extra column (known as discriminator column) is added to identify the class. But nullable values are stored in the table.
 
 
 
-1. Table Per Hierarchy
+###### TPH with xml file
 
-Hierarchy structure use <subclass> to implement. One xml file record all of the Hierarchy class include parent class and subclasses.
+Hierarchy structure use `<subclass>` to implement. One xml file record all of the Hierarchy class include parent class and subclasses.
 
 It is mainly used to distinguish the record. To specify this, **discriminator** subelement of class must be specified.
 
@@ -757,6 +787,205 @@ e.g.,
 </class>  
 </hibernate-mapping>  
 ```
+
+
+
+Others,
+
+Hierarchy strategy use only one table which mapping to the parent Class, it has all of columns of class have. e.g.,
+
+inheritance hierarchy:
+
+![table per class hierarchy using annotation](assets/Web%20Frameworks.assets/inheritance1.jpg)
+
+Xml:
+
+person.hbm.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mepping>
+	<class name="con.max.domain.Person" table="person">
+    	<id name="id">
+        	<generator class="native"></generator>
+        </id>
+        <discriminator column="discrimination" type="java.lang.String"></discriminator>
+        <property name="name" column="name" type="java.long.String"></property>
+        <subclass name="com.max.domain.Scientist" disciriminator-value="scientist">
+            <property name="paperNmae" column="paper_name" type="java.long.String"></property>
+            <property name+"department" column="department" type="java.long.String"></property>
+        </subclass> 
+        <subclass name="com.max.domain.Student" discriminator-value="student">
+        	<property name="school" column="school" type="java.long.String"></property>
+            <property name="teacher" column="teacher" type="java.long.String"></property>
+        </subclass>
+    </class>
+</hibernate-mepping>
+```
+
+
+
+Person.java
+
+```java
+public class Person {
+    private int id;
+    private String name;
+    private int age;
+    
+    public Person(){
+    }
+    public Person(int id,String name, int age){
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
+    public int getId(){
+        return this.id;
+    }
+    public void setId(int id){
+        this.id = id;
+    }
+    public String getName() {
+    	return this.name;    
+	}
+    public void setName(String name) {
+        this.name = name;
+    }
+   	public int getAge(){
+        return this.age;
+    }
+    public void setAge(int age){
+        this.age = age;
+    }
+}
+```
+
+Scientist.java
+
+```java
+public class Scientist extends Person {
+    private String paperName;
+    private String department;
+    
+    public Scientist(){
+    }
+    public Scientist(String paperName, String department) {
+        this.paperNmae = paperName;
+        this.deparment = department;
+    } 
+    public String getPaperName(){
+        return this.paperName;
+    }
+ 	public void setPaperName(String paperName){
+        this.paperName = paperName; 
+    }   
+    public String getDepartment(){
+        return this.depaperment;
+    }
+    public void setDeparment(String department){
+        this.department = department;
+    }
+}
+```
+
+Student.java
+
+```java
+public class Student{
+    private String school;
+    private String teacher;
+    public Student(){
+    } 
+    public Student(String school, String teacher){
+        this.school = school;
+        this.teacher = teacher;
+    }
+   	public String getSchool() {
+        return this.school;
+    }
+    public void setSchool(){
+        this.school = school;
+    }
+    public String getTeacher(){
+        return this.teacher;
+    }
+    public void setTeacher(){
+        this.teacher = teacher;
+    }
+}
+```
+
+describe table person
+
+```sql
+create table person if not exists (
+	id int not null pirmary key auto_increment,
+    name varchar(20) not null,
+    age int not null,
+    paperName varchar(30),
+    department varchar(30),
+    school varchar(30),
+    teacher varchar(30)
+)engine=InnoDB；
+```
+
+**All the data will be insert into the table.**
+
+
+
+###### TPH with Annotation
+
+Here, we need to use <font color="gree">@Inheritance(strategy=InheritanceType.SINGLE_TABLE)</font>, <font color="gree">@DiscriminatorColumn</font> and <font color="gree">@DiscriminatorValue </font>annotations for mapping table per hierarchy strategy.
+
+In case of table per hierarchy, **only one table is required to map the inheritance hierarchy.** Here, an extra column (also known as **discriminator column**) is created in the table to identify the class.
+
+You need to follow the following steps to create simple example:
+
+- Create the persistent classes
+- Edit pom.xml file
+- Create the configuration file
+- Create the class to store the fetch the data
+
+
+
+<font color=red>ERROR: Incorrect string value: '\xE9\x90\x92\xEF\xB9\x80...' for column 'name' at row 1</font>
+
+When database charset, table character set and hibernate input string isn't utf8, it will report this error.
+
+You should convert the database charset and table character set to utf8 or utf8mb4;
+
+>create database and set charset to utf8:
+>
+>```mysql
+>CREATE DATABASE IF NOT EXISTS test CHARSET=utf8; 
+>```
+>
+>change the database charset:
+>
+>```mysql
+>ALTER DATABASE test CHARSET=UTF8MB4; 
+>ALTER DATABASE bookdb DEFAULT CHARSET SET utf8mb4;
+>```
+>
+>change the table character set:
+>
+>```mysql
+>ALTER TABLE table_name CONVERT TO CHARACTER SET utf8mb4;
+>```
+
+##### Table Per Concrete class
+
+In case of table per concrete class, tables are created as per class. But duplicate column is added in subclass tables.
+
+##### Table Per Subclass
+
+In this strategy, tables are created as per class but related by foreign key. So there are no duplicate columns.
+
+
 
 
 
