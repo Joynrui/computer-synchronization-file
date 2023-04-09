@@ -8,7 +8,7 @@
 
 ### 3. `Math`
 
-#### `DecimalFormat` class
+`DecimalFormat` class
 
 `DecimalFormat` class uses to output the number according to the regular format.
 
@@ -2283,14 +2283,14 @@ Exactly as the name sounds, an `@Inherited` annotation type is inherited by subc
 - <font color=green>@Retention</font>
 The `@Retention` meta-annotation specifies how long an annotation type should be retained. The value attribute is one of the `java.lang.annotation.RetentionPolicy` `enum`constants. 
 
-1. <font color=blue>`RetentionPolicy.SOURCE` </font>: The annotation will not be included in the class file. This is useful for annotations which are intended for the compiler only.
-	2. <font color=blue>`RetentionPolicy.CLASS`</font> : The annotation will be included in the class file, but cannot be read reflectively.
-3. <font color=blue>`RetentionPolicy.RUNTIME` </font>: The annotation can be reflected at runtime. If no @Retention policy is specified, it defaults to `RetentionPolicy.CLASS`.
+1. <font color=purple>`RetentionPolicy.SOURCE` </font>: The annotation will not be included in the class file. This is useful for annotations which are intended for the compiler only.
+	2. <font color=purple>`RetentionPolicy.CLASS`</font> : The annotation will be included in the class file, but cannot be read reflectively.
+3. <font color=purple>`RetentionPolicy.RUNTIME` </font>: The annotation can be reflected at runtime. If no @Retention policy is specified, it defaults to `RetentionPolicy.CLASS`.
 
 - <font color=green>@Target</font>
 
   The `@Target` meta-annotation determines what may be marked by the annotation. The value attribute is one or more of the `java.lang.annotation.ElementType` `enum` constants. 
-  Those constants are <font color=blue>`ElementType.ANNOTATION_TYPE`</font>, <font color=blue>`CONSTRUCTOR`</font>, <font color=blue>`FIELD`</font>, <font color=blue>`LOCAL_VARIABLE`, </font><font color=blue>`METHOD`</font>, <font color=blue>`PACKAGE`</font>, <font color=blue>`PARAMETER`</font>,<font color=blue>`TYPE`</font>.
+  Those constants are <font color=purple>`ElementType.ANNOTATION_TYPE`</font>, <font color=purple>`CONSTRUCTOR`</font>, <font color=purple>`FIELD`</font>, <font color=purple>`LOCAL_VARIABLE`, </font><font color=purple>`METHOD`</font>, <font color=purple>`PACKAGE`</font>, <font color=purple>`PARAMETER`</font>,<font color=purple>`TYPE`</font>.
 
 - <font color=green>@Repeatable</font>
 
