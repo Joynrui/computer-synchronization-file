@@ -669,6 +669,14 @@ public class Shoes implements Runnable {
 | 锁类型   | 可重入 不可中断 非公平                                                         | 可重入 可判断 可公平（两者皆可）                                                                 |
 | 锁性能   | 少量同步                                                                       | 大量同步                                                                                         |
 
+
+
+- [说一说管程（Monitor）及其在Java synchronized机制中的体现](https://www.jianshu.com/p/e624460c645c)
+
+
+
+
+
 ### CPU 线程调度
 
 操作系统对线程有不同的调度方法。
