@@ -1,4 +1,4 @@
-# Data structure and algorithm 
+# Data structure and algorithm
 
 
 
@@ -27,7 +27,43 @@
 
 ## ALgorithm analysis 算法分析
 
+- <font color="lightblue">Asymptotic Notation</font>
+
+<font color="gree">Asymptotic Notation is used to describe the running time of an algorithm</font> - how much **time** an algorithm takes with a given input, n. 
+
+There are three different notations: **<font color="red">big O, big Theta (Θ), and big Omega (Ω)</font>**. 
+
+**big-Θ** is used when the running time is the **same for all cases**, 
+
+**big-O** for the **worst case** running time, 
+
+and **big-Ω** for the **best case** running time.
+
+
+
 ### 2.1 mathematical foundations
+
+
+
+- Definition 2.1. 
+
+T(N) = O(f(N)) if there are positive constants c and n0 such that T(N) ≤ cf(N) when N ≥ n0.
+
+
+
+- Definition 2.2.
+
+T(N) = (g(N)) if there are positive constants c and n0 such that T(N) ≥ cg(N) when N ≥ n0.
+
+- Definition 2.3.
+
+T(N) = (h(N)) if and only if T(N) = O(h(N)) and T(N) = (h(N)).
+
+- Definition 2.4.
+
+T(N) = o(p(N)) if for all positive constants c there exists an n0 such that T(N) < cp(N) when N > n0. Less formally, T(N) = o(p(N)) if T(N) = O(p(N)) and T(N) = (p(N))
+
+
 
 ***principle 1***：如果 
 $$
@@ -94,7 +130,7 @@ Sometimes, the time it takes to just read in the data from disk is likely orders
 
 
 
-*principle*：**嵌套for循环**
+*principle2*：**嵌套for循环**
 
 ​		从里面向外分析这些循环。在一组嵌套循环内部的一条语句总的运行时间为该语句的运行时间乘以该组所有的for循环的大小的乘积。
 
@@ -2694,6 +2730,8 @@ Rehashing can be implemented in several ways with quadratic probing.
 1. Rehash as soon as the table is half full.
 2. Rehash only when an insertion fails.
 3.  **Middle-of-the-road** strategy:  is to rehash when the table reaches a certain load factor. Since performance does degrade as the load factor increases, the third strategy, implemented with a good cutoff, could be best
+
+
 
 
 

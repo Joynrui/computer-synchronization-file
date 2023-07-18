@@ -793,13 +793,13 @@ id int(10) primary key auto_increment comment 'This is the comment about this fi
 - 创建表使用：
 
 ```mysql
-foreign key('table2 field') references 'table1 name'('table1 field');
+constraint 'foregin_key_name' FOREIGN KEY ('table2 field') REFERENCES 'table1 name'('table1 field');
 ```
 
 - 修改表使用：
 
 ```mysql
-alter 'table_name' add foreign key ('table2_field') references 'table1_name'('table1_field');  
+alter 'table_name' add  CONSTRAINT 'foregin_key_name'  foreign key ('table2_field') references 'table1_name'('table1_field');  
 ```
 
 

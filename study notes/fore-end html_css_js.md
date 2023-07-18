@@ -1,12 +1,133 @@
-# JavaScript Note
 
 
 
-[**JavaScript format standard**](https://segmentfault.com/a/1190000009636665)
+
+## 结构html,样式CSS，逻辑JS
 
 
 
-#  I. What can JavaScript do?
+# ES6
+
+ES6即ECMAScript 6, 是JavaScript的标准版本。
+
+ 
+
+## Let and const
+
+### let
+
+1. base function:
+
+```javascript
+{
+    let a = 0;
+    // a = 0
+    a
+}
+// ReferenceError: a is not defined
+a 
+```
+
+2. let variable only available in speacify block, var variable available in global range. 
+
+```javascript
+{
+    let a = 1;
+    var b = 9;
+    // a = 1
+    console.log(a);
+    // b = 9
+    console.log(b);
+}
+// b = 0
+console.log(b);
+// ReferenceError
+console.log(a);
+```
+
+3. let variable can't assert multiple times but assert only once. var variable can assert multiple times.
+
+```javascript
+let a = 1;
+let a = 22;
+let b = 3;
+let b = 4;
+// Identifier 'a' has already been declared
+a
+// b = 4
+b
+```
+
+4. let is very suitable for for loop:
+
+```javascript
+// output 10 ten times
+for (var i = 0; i < 10; i++) {
+    setTimeout(function() {
+        console.log(i);
+    })
+}
+// output 0123456789
+for (let j = 0; j < 10; j++) {
+    setTimeout(function() {
+		console.log(j);
+    })
+}
+```
+
+变量 i 是用 var 声明的，在全局范围内有效，所以全局中只有一个变量 i, 每次循环时，setTimeout 定时器里面的 i 指的是全局变量 i ，而循环里的十个 setTimeout 是在循环结束后才执行，所以此时的 i 都是 10。
+
+变量 j 是用 let 声明的，当前的 j 只在本轮循环中有效，每次循环的 j 其实都是一个新的变量，所以 setTimeout 定时器里面的 j 其实是不同的变量，即最后输出 12345。（若每次循环的变量 j 都是重新声明的，如何知道前一个循环的值？这是因为 JavaScript 引擎内部会记住前一个循环的值）。
+
+5. let 不存在变量提升，var 会变量提升
+
+```javascript
+// ReferenceError: a is not defined
+console.log(a);
+let a = "cyberbase":
+// undefined
+console.log(b);
+var b = "hello cyberbase";
+```
+
+变量 b 用 var 声明存在变量提升，所以当脚本开始运行的时候，b 已经存在了，但是还没有赋值，所以会输出 undefined。
+
+变量 a 用 let 声明不存在变量提升，在声明变量 a 之前，a 不存在，所以会报错。
+
+
+
+### const
+
+const declare a read only variable, it can't changed after declaration. It also means const variable should initialize while declare it, but error.
+
+```javascript
+const PI = "3.1415926";
+// 3.1415926
+PI
+// Syntax Error: Missing Intializer in const declaration
+const CYBER;
+```
+
+<font color="red">Temporal Dead Area</font>
+
+```javascript
+var PI = "a";
+if (true) {
+    // Cannot access 'PI' before initialization
+	console.log(PI);  
+	const PI = "3.1415926";
+}
+```
+
+ES6 明确规定，代码块内如果存在 let 或者 const，代码块会对这些命令声明的变量从块的开始就形成一个封闭作用域。代码块内，在声明变量 PI 之前使用它会报错。
+
+
+
+[**fore-end format standard**](https://segmentfault.com/a/1190000009636665)
+
+
+
+# I. What can JavaScript do?
 
 ## JavaScript Can Change HTML Content
 
@@ -152,8 +273,6 @@ javascript y有三种使用方法：
 
 
 
-
-## 结构html,样式CSS，逻辑JS
 
 
 
