@@ -4,6 +4,8 @@
 
 
 
+
+
 # Front end Framework
 
 ## Vue.js
@@ -28,13 +30,13 @@
 
 
 
-First, learn <font color="red">spring boot</font>, than begin to learn <font color="red">spring MVC</font> and <font color="red">SSM</font> (*Spring  +  SpringMVC + Mybatis*)  
+First, learn <font color="red">spring boot</font>, then begin to learn <font color="red">spring MVC</font> and <font color="red">SSM</font> (*Spring  +  SpringMVC + Mybatis*)  
 
-##  Spring Boot
+# Spring Boot
 
 
 
-###  1.1 Spring boot feature introduction
+##  1.1 Spring boot feature introduction
 
 **Spring Boot** makes it easy to create **stand-alone,** production-grade Spring based Applications that you can "just run".
 
@@ -54,7 +56,7 @@ Most Spring Boot applications need **minimal Spring configuration**.
 
 
 
-### 1.2 The First Spring boot project
+## 1.2 The First Spring boot project
 
 - Use Spring initalizr to create project, official website has this method and IDEA also integrated. (remember add dependencies(like <font color="red">spring web</font>)) 
 
@@ -125,7 +127,7 @@ attentions:
 
 [IntelliJ IDEA 配置 Maven 最全说明 | 程序员笔记 (knowledgedict.com)](https://www.knowledgedict.com/tutorial/idea-config-maven.html)
 
-###  1.3 Create Spring project in IDEA
+##  1.3 Create Spring project in IDEA
 
 
 
@@ -163,11 +165,27 @@ server.port=8081
 
 
 
+## Controller
+
+### `@Controller`与 `@RestController`
+
+`@Controller`用于非前后端分离的项目类型，`@Controller`中返回的参数是MVC中的视图层View，而`@RestController`用于前后端分离的项目，控制器层的方法返回的是一个字符串，并将字符串转换为JOSN格式数据发送给前端。
 
 
 
+### `@RequestParam`
 
+用于处理方法接收的参数与方法的形参不一致的情况
 
+usage example:
+
+```java
+@RequestMapping(value = "/getTest3",method = RequestMethod.GET)
+    public String getTest3(@RequestParam(value = "nickname", required = false)String name) {
+        System.out.println(name);
+        return "get request";
+    }
+```
 
 
 
