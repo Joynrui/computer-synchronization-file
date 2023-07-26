@@ -189,6 +189,78 @@ usage example:
 
 
 
+## Set static file access directory
+
+```properties
+# 设置默认静态资源访问路径格式，如设置为"/images/**"路径,要访问static目录中的文件则必须加上images前缀，即"http://localhost:8080/images/test.jpg"
+# 默认值为 "/**"
+spring.mvc.static-path-pattern=/**
+# 设置编译完成时，静态资源的路径名称。源代码包路径保持一致。必须加前缀"classpath:"。
+spring.web.resources.static-locations=classpath:/filename
+```
+
+
+
+## File upload
+
+**文件上传原理**
+
+- 表单的 `enctype` 属性规定在发送到服务器之前应该如何对表单数据进行编码。
+- 当表单的`enctype="application/x-www-form-urlencoded"`（default）时，form表单中的数据格式为：`key=value&key=value`。
+- 当表单的`enctype="multipart/form-data"`时，其传输数据的形式如何下：
+
+![image-20230726214649767](assets/Web%20Frameworks.assets/image-20230726214649767.png)
+
+- Spring Boot 工程嵌入的tomcat限制了请求的文件大小，每个文件的配置最大为1MB，单次请求的文件总数不能大于10MB。
+- 要更改这个默认值需要在配置文件（`application.properties`）中加入两个配置。
+
+```properties
+spring.servlet.multipart.max-file-size=10MB
+spring.servlet.multipart.max-request-size=10MB
+```
+
+- 当表单的`enctype="multipart/form-data"`时，可以使用MultipartFile获取上传文件数据，在通过transferTo方法将其写入磁盘当中。
+
+eg.,
+
+```java
+@RestController
+public class FileController {
+    private static final String UPLOADED_FOLDER = System.getProperty("user.dir") + "/upload/";
+    
+    @PostMapping("/up")
+    public String upload(String nickname, MultipartFile f, HttpServletRequest request) throws IOException {
+        System.out.println(nickname);
+        // 获取图片原始名称
+        System.out.println("文件名称：" + f.getOriginalFilename());
+        // 获取文件大小
+		System.out.println("文件大小：" + f.getSize());
+        // 获取文件类型
+        System.out.println("文件类型：" + f.getContentType());
+        System.out.println(System.getProperty("user.dir"));
+        // 获取系统真实路径 
+        String path = request.getSerlvetContext().getRealPath("/upload/");
+        System.out.println(path);
+        saveFile(f);
+        return "upload success";
+    }
+}
+
+	public void saveFile(MultipartFile f， String path) throws IOException {
+        // 判断路径是否存在，不存在则创建路径
+        File upDir = new File(path);
+        if (!upDir.exists()) {
+            upDir.mkdir();
+        }
+        // 创建file对象存储路径
+        File file = new File(path + f.getOriginalFilename());
+        // 使用transferTo()方法将网络上传输的文件存储到此目录当中
+        f.transferTo(file);
+    } 
+```
+
+focus：开发阶段每次tomcat存储上文件的路径都会改变，所以每次上传文件前要先重启服务器。
+
 
 
 
