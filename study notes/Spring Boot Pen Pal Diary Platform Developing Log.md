@@ -25,4 +25,21 @@
 
 
 
- 
+## 2023.7.26
+
+- Set static resources file access directory in `application.properties`.
+
+- Set static target access directory pattern.
+
+- file upload
+
+
+
+
+
+## 2023.8.1
+
+- Spring Interceptor
+
+- RESTful service(RESTful framework): a API developing design style.
+-  http method

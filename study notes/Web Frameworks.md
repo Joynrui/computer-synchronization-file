@@ -201,7 +201,7 @@ spring.web.resources.static-locations=classpath:/filename
 
 
 
-## File upload
+## File Upload
 
 **文件上传原理**
 
@@ -219,34 +219,43 @@ spring.servlet.multipart.max-file-size=10MB
 spring.servlet.multipart.max-request-size=10MB
 ```
 
-- 当表单的`enctype="multipart/form-data"`时，可以使用MultipartFile获取上传文件数据，在通过transferTo方法将其写入磁盘当中。
+- 当表单的`enctype="multipart/form-data"`时，可以使用``MultipartFile`获取上传文件数据，在通过`transferTo`方法将其写入磁盘当中。
 
 eg.,
 
 ```java
 @RestController
 public class FileController {
+    /**
+     * UPLOADED_FOLDER为上传文件所在的项目地址
+     */
     private static final String UPLOADED_FOLDER = System.getProperty("user.dir") + "/upload/";
-    
-    @PostMapping("/up")
+
+    @PostMapping("/upload")
     public String upload(String nickname, MultipartFile f, HttpServletRequest request) throws IOException {
         System.out.println(nickname);
         // 获取图片原始名称
         System.out.println("文件名称：" + f.getOriginalFilename());
         // 获取文件大小
-		System.out.println("文件大小：" + f.getSize());
+        System.out.println("文件大小：" + f.getSize());
         // 获取文件类型
         System.out.println("文件类型：" + f.getContentType());
-        System.out.println(System.getProperty("user.dir"));
-        // 获取系统真实路径 
-        String path = request.getSerlvetContext().getRealPath("/upload/");
+        // 获取上传文件的项目文件地址
+        System.out.println(UPLOADED_FOLDER);
+        // 获取系统真实路径
+        String path = request.getServletContext().getRealPath("/upload/");
         System.out.println(path);
-        saveFile(f);
+        saveFile(f, path);
         return "upload success";
     }
-}
 
-	public void saveFile(MultipartFile f， String path) throws IOException {
+    /**
+     * Take the file that you want upload to the server. (request --> server directory)
+     * @param f
+     * @param path
+     * @throws IOException
+     */
+    public void saveFile(MultipartFile f, String path) throws IOException {
         // 判断路径是否存在，不存在则创建路径
         File upDir = new File(path);
         if (!upDir.exists()) {
@@ -256,12 +265,73 @@ public class FileController {
         File file = new File(path + f.getOriginalFilename());
         // 使用transferTo()方法将网络上传输的文件存储到此目录当中
         f.transferTo(file);
-    } 
+    }
+}
 ```
 
 focus：开发阶段每次tomcat存储上文件的路径都会改变，所以每次上传文件前要先重启服务器。
 
 
+
+
+
+## Spring Boot Interceptor
+
+拦截器适用于全局操作，应用场景如下：
+
+- 权限查看：登录检测，进入处理程序检测是否登录，如果没有，则直接返回登录页面。
+- 性能监控：有时系统运行缓慢，可以通过拦截器在进入处理程序之前记录开始时间，在处理完后记录结束时间，从而得到该请求的处理时间
+- 通用行为：读取cookie得到用户信息并将用户对象放入请求，从而方便后续流程使用。还有哦Locale, Theme信息等，只要时多个处理程序都需要的，即可使用拦截器实现。
+
+
+
+Spring Boot 中的拦截器：
+
+- Spring Boot 定义了`HandlerInterceptor`接口来实现自定义拦截器的功能。
+- `HandlerInterceptor`接口定义了`preHandle`、`postHandle`、`afterCompletion`三种方法，通过重写这三种方法实现请求前，请求后等操作。
+
+![image-20230801160614993](assets/Web%20Frameworks.assets/image-20230801160614993.png) 
+
+
+
+an implementation example of interceptor
+
+- definition:
+
+```java
+public class LoginInterceptor implements HandlerInterceptor {
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        System.out.println("Prehandle in LoginInterceptor");
+        return true;
+    }
+}
+```
+
+### Interceptor registry
+
+- `addPathPatterns`方法定义拦截器地址
+- `excludePathPatterns`定义排除某些地址不被拦截
+- 添加的一个拦截器没有`addPathPattern`任何一个`url`则默认拦截所有请求。
+- 如果没有`excludePathPatterns`任何一个请求，则默认不放过任何一个请求。
+
+an implementation example of interceptor registry 
+
+```java
+@Configuration
+public class WebConfigurer implements WebMvcConfigurer {
+
+    /**
+     *  This method add the interceptor which you create, and put it on specified directory. And the interceptor
+     *  will work on this directory.
+     * @param registry
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/user/**");
+    }
+}
+```
 
 
 
@@ -3014,3 +3084,48 @@ As we have seen so far, JPA is a specification. It provides common prototype and
 | The **`EntityManagerFactory`** interface is used to interact with the entity manager factory for the persistence unit. Thus, it provides an entity manager. | It uses **`SessionFactory`** interface to create Session instances. |
 | It uses **`EntityManager`** interface to create, read, and delete operations for instances of mapped entity classes. This interface interacts with the persistence context. | It uses **`Session`** interface to create, read, and delete operations for instances of mapped entity classes. It behaves as a runtime interface between a Java application and Hibernate. |
 | It uses **`Java Persistence Query Language`** (JPQL) as an object-oriented query language to perform database operations. | It uses **`Hibernate Query Language`** (HQL) as an object-oriented query language to perform database operations. |
+
+
+
+
+
+# RESTful
+
+- 一种流行的互联网软件服务架构设计风格。
+
+- 全称Representational State Transfer, 表述性状态转移。
+
+- RESTful不是一个标准，而是一组Client 与 Server 交互时的架构理念和设计原则，基于这个架构理念和设计原则的Web API更加简洁，更有层次。
+
+
+
+## features of RESTful
+
+- 每一个URL代表一种资源
+- Client使用GET,POST,PUT,DELETE四种表示操作的动词对Server资源进行操作：
+
+>- GET用于获取资源， 或称 C 从 S 获取资源。
+>- POST用于新建资源，或称 C 向 S 发送资源。
+>- PUT用于更新资源， 或称 C 向 S 发送 S 中已存在资源的新版本，更新资源。
+>- DELETE用于删除资源。
+
+- 通过操作资源的表现形式实现服务端请求操作。
+
+- 资源的表现形式为JSON or HTML。
+- C 与 S 之间的交互在请求之间是无状态的，从C到S的每个请求都包含必须的信息。
+
+
+
+**符合RESTful规范的Web API需要具备以下两个关键特性：**
+
+- 安全性：安全的方法被期望不会产生任何副作用，当我们使用GET操作获取资源时，不会引起资源本身的改变，也不会引起服务器状态改变。
+- 幂等性：幂等的方法保证了重复进行一个请求和一次请求的效果相同（并不是指响应总是相同的，而是指服务器上的资源状态从第一次请求后就不在改变了），在数学上幂等性时指N次变换的结果和一次变换相同。
+
+### Http Method
+
+Http提供了POST,GET, PUT, DELETE等操作类型对某个Web资源进行**<font color="gree">Create、Read、Update和Delete操作。</font>**
+
+一个HTTP请求除了利用URL标志目标资源之外，还需要通过HTTP Method指定针对该资源的操作类型，一些常见的HTTP方法及其在RESTful风格下的使用：
+
+![image-20230801203457838](assets/Web%20Frameworks.assets/image-20230801203457838.png)
+
