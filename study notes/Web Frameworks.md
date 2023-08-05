@@ -335,6 +335,18 @@ public class WebConfigurer implements WebMvcConfigurer {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 ## ORM: Object Related Mapping
 
 **Object-relational mapping** (ORM) is a mechanism that makes it possible to address, access and manipulate objects without having to consider how those objects relate to their data sources.
@@ -3052,6 +3064,103 @@ session.evict(e);
 
 ### MyBatis
 
+- `MyBatisPlus` dependency, MySQL 
+
+```xml
+<!--MyBatisPlus dependency-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.4.3.1</version>
+        </dependency>
+        <!--mysql driver-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <!--database connector pool-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.2.18</version>
+        </dependency>
+```
+
+- 配置数据源
+
+```properties
+#数据源类型
+spring.datasource.type=com.alibaba.druid.pool.DruidDataSource
+#数据库驱动 MySQL 3.8.X
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+#数据库地址
+spring.datasource.url=jdbc:mysql://localhost:3306/springboottestdb?useSSL=false
+spring.datasource.username=root
+spring.datasource.password=root1234
+#mybatis日志输出
+mybatis-plus.configuration.log-impl=org.apache.ibatis.logging.stdout.StdOutImpl
+```
+
+- `@MapperScan("com")`:`MapperScan` annotation is `MyBatis` mapping directory. Write on boot class name generally.
+
+- mybatis CRUD annotation 
+
+| annotation | function                              |
+| ---------- | ------------------------------------- |
+| @Insert    | 插入                                  |
+| @Delete    | 删除                                  |
+| @Update    | 更新                                  |
+| @Select    | 选择                                  |
+| @Result    | 结果集封装                            |
+| @Results   | 可以与@Result一起使用，封装多个结果集 |
+| @One       | 一对一结果集封装                      |
+| @Many      | 一对多结果集封装                      |
+
+
+
+eg.,MyBatis CRUD
+
+```java
+@Mapper
+public interface UserBatisTestMapper {
+    // return 1 means success, else return 0 means fail.
+    @Insert("insert into user values(#{id},#{username}, #{password})")
+    int add(UserBatisTest userBatisTest);
+
+    // return 1 means success, else return 0 means fail.
+    @Delete("delete from user where id=#{id}")
+    int delete(int id);
+
+    // return 1 means success, else return 0 means fail.
+    @Update("update user set username=#{username}, password=#{password} where id=#{id}")
+    int update(UserBatisTest userBatisTest);
+
+    // return 1 means success, else return 0 means fail.
+    @Select("select * from user where id=#{id}")
+    int selectById(int id);
+
+    @Select("select * from user")
+    List<UserBatisTest> getAll();
+}
+```
+
+- `MyBatisPlus CRUD`
+
+`MyBatisPlus` has more convenient method to operating data
+
+Like this:
+
+```java
+// User is a bean object
+public interface UserMapper extends BaseMapper<User> {
+	// you will undo any base CRUD on the bean object, BaseMapper implement it.   
+}
+```
+
+
+
+
+
 
 
 
@@ -3129,3 +3238,69 @@ Http提供了POST,GET, PUT, DELETE等操作类型对某个Web资源进行**<font
 
 ![image-20230801203457838](assets/Web%20Frameworks.assets/image-20230801203457838.png)
 
+- focus:<font color=red>除POST以外，其他请求参数都在请求参数中而不在请求体中。</font>
+
+
+
+# Swagger
+
+- Swagger 是一个规范和完整的框架，用于生成、描述、调用和可视化RUSTful风格的Web服务器，是非常流行的API表达式工具。
+- Swagger能够自动生成完善的RESTful API 文档，同时并根据后台代码的修改同步更新，同时提供完整的测试页面来调试API。
+
+- 需求依赖
+
+```xml
+<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger2</artifactId>
+    <version>2.9.2</version>
+</dependency>
+<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger-ui</artifactId>
+    <version>2.9.2</version>
+</dependency>
+```
+
+- Swagger的配置
+
+```java
+@Configuration
+// enable Swagger function
+@EnableSwagger2
+public class Swagger2Config {
+    @Bean
+    public Docket CreateRestApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
+                .select()
+                // com包下所有API都交给Swager2管理
+                .apis(RequestHandlerSelectors.basePackage("com"))
+                .paths(PathSelectors.any()).build();
+
+    }
+
+    /**
+     *  API文档页面显示信息
+     * @return ApiInfoBuilder()
+     */
+    private ApiInfo apiInfo(){
+        return new ApiInfoBuilder()
+                .title("演示项目API")
+                .description("学习Swagger1的演示项目")
+                .build();
+    }
+}
+```
+
+- <font color=red>focus</font>: Spring Boot 2.6.X后与Swagger有版本冲突问题，需要在`application.properties`中添加以下配置”
+
+```properties
+spring.mvc.pathmatch.matching-strategy=ant_path_matcher
+```
+
+- access address: `http://127.0.0.1:8080/swagger-ui.html`
+
+- swagger annotation
+
+![image-20230805152722189](assets/Web%20Frameworks.assets/image-20230805152722189.png)

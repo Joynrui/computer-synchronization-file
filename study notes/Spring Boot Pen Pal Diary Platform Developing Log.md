@@ -43,3 +43,11 @@
 
 - RESTful service(RESTful framework): a API developing design style.
 -  http method
+
+
+
+## 2023.8.5
+
+- swagger
+- `MyBatis` and `MyBatisPlus` base CRUD
+- http request type post get put delete ... 
