@@ -6,7 +6,7 @@
 
  *Logic is the analysis and appraisal (评估) of arguments.*  
 
-## Core  terms
+## Core terms
 
 1. **Deductive Logic** :  演绎逻辑，推理逻辑。指根据逻辑规律和原理，从现有的结果推理其根源由来。
 2. **Inductive Logic** :  归纳逻辑，归纳逻辑，指根据过去已经发生过的事情，来推断现在某一事物的发展规律及其结果。
