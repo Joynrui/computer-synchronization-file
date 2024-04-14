@@ -234,7 +234,7 @@ SHOW CREATE DATABASE test;//test is the DATABASE name 查看创建数据库的SQ
 
 6. 创建数据库指定字符编码以及查看字符编码
 
-- The windows default charset is GBK, but we should use UTF8 or UTF8MB4 in development.
+- The Windows default charset is GBK, but we should use UTF8 or UTF8MB4 in development.
 - notice:  MySQL version 8.0 and above versions use utf8mb4 as its default charset.
 
 ```mysql
@@ -323,19 +323,19 @@ address VARCHAR(100) DEFAULT 'unknown' COMMENT 'students family address'
 - first:
 
 ```mysql
-DESC table;// table is the Table name.
+DESC table;# table is the Table name.
 ```
 
 - second:
 
 ```mysql
-SHOW COLUMNS FROM i;// i is the table name.
+SHOW COLUMNS FROM i;# i is the table name.
 ```
 
 6. check table status:
 
 ```mysql
-SHOW TABLE STATUS LIKE 'table name'\G
+SHOW TABLE STATUS LIKE 'table name';
 ```
 
 
@@ -355,7 +355,7 @@ Query OK, 0 rows affected (0.01 sec)
 - add field:
 
 ```mysql
-ALTER TABLE 'table_name' ADD 'i' INT;   // i
+ALTER TABLE 'table_name' ADD 'i' INT;   # i
 ```
 
 ```mysql
@@ -363,7 +363,7 @@ ALTER TABLE 'table_name' ADD 'i' INT FIRST;
 ```
 
 ```mysql
-ALTER TABLE 'table_name' ADD 'i' INT AFTER 'c';// c is the column name.
+ALTER TABLE 'table_name' ADD 'i' INT AFTER 'c';# c is the column name.
 ```
 
 - drop column:
@@ -381,7 +381,7 @@ ALTER TABLE 'table_name' MODIFY 'c' CHAR(10);
 - change column name:
 
 ```mysql
-ALTER TABLE 'table_name' CHANGE  'i' 'j' BIGINT;// i is the quondam name. j is the changed name.
+ALTER TABLE 'table_name' CHANGE  'i' 'j' BIGINT;# i is the quondam name. j is the changed name.
 ```
 
 ```mysql
@@ -400,9 +400,9 @@ ALTER TABLE table `quondam name` RENAME TO `changed name`;
 
 **The Effect of ALTER TABLE on Null and Default Value Attributes**
 
-When you MODIFY or CHANGE a column, you can also specify whether or not the column can contain NULL values and what its default value is. In fact, if you don't do this, MySQL automatically assigns values for these attributes and the value is Null.
+When you MODIFY or CHANGE a column, you can also specify whether or not the column can contain NULL values and its default value. If you don't do this, MySQL automatically assigns values for these attributes and the value is Null.
 
-- You can change a default value for any column by using the **ALTER** command.
+- You can change the default value for any column by using the **ALTER** command.
 
 ```mysql
 ALTER TABLE testalter_tbl ALTER i SET DEFAULT 1000; 
@@ -497,6 +497,8 @@ SELECT 'feild_name' FROM 'table_name';
 ```
 
 Query row allows *.
+
+select * from table_name. **星号有性能缺陷**
 
 1. SQL语句区分
 

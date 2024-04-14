@@ -1,4 +1,4 @@
-# Data structure and algorithm
+# Data structure and algorithm book notes（Description by Java）
 
 
 
@@ -358,15 +358,35 @@ arr = newArr;
 
 
 
-#### 3.2.2 Simple Linked List  简单链表
+#### 3.2.2 Singly Linked List  单链表
 
-链表为一系列节点组成，节点不必在内存中相连。每一个节点包含到该元素后面的节点的链，称next链。
+单链表为一系列节点组成，节点不必在内存中相连。每一个节点包含到该元素后面的节点的链，称next链。
+
+- Simple Linked List CRUD
+
+```java
+// 访问头节点：O(1),遍历第一个节点就是头节点
+/**
+	访问尾节点：
+	当尾节点不存在指向下一个节点的next指针，O(N),从第一个节点遍历到最后一个节点就是尾节点。
+	当尾节点存在，O(1),在尾部节点可以通过next指针直接访问尾节点。
+**/
+// 访问中间节点：O(N),遍历到中间节点插入。
+```
+
+#### 3.2.3 Double Linked List 双链表
 
 **双链表：** 每一个节点都持有一个指向它在表中的前驱节点的链。
 
+``` java
+// 访问头节点: O(1),遍历第一个节点就是头节点。
+// 访问尾节点：O(1), 遍历尾节点也可以是头节点。
+// 访问中间节点： O(N),遍历到中间第N个节点。
+```
 
 
-### 3.3  List in Collection API  
+
+### 3.3  List in Collection API
 
 
 
@@ -2733,7 +2753,38 @@ Rehashing can be implemented in several ways with quadratic probing.
 
 
 
+Q: Initalize hashMap capacity, but performance changed more and more slow?
+
+[link](https://cloud.tencent.com/developer/article/1913508)
 
 
 
+
+
+
+
+# Appendix
+
+## Search Algorithm
+
+### Binary Search
+
+The time complexity is O(logn) algorithm usually involves a process of halving(reduction by half) the search range at each iteration or recursion. Binary search is like this.
+
+Binary search is a bunch of search algorithms, not just only one algorithm.
+
+
+
+- how to find binary search middle index
+
+$$
+mid=low+\frac{high-low}{2}
+$$
+
+这里，low 是搜索区间的最低索引，high 是搜索区间的最高索引。这个计算方式有两个好处：
+
+1. **防止溢出**：直接计算 (low+high)/2 可能会导致在 low 和 high 都很大的情况下溢出。使用上面的计算方法可以避免这个问题。
+2. **自然处理奇偶性**：当 high−low 为奇数时，除以 2 的结果会自动向下取整，因此中点索引 mid 会指向中间位置的左侧元素（在零索引的数组中）。对于二分查找来说，这种细微的差异并不影响算法的正确性或效率。
+
+​	每次迭代或递归，搜索范围都会根据中间元素的值与目标值的比较结果被缩小一半。如果中间元素就是目标值，那么查找成功；如果目标值小于中间元素，则在左侧子数组中继续查找；否则，在右侧子数组中继续查找。不断重复这个过程，直到找到目标值或者搜索范围为空。
 

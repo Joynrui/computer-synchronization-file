@@ -27,7 +27,7 @@ DecimalFormat df = new DecimalFormat("00000000");
    Java 中，main 方法 应是 一个项目的入口点，而不是用于测试新模块。
 
    main 方法应具备**“逻辑控制语句少，且只做项目的程序入口点”** 的特点。
-2. 在项目中需要使用的“功能性控制语句”，必须将其从main 方法中剥离出来单独建立一个方法，以提高程序的复用性。
+2. 在项目中需要使用的“功能性控制语句”，必须将其从main方法中剥离出来单独建立一个方法，以提高程序的复用性。
 3. 单元测试：主方法测试主要步骤为：
 
    1） 本地测试；
@@ -1561,7 +1561,7 @@ public class JdbcDemo {
 
 [原文链接](https://blog.csdn.net/qq_43511405/article/details/108565216)
 
-### Example2 for JDBC:
+### Example2 for JDBC
 
 ```java
 import java.sql.*;
@@ -1623,7 +1623,7 @@ driver = com.mysql.cj.jdbc.Driver
 - step 4: Through the static code block, pre-execute the configuration items of the read configuration file for preprocessing.
 - step 5:
 
-### Example For `JDBCUtils`:
+### Example For `JDBCUtils`
 
 ```java
 import java.io.InputStream;

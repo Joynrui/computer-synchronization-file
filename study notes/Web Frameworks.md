@@ -10,6 +10,609 @@
 
 ## Vue.js
 
+### Vue3 Basic function
+
+#### basetest.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!--import vue.js script-->
+    <script src="http://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <!--declare the DOM area which will be controlled with vue-->
+    <div id ="app">
+        <!--model syntax-->
+        {{message}}
+    </div>
+
+    <!--create vue  instance object-->
+    <script>
+        const hello = {
+            data: function() {
+                return {
+                    message: "Weclome to Cyberbase!"
+                }
+            }
+        }
+        const app = Vue.createApp(hello)
+        app.mount('#app')
+    </script>
+</body>
+</html>
+```
+
+#### content.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="http://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="app">
+        <!--模板语法-->
+        <p>姓名：{{username}}</p>
+        <p>性别：{{gender}}</p>
+        <!--super link 字符串不会直接渲染-->
+        <p>{{desc}}</p>
+        <!--使用 v-html parameter渲染超链接字符串-->
+        <!--“v-html”称指令-->
+        <p v-html="desc"></p>
+
+    </div>
+    <script>
+        const vm = {
+            data: function() {
+                return {
+                    username:'cyberbase',
+                    gender: '男',
+                    desc:'<a herf="http://www.baidu.com">百度</a>'
+                }
+            }
+        }
+        const app = Vue.createApp(vm)
+        app.mount('#app')
+    </script>
+</body>
+</html>
+```
+
+#### parameter_binding.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="http://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!--v-bind:用于将参数绑定-->
+        <!--"v-bind:herf" 与 ":herf" 等效，（v-bind 可以省略）-->
+        <a v-bind:herf="link">baidu</a>
+        <input type="text" :placeholder="inputValue">
+         <!--This method only change page element but unchanged with parameter which is to transmit.-->
+        <!--When page elements changing by user, v-model command will update parameter value that should be transmitting synchronously.-->
+        <img :src="imgSrc" :style="{width:w}" alt="">
+    </div>
+    <script>
+        const vm = {
+            data: function () {
+                return {
+                    link: "http://www.baidu.com",
+                    inputValue: "Please input content:",
+                    imgSrc: "D:/Files/插画/89532340_p0.jpg",
+                    w: '500px'
+                }
+            }
+        }
+        const app = Vue.createApp(vm)
+        app.mount('#app')
+    </script>
+</body>
+
+</html>
+```
+
+#### js_expression.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="http://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="app">
+        <p>{{number + 18}}</p>
+        <p>{{ok ? 'True' : 'False'}}</p>
+        <p>{{message.split('').reverse().join('')}}</p>
+        <p :id="'list-' + id">xxx</p>
+        <p>{{user.name}}</p>
+    </div>
+    <script>
+        const vm = {
+            data: function() {
+                return {
+                    number: 10,
+                    ok: false,
+                    message:'ABC',
+                    id: 3,
+                    user: {
+                        name: 'max',
+                    }
+                }
+            }
+        }
+        const app = Vue.createApp(vm)
+        app.mount('#app')
+    </script>
+</body>
+</html>
+```
+
+#### action_binding.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <!--import vue.js script-->
+    <script src="http://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="app">
+        <h2>count value: {{count}}</h2>
+        <button v-on:click="subtractCount">-1</button>
+        <button @click="count+=1">+1</button>
+    </div>
+
+    <script>
+        const vm = {
+            data:function() {
+                return{
+                    count: 0,
+                }
+            },
+            methods: {
+                subtractCount() {
+                    this.count -= 1
+                },
+            },
+        }
+        const app = Vue.createApp(vm)
+        app.mount('#app')
+    </script>
+</body>
+</html>
+```
+
+#### condition_rendering.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <!--import vue.js script-->
+    <script src="http://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="app">
+        <button @click="flag = !flag">Toggle Flag</button>
+        <!-- If 'v-if' value is false.it will not create label-->
+        <p v-if="flag">请求被v-if控制</p>
+        <!-- If 'v-show' value is false it will create label but dont show it on the page.-->
+        <p v-show="flag">请求被v-show控制</p>
+    </div>
+    <script>
+        const vm ={
+            data: function(){
+                return {
+                    flag: false,
+                }
+            }
+        }
+        const app = Vue.createApp(vm)
+        app.mount('#app')
+    </script>
+</body>
+</html>
+```
+
+#### v-else_and_v-else-if.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <!--import vue.js script-->
+    <script src="http://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="app">
+        <p v-if="num > 0.5">random number > 0.5</p>
+        <p v-else>random <= 0.5</p>
+        <hr />
+        <p v-if="type === 'A' ">excellent</p>
+        <p v-else-if="type === 'B' ">well</p>
+        <p v-else-if="type === 'C' ">normal</p>
+        <p v-else>bad</p>
+    </div> 
+    <div v-show="a">
+        test
+    </div>
+    <button @click="!a">click</button>
+    <script>
+        const vm = {
+            data: function(){
+                return {
+                    num:Math.random(),
+                }
+            }
+        }
+        const app = Vue.createApp(vm);
+        app.mount("#app");
+    </script>
+</body>
+</html>
+```
+
+#### list_rendering.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <!--import vue.js script-->
+    <script src="http://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="(user, i) in userList">index: {{i}}< name: {{user.name}}</li>
+        </ul>
+    </div>
+    <script>
+        const vm = {
+            data: function () {
+                return {
+                    userList:[
+                        {id: 1, name:"Cyberbase corporation"},
+                        {id: 2, name:"Max Croft"},
+                        {id: 3, name:"Sunshine.Y"}
+                    ],
+                }
+            },
+        }
+        const app = Vue.createApp(vm);
+        app.mount('#app');
+    </script>
+</body>
+```
+
+
+
+### Create new Vue project
+
+1. download node.js
+2. use:
+
+- It's Vue 手脚架
+
+```shell
+npm install -g @Vue-cli
+```
+
+- create Vue project
+
+```shell
+vue create [options] <app-name>
+```
+
+- run Vue project
+
+```shell
+npm run serve
+```
+
+
+
+### Vue project content
+
+- `package.json` is project dependency catalog.
+- `App.vue` is project root component.
+
+- `node-modules` is project dependency file, it could be delete, and synchronizing next time.
+
+
+
+## `Vue Router`
+
+Vue2.x corresponding Vue router3.x
+
+Vue3.x corresponding Vue router4.x 
+
+router3.x and router.4.0 just have a little bit of difference.
+
+
+
+```shell
+npm install vue-router@3.6.5
+```
+
+
+
+
+
+## `Vuex`
+
+
+
+install version 3 of `Vuex`(Please install it in Vue Project directory)
+
+```shell
+npm install vuex@3
+```
+
+
+
+
+
+
+
+## `Mockjs`
+
+Frontend intercept Ajax request and create random data tools, used to simulate  server response.
+
+1. install
+
+```shell
+npm install mockjs
+```
+
+
+
+## Element UI
+
+1. install
+
+```shell
+npm i element-ui
+```
+
+2. import `element-ui` into Vue project
+
+    a. add statements in main.js
+
+```javascript
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+// This is Vue2 syntax, Vue3 has a bit of different
+Vue.use(ElementUI);
+```
+
+## Third Party Gallery
+
+[`Fontawesome4`](http://fontawesome.dashgame.com/)
+
+[`Fontawesome5`](https://fa5.dashgame.com/#/)
+
+[`Fontawesome6`](https://fa6.dashgame.com/)
+
+- install
+
+```shell
+npm install font-awesome
+```
+
+- import
+
+```javascript
+import 'font-awesome/css/font-awesome.min.css'
+```
+
+
+
+## `Axios`
+
+An Ajax framework, `Axios` is a *[promise-based](https://javascript.info/promise-basics)* HTTP Client for [`node.js`](https://nodejs.org/) and the browser. 
+
+
+
+- install
+
+```shell
+npm install axios
+```
+
+- import
+
+```javascript
+import axios from 'axios';
+```
+
+
+
+- 一般在组件创建时调用请求，或需要某些动作时调用请求。
+
+### Configure Axios
+
+Import `axios` in main.js, and set `baseUrl`, associate axios
+
+```javascript
+import axios from 'axios';
+axios.defaults.baseURL = 'http://localhost:8081'
+// Set axios to a global custom attribute, every componentscan access directly inside.
+Vue.prototype.$http = axios
+```
+
+## Axios CRUD
+
+```js
+axios.get(url, config);
+axios.delete(url, config);
+axios.post(url, data, config);
+axios.put(url, data, config);
+axios.patch(url, data, config);
+```
+
+### notice： Data format of Axios response is res.data
+
+
+
+
+
+1. GET
+
+```js
+// then mode
+function getList() {
+    axios.get("url").then((res:  AxiosResponse<ObjectType[]>) => {
+        console.log(res.data)
+        data.list = res.data
+    })
+}
+// async mode 
+async function getList() {
+    let res: AxiosResponse<ObjectType[]> = await axios.get("url") 
+}
+
+async functiongetDetail(id: number) {
+    let res = await axios.get("url", + id)
+    console.log("详情", res.data)
+} 
+```
+
+2. POST
+
+```js
+async function postCreate() {
+    // body 为变量本身 userCreateType 为变量类型别名
+ 	let body :userCreateType(){
+     	name: "",
+     	age: "",
+     	addr:"",
+ 	}
+	let res = await axios.post("url", body)
+    console.log("添加"，res.data)
+}
+```
+
+3. PUT 全量更新
+
+```js
+async function putUpdate(item: ObjectType) {
+    let body: userCreateType = {
+        name: "",
+        age: "",
+        addr: "",
+    }
+    let res = await axios.put("url", item.id, body)
+    getList()
+}
+```
+
+4. DELETE 
+
+```js
+async function deleteRemove(id: number){
+    let res = await axios.delete("url" + id)
+    console.log("删除"，res.data)
+    getList()
+}
+```
+
+
+
+
+
+
+
+
+
+### Question
+
+使用请求时，因存在回调函数， 而回调函数的作用域会发生变化，故以下代码会出现异常：
+
+此处因回调函数function作用域发生变化， this. 与created不同导致异常。
+
+```javascript
+ created:function(){
+    axios.get("http://localhost:8081/userquery")
+        .then(function(response){
+     		this.tableData = response.data
+    })
+  },
+ data(){
+     return {
+         tableData:[]
+     }
+ }
+```
+
+solution:使用箭头函数：箭头函数的作用域与其所属的父级函数相同，this. 指向相同
+
+```javascript
+ created:function(){
+    axios.get("http://localhost:8081/userquery")
+        .then((response)=>{
+     		this.tableData = response.data
+    })
+  },
+ data(){
+     return {
+         tableData:[]
+     }
+ }
+```
+
+
+
+
+
+## Less
+
+CSS framework
+
+- install
+
+```shell
+npm install less@4.1.2
+npm install less-loader@6.0.0
+```
+
 
 
 
@@ -26,11 +629,9 @@
 
 
 
+First, learn <font color="red">spring boot</font>, then begin to learn <font color="red">spring MVC</font> and <font color="red">SSM</font> (*Spring  +  SpringMVC + Mybatis*) 
 
-
-
-
-First, learn <font color="red">spring boot</font>, then begin to learn <font color="red">spring MVC</font> and <font color="red">SSM</font> (*Spring  +  SpringMVC + Mybatis*)  
+ 
 
 # Spring Boot
 
@@ -335,7 +936,25 @@ public class WebConfigurer implements WebMvcConfigurer {
 
 
 
+### Interceptor data localized question
 
+- `request.getAttribute`表示从request范围取得设置的属性，必须要先`setAttribute`设置属性，才能通过`getAttribute`来取得，设置与取得的为Object对象类型 。
+
+- `request.getParameter`表示接收参数，参数为页面提交的参数，包括：表单提交的参数、URL重写（就是xxx?id=1中的id）传的参数等，因此这个并没有设置参数的方法（没有`setParameter`），而且接收参数返回的不是Object，而是String类型。
+
+- `setAttribute`的参数是String 和 Object ,
+
+​		1.放的时候：`Double res = new Double(result)`;//包装
+
+​				`request.setAttribute(“result”, res);`//再设置进去
+
+​		2.取的时候：``Double res = (Double)request.getAttribute(“result”);``
+
+​				`double result = res.doublue();`
+
+- 另外，需要注意的是使用request.setAttribute时不能使redirect而是forward。即是将请求转发而不是重定向.
+
+[link](https://developer.aliyun.com/article/861741)
 
 
 
@@ -3304,3 +3923,138 @@ spring.mvc.pathmatch.matching-strategy=ant_path_matcher
 - swagger annotation
 
 ![image-20230805152722189](assets/Web%20Frameworks.assets/image-20230805152722189.png)
+
+
+
+
+
+# Cross Origin Question
+
+为了保证browser的安全，不同源的客户端脚本在没有明确授权的情况下，不能读写对方资源，称为同源策略，同源策略时浏览器安全的基石。
+
+- 同源策略（`Sameoriginpolicy`）是一种约定，它是浏览器最核心也是最基本的安全功能。
+- 同源是指在同一个域内，就是两个页面具有相同的<font color="red">协议，主机和端口号</font>。
+- 当一个请求URL的协议，域名，端口三者之前任意一个与当前页面URL不同，即为跨域，此时无法读取非同源网页的Cookie，无法向非同源地址发送Ajax请求。
+
+## CORS
+
+- CORS, Cross-Origin Resource Sharing, 是由W3C制定的一种跨域资源共享技术标准，其目的是为解决前端的跨区请求。
+
+- CORS可以在不破坏已有规则的情况下，通过后端服务器实现CORS接口，从而实现跨域通信。
+- CORS将请求分为两种：**简单请求和非简单请求**， 分别对跨域通信提供了支持。
+
+
+
+### 简单请求
+
+某些请求不会触发 [CORS 预检请求](https://developer.mozilla.org/zh-CN/docs/Glossary/Preflight_request)。在废弃的 [CORS 规范](https://www.w3.org/TR/2014/REC-cors-20140116/#terminology)中称这样的请求为*简单请求*，但是目前的 [Fetch 规范](https://fetch.spec.whatwg.org/)（CORS 的现行定义规范）中不再使用这个词语。
+
+其动机是，HTML 4.0 中的 [form](https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/form) 元素（早于跨站 [`XMLHttpRequest`](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest) 和 [`fetch`](https://developer.mozilla.org/zh-CN/docs/Web/API/fetch)）可以向任何来源提交简单请求，所以任何编写服务器的人一定已经在保护[跨站请求伪造攻击](https://developer.mozilla.org/zh-CN/docs/Glossary/CSRF)（CSRF）。在这个假设下，服务器不必选择加入（通过响应预检请求）来接收任何看起来像表单提交的请求，因为 CSRF 的威胁并不比表单提交的威胁差。然而，服务器仍然必须提供 [`Access-Control-Allow-Origin`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Access-Control-Allow-Origin) 的选择，以便与脚本*共享*响应。
+
+
+
+若请求**满足所有下述条件**，则该请求可视为*简单请求*：
+
+- 使用下列方法之一：
+
+    - [`GET`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/GET)
+    - [`HEAD`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/HEAD)
+    - [`POST`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/POST)
+
+- 除了被用户代理自动设置的标头字段（例如`Connection`,`User-Agent`或其他在 Fetch 规范中定义为"禁用标头名称"的标头），允许人为设置的字段为 Fetch 规范定义的对 CORS 安全的标头字段集合
+
+    。该集合为：
+
+    - [`Accept`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Accept)
+    - [`Accept-Language`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Accept-Language)
+    - [`Content-Language`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Language)
+    - [`Content-Type`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Content-Type)（需要注意额外的限制）
+    - [`Range`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Range)（只允许[简单的范围标头值](https://fetch.spec.whatwg.org/#simple-range-header-value) 如 `bytes=256-` 或 `bytes=127-255`）
+
+- `Content-Type`标头所指定的媒体类型的值仅限于下列三者之一：
+    - `text/plain`
+    - `multipart/form-data`
+    - `application/x-www-form-urlencoded`
+- 如果请求是使用 [`XMLHttpRequest`](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest) 对象发出的，在返回的 [`XMLHttpRequest.upload`](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/upload) 对象属性上没有注册任何事件监听器；也就是说，给定一个 [`XMLHttpRequest`](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest) 实例 `xhr`，没有调用 `xhr.upload.addEventListener()`，以监听该上传请求。
+- 请求中没有使用 [`ReadableStream`](https://developer.mozilla.org/zh-CN/docs/Web/API/ReadableStream) 对象。
+
+
+
+简单来说，简单请求使，CORS策略会在header中增加一个origin字段：
+
+```
+Origin:http://localhost:8081
+```
+
+服务端收到请求后，根据该字段判断是否允许该请求访问，如果允许，则在response HTTP header信息中添加Access-Control-Allow-Origin字段：
+
+```
+// * 代表所有的源域，也可以指定源域
+Access-Control-Allow-Origin: *
+```
+
+### 预检请求
+
+与简单请求不同，“需预检的请求”一般称为非简单请求，要求必须首先使用 [`OPTIONS`](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods/OPTIONS) 方法发起一个预检请求到服务器，以获知服务器是否允许该实际请求。"预检请求“的使用，可以避免跨域请求对服务器的用户数据产生未预期的影响。
+
+- 预检请求将真实请求的信息，包括请求方法，自定义字段，源信息，添加到http header信息字段中，询问服务器是否允许这样的操作。
+
+eg.,
+
+ browser request:
+
+```
+OPTION:/test HTTP:/1.1
+Origin:http://localhost:8081
+Access-Control-Request-Method:GET
+Access-Control-Request-Headers:X-Costom-Header
+Host:localhost:8081
+```
+
+Access-Control-Request-Headers 包含请求的自定义header字段
+
+Server response:
+
+```
+Access-Control-Allow-Origin:http://localhost:8081
+Access-Control-Allow-Methods:GET,POST,PUT,DELETE
+Access-Control-Allow-Headers:X-Custom-Header
+Access-Control-Allow-Credenticals:true
+//Unit second
+Access-Control-Max-Age: 1728000 
+```
+
+Access-Control-Allow-Headers: 是否允许用户发送，处理cookie
+
+Access-Control-Max-Age：超过有效期重发预检请求
+
+
+
+### CORS using in Spring Boot
+
+
+
+Configuration Class: This direction used to  Mapping all of the project, and you needn't to add `@CrossOrigin` annotation at every Controller.(That's an another direction)
+
+```java
+public class CorsConfig implements WebMvcConfigurer {
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOriginPatterns("*")
+                .allowedMethods("POST","GET","PUT", "OPTION", "DELETE")
+                .maxAge(168000)
+                .allowedHeaders("*")
+                // 是否发送cookie
+                .allowCredentials(true);
+    }
+}
+```
+
+
+
+# SLF4J
+
+
+
+![image-20231015210546114](assets/Web%20Frameworks.assets/image-20231015210546114.png)
