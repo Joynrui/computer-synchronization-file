@@ -36,3 +36,9 @@ public class Earth{
 
 In this situation,  the instance is created only when the `getInstance()` method is called for the first time. This can save resources if the instance is not always needed. However, it's important to note that this approach isn't thread-safe and might lead to issues in a multithreaded environment.
 
+
+
+# Decorator Pattern
+
+The Decorator Pattern used to expand a class, has the same effect as extending a class, but also the decorator pattern could expand a class dynamically. If you need new functions or parameters, you can use the Decorator Pattern and the original class will not be affected.
+

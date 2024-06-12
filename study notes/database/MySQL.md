@@ -1,6 +1,6 @@
 # MySQL
 
-# 零、初始
+# 0 初始
 
 1. 什么是数据库 database
 2. 抛出问题，数据库的产生
@@ -87,7 +87,7 @@
 
 
 
-# 一、安装、连接以及配置MySQL
+# 1 安装、连接以及配置MySQL
 
 1. windows两种安装方式，入门选手推荐第二种(win10演示)
 2. 更改终端，放弃cmd作为主要终端，使用一流终端
@@ -154,9 +154,9 @@ mysql --initialize-insecure --user=root
 
 ------
 
-# 三、数据库的基本操作
+# 2 数据库的基本操作
 
-1. 数据库的显示讲解
+## 2.1 查看数据库
 
 ```mysql
  SHOW DATABASES;// Show all the databases on the server.
@@ -175,7 +175,7 @@ Notice: `information_schema`、`mysql`、`performance_schema` and `sys` are  sys
 
 
 
-2. 创建数据库
+## 2.2 创建数据库
 
 - common create method
 
@@ -200,7 +200,7 @@ CREATE DATABASE IF NOT EXISTS `test`;
 
 
 
-3. 删除数据库
+## 2.3 删除数据库
 
 - common drop method
 
@@ -217,7 +217,7 @@ DROP DATABASE IF EXISTS test;
 
 
 
-4. 查看创建的数据库的SQL
+## 2.4 查看创建的数据库的SQL
 
 ```mysql
 SHOW CREATE DATABASE test;//test is the DATABASE name 查看创建数据库的SQL语句
@@ -232,7 +232,7 @@ SHOW CREATE DATABASE test;//test is the DATABASE name 查看创建数据库的SQ
 
 
 
-6. 创建数据库指定字符编码以及查看字符编码
+## 2.5 创建数据库指定字符编码
 
 - The Windows default charset is GBK, but we should use UTF8 or UTF8MB4 in development.
 - notice:  MySQL version 8.0 and above versions use utf8mb4 as its default charset.
@@ -243,7 +243,7 @@ CREATE DATABASE IF NOT EXISTS test CHARSET=GBK;
 
 
 
-7. **修改数据库字符编码**
+## 2.6 修改数据库字符编码
 
 ```mysql
 ALTER DATABASE test CHARSET=UTF8MB4; 
@@ -255,10 +255,11 @@ ALTER DATABASE bookdb DEFAULT CHARSET SET utf8mb4;
 
 
 ------
-# 四、表的基本操作
+# 3 表的基本操作
 
-1. 提出问题，引入“表“的概念与思维模式 table
-2. 引用数据库和查看数据库中的表
+
+
+## 3.1 引用数据库和查看数据库中的表
 
 - 引用数据库中的表
 
@@ -281,7 +282,7 @@ ALTER TABLE table_name CONVERT TO CHARACTER SET utf8mb4;
 
 
 
-3. 创建表
+## 3.2 创建表
 
 ```mysql
  CREATE TABLE table(// table is TBALE name 
@@ -295,7 +296,7 @@ Query OK, 0 rows affected (0.01 sec)
 
 
 
-4. 正规创建表
+## 3.3 推荐创建表的方式
 
 ```mysql
 CREATE TABLE IF NOT EXISTS students(
@@ -318,7 +319,7 @@ address VARCHAR(100) DEFAULT 'unknown' COMMENT 'students family address'
 
 
 
-5. 查看表结构
+## 3.4 查看表结构
 
 - first:
 
@@ -332,7 +333,7 @@ DESC table;# table is the Table name.
 SHOW COLUMNS FROM i;# i is the table name.
 ```
 
-6. check table status:
+## 3.5 查看表状态
 
 ```mysql
 SHOW TABLE STATUS LIKE 'table name';
@@ -340,7 +341,7 @@ SHOW TABLE STATUS LIKE 'table name';
 
 
 
-6. 删除表
+## 3.6 删除表
 
 ```mysql
 DROP TABLE table;//table is the Table name.
@@ -349,8 +350,7 @@ Query OK, 0 rows affected (0.01 sec)
 
 - notice: You can use “，“ to drop complex tables.
 
-
-7. 修改表
+## 3.7 修改表
 
 - add field:
 
@@ -420,9 +420,9 @@ ALTER TABLE testalter_tbl ALTER i DROP DEFAULT;
 
 
 ------
-# 五、数据操作
+# 4 数据操作
 
-1. 插入数据
+## 4.1 插入数据
 
 - first：
 
@@ -440,13 +440,13 @@ notice: Character string should be bracketed into a single quote or double quote
 
 ​			Value allows **default, null**.
 
-2. 一次性插入多条数据
+## 4.2 一次性插入多条数据
 
 ```mysql
 INSERT INTO 'table_name' VALUES(value1, value2,...), (value1, value2,...);
 ```
 
-3. 删除数据
+## 4.3 删除数据
 
 - delete all the values in the specific table:
 
@@ -462,7 +462,7 @@ DELETE FROM 'table_name' where 'feild_name' ><= figure.
 
 notice:  We often use the **primary key** behind the WHERE command.
 
-4. 清空表:
+## 4.4 清空表
 
 - empty table  (recommend):
 
@@ -474,7 +474,7 @@ TRUNCATE 'table_name';
 
 
 
-5. 更新数据
+## 4.5 更新数据
 
 - basic:
 
@@ -490,7 +490,7 @@ UPDATE 'table_name' SET 'feild_name1' = 'value1', 'feild_name2' = 'value2',... W
 
 
 
-6. 查询表数据（基本）
+## 4.6 查询表数据（基本）
 
 ```mysql
 SELECT 'feild_name' FROM 'table_name';
@@ -514,7 +514,7 @@ select * from table_name. **星号有性能缺陷**
 
 
 
-7. 字符集编码问题
+## 4.7 字符集编码问题
 
 - show encoding:
 
@@ -522,7 +522,7 @@ select * from table_name. **星号有性能缺陷**
 show variables like 'character_set_%';
 ```
 
-8. 撤销上一步操作
+## 4.8 撤销上一步操作
 
 - rollback :
 
@@ -539,11 +539,9 @@ Rollback statement **allows you to rollback or undo one more statements that hav
 
 
 ------
-# 六、数据类型
+# 5 数据类型
 
-**数据类型总结**
-
-- **数值型**
+## 5.1 数值型
 
 |     类型     | 大小                                     | 范围（有符号）                                               | 范围（无符号）                                               | 用途           |
 | :----------: | ---------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | -------------- |
@@ -558,9 +556,7 @@ Rollback statement **allows you to rollback or undo one more statements that hav
 
 notice: decimal(x, y) : x is the precision of the number (**range of the number digit** (bit)), y is the scale (**digit after the decimal** (dot)).   
 
-
-
-- **日期和时间类型**
+## 5.2 日期和时间类型
 
 | 类型      | 大小 ( bytes) | 范围                                                         | 格式                | 用途                     |
 | :-------- | :------------ | :----------------------------------------------------------- | :------------------ | :----------------------- |
@@ -570,9 +566,7 @@ notice: decimal(x, y) : x is the precision of the number (**range of the number 
 | DATETIME  | 8             | 1000-01-01 00:00:00/9999-12-31 23:59:59                      | YYYY-MM-DD HH:MM:SS | 混合日期和时间值         |
 | TIMESTAMP | 4             | 1970-01-01 00:00:00/2038结束时间是第 **2147483647** 秒，北京时间 **2038-1-19 11:14:07**，格林尼治时间 2038年1月19日 凌晨 03:14:07 | YYYYMMDD HHMMSS     | 混合日期和时间值，时间戳 |
 
-
-
-- **字符串类型**
+## 5.3 字符串类型
 
 | 类型       | 大小                  | 用途                            |
 | :--------- | :-------------------- | :------------------------------ |
@@ -589,7 +583,7 @@ notice: decimal(x, y) : x is the precision of the number (**range of the number 
 
 
 
-- mysql mapping to java datatype
+## 5.4 mysql mapping to java datatype
 
 | MySQL Type    | Java Type            |
 | ------------- | -------------------- |
@@ -613,33 +607,17 @@ notice: decimal(x, y) : x is the precision of the number (**range of the number 
 | TIME          | java.sql.Time        |
 | TIMESTAMP     | java.sql.Tiimestamp  |
 
-​       
+## 5.5 浮点数类型
 
+```mysql
+float(number1, number2)   // number1:  数字位数   number2: 小数位数
+```
 
+```mysql
+double(number1, number2)  // number1:  数字位数   number2: 小数位数
+```
 
-1. 数据库的数据类型问题
-
-
-2. int数值类型
-
-
-3.  int类型实际操作和注意事项
-
- Enter the number should be in range.
-
-
-4. 浮点数类型
-
-   ```mysql
-   float(number1, number2)   // number1:  数字位数   number2: 小数位数
-   ```
-
-   ```mysql
-   double(number1, number2)  // number1:  数字位数   number2: 小数位数
-   ```
-
-
-5. 定点数类型
+## 5.6 定点数类型
 
 ```mysql
 decimal(number1, number2)  // number1:   数字位数    number2: 小数位数
@@ -647,29 +625,23 @@ decimal(number1, number2)  // number1:   数字位数    number2: 小数位数
 
 notice： decimal type clefts the number storage part: integer part and fractional part.
 
-
-6. 字符串与文本类型
-
-
-7. 布尔类型
+## 5.7 布尔类型
 
 ture –> 1    false–> 0
 
-
-8. 枚举类型
+## 5.8 枚举类型
 
 ``` mysql
 enum(value1, value2, value3,...) //  value 只能为枚举类型中的一个值
 ```
 
-
-9. 枚举类型的另类存储方式
+## 5.9 枚举类型的另类存储方式
 
 notice 枚举类型存储值时，使用整数来存储。这种方法可以大幅降低存储值是占用的大量空间。
 
 insert 时 可以直接输入整数来插入下标所对应的值（数组）
 
-10. set类型
+## 5.10 set类型
 
 SET(val1, val2, val3, ...)  ： A string object that can have 0 or more values, chosen from a list of possible values. You can list up to 64 values in a SET list 
 
@@ -677,28 +649,26 @@ SET(val1, val2, val3, ...)  ： A string object that can have 0 or more values, 
 insert into "table name"('value1, value2,...');
 ```
 
-
-
-11. 时间日期类型
+## 5.11 时间日期类型
 
 实际应用当中一定要使用时间field
 
 
 
 ------
-# 七、列属性完整性
+# 6 列属性完整性
 
-1. 列属性问题
+## 6.1 列属性问题
 
 primary key 若设置为auto_increment, 则删除一行值后则不能再次使用此id 值插入信息
 
 About InnoDB and MyISAM, note that you cannot reset the counter to a value less than or equal to any that have already been used. For MyISAM, if the value is less than or equal to the maximum value currently in the AUTO_INCREMENT column, the value is reset to the current maximum plus one. For InnoDB, if the value is less than the current maximum value in the column, no error occurs and the current sequence value is not changed.
 
-2. Primary key主键作用以及企业用途
+## 6.2 Primary key主键作用以及企业用途
 
 一个表只能有一个主键，但一个主键可以有多个字段（field）.
 
-3. 删除主键、组合键、选择主键
+## 6.3 删除主键、组合键、选择主键
 
 - set primary key
 
@@ -731,23 +701,24 @@ alter table 'table_name' add primary key (Field1,Field2);
 - **联合主键**： 关系数据库实际上还允许通过多个字段唯一标识记录，**即两个或更多的字段都设置为主键**，这种主键被称为联合主键。
 
   对于联合主键，允许一列有重复，只要不是所有主键列都重复即可。
-4. 复合主键究竟有什么用？(Not recommended)
-5. unique唯一键的作用以及使用
+
+## 6.4 复合主键究竟有什么用？(Not recommended)
+
+## 6.5 unique唯一键的作用以及使用
 
 唯一键与其他表无关，可以为null,一张表可以有多个唯一键。
 
 ```mysql
 unique// 唯一键关键字
 ```
-4. 唯一键扩展
-5. 主键和唯一键区别
+## 6.6 主键和唯一键区别
 
 - 主键可能由多个字段构成，而唯一键是一个字段。（论坛id和昵称）
 - 一张表有一个主键，可以有多个唯一键。
 - 主键可能会被其他表引用，而唯一键不会。
 - 主键不能为null, 唯一键可以为null. 
 
-6. sql内注释代码注释
+## 6.7 sql内注释代码注释
 
 - 单行注释：  
 
@@ -778,19 +749,12 @@ id int(10) primary key auto_increment comment 'This is the comment about this fi
 
 
 
-
-8. 数据库完整性
+## 6.8 数据库完整性
 
 - eg: 多种因素造成数据库的完整性约束。
 - 域完整性，实体完整性，引用完整性，自定义完整性。
 
-
-
-9. 引用数据表的完整性问题，抛出外键的概念
-
-
-
-10. 外键约束
+## 6.9 外键约束
 
 - 创建表使用：
 
@@ -810,11 +774,11 @@ alter 'table_name' add  CONSTRAINT 'foregin_key_name'  foreign key ('table2_fiel
 
 从表中包含主表中的primary key, 则称此key为从表的外键。
 
-12. 什么时候设计外键呢？
+## 6.10 什么时候设计外键呢？
 
-- **并发设计时禁止使用外键。**
+- **<font color=red>并发设计时禁止使用外键。</font>**
 
-12. 删除外键
+## 6.11 删除外键
 
 - **MUL**意为 此field可重复，并非是外键约束标签。
 
@@ -830,13 +794,13 @@ show create table 'table_name';
 
 ，查看是否添加foreign key 后再进行删除。（desc 'table_name'; 无法显示表是否包含外键）
 
-12. 外键三种操作：严格、置空、级联的使用场景以及介绍
+## 6.12 外键三种操作：严格、置空、级联的使用场景以及介绍
 
 置空：删除主表中某一条信息，则与之绑定的外键中对应的信息置为NULL；
 
 级联：删除主表中某一条信息，则将与之绑定的外键中对应的信息删除；
 
-13. 置空和级联演示
+## 6.13 置空和级联
 
 - 置空：
 
@@ -857,29 +821,36 @@ on update cascade // 更新将关联到此字段的外键信息进行相同的�
 cascade: 瀑布，层叠； （cas- , 落下，降临； -ade, 状态，物品）
 
 ------
-# 八、数据库设计思维
+# 7 数据库设计思维
 
-1. 数据库设计的基本概要
+## 7.1数据库设计的基本概要
 
 冗余： 
 
-2. 实体和实体之间的关系
+## 7.2 实体和实体之间的关系
 
-3. Codd第一范式：确保每列原子性 (All the Feild should be original and be united.)
+## 7.3 范式
+
+### 7.3.1 Codd第一范式
+
+确保每列原子性 (All the Feild should be original and be united.)
 
 - BC范式：
 
-4. Codd第二范式：非键字段必须依赖与键字段 （全部属性均为primary_key）
+### 7.3.2 Codd第二范式
 
-5. Codd第三范式：消除传递依赖
+非键字段必须依赖与键字段 （全部属性均为primary_key）
+
+### 7.3.3 Codd第三范式
+
+消除传递依赖
 
 - 避免数据冗余。
 
 ------
-# 九、单表查询
+# 8 单表查询
 
-1. 开端
-2. select
+## 8.1 select
 
 - ```mysql
   select 'any date'; # the date may exist or not
@@ -891,11 +862,11 @@ cascade: 瀑布，层叠； （cas- , 落下，降临； -ade, 状态，物品�
 
   
 
-3. from
+## 8.2 from
 
 ​	from返回一个笛卡尔集。即可以from 多个表组合起来。
 
-1. dual
+## 8.3 dual
 
 ​	dual 默认伪表
 
@@ -905,35 +876,33 @@ select 7*9 as res from dual;
 
 
 
-1. where 
+## 8.4 where 
 
 条件筛选
 
 equal: =  ;   unequal:    ！=   ,  <>;     小于：<;      大于：> ;       
 
-1. in
+## 8.5 in
 
 ​	可以进行特殊值查询
 
-
-
-1. between...and
+## 8.6 between...and
 
 闭区间
 
-1. is null
+## 8.7 is null
 
 
 
-1. 聚合函数
+## 8.8 聚合函数
 
 自带的集成函数： sum(), avg(), max(), min(), count(), {count(*);count(1);}
 
-1. 第三方客户端的使用
+## 8.9 第三方客户端
 
 navicat
 
-1. like模糊查询
+## 8.10 like模糊查询
 
 ```mysql
 select * from 'table_name' where 'field' like '张%'; 
@@ -941,15 +910,15 @@ select * from 'table_name' where 'field' like '张%';
 
 
 
-1. order by 排序查询
+## 8.11 order by 排序查询
 
-升序
+- 升序
 
 ```mysql
 select * from 'table_name' order by 'field_name' asc;
 ```
 
-降序
+- 降序
 
 ```mysql
 select * from 'table_name' order by 'field_name' desc; 
@@ -957,17 +926,15 @@ select * from 'table_name' order by 'field_name' desc;
 
 
 
-1. group by 分组查询
+## 8.12 group by 分组查询
 
-for  example :
-
-// 升序
+- 升序
 
 ```mysql
 select avg('field_name') as '列名称', 'field_name' as '列名称' from 'table_name' group by 'field_name' asc;
 ```
 
-// 降序
+- 降序
 
 ```mysql
 select avg('field_name') as '列名称', 'field_name' as '列名称' from 'table_name' group by 'field_name' desc;
@@ -975,7 +942,7 @@ select avg('field_name') as '列名称', 'field_name' as '列名称' from 'table
 
 
 
-1. group_concat
+## 8.13 group_concat
 
 ```mysql
 select group_concat('field_name'), 'field_name' from 'table_name' group by 'field_name';
@@ -983,22 +950,20 @@ select group_concat('field_name'), 'field_name' from 'table_name' group by 'fiel
 
 
 
-1. having
+## 8.14 having
 
-在查询的结果集中查询用 having.
-
-for example,
+在查询的结果集中查询用 having.（常常使用别名进行查询）
 
 ```mysql
-SELECT COUNT(CustomerID), Country
+SELECT COUNT(CustomerID) as 'CustomerID', Country as 'Country'
 FROM Customers
 GROUP BY Country
-HAVING COUNT(CustomerID) > 5;
+HAVING 'CustomerID' > 5;
 ```
 
 
 
-1. limit 
+## 8.15 limit 
 
 limit 用来限定起始位置和终了位置。
 
@@ -1008,7 +973,7 @@ select * from 'table_name' limit 1, 5;
 
 第一个数值代表起始位置，第二个数字代表查询长度。
 
-1. distinct all
+## 8.16 distinct all
 
 去重
 
@@ -1019,9 +984,9 @@ select count(distinct 'field_name') from 'table_name';
 
 
 ------
-# 十、多表查询
+# 9 多表查询
 
-1. union联合查询
+## 9.1 union联合查询
 
 The `UNION` operator is used to combine the result-set of two or more `SELECT` statements.
 
@@ -1039,7 +1004,7 @@ select * from 'field_name1' union distinct select 8 from 'field_name2';
 
 
 
-1. inner join内联查询
+## 9.2 inner join内联查询
 
 通过两个表中的公共字段，在两张表之间建立连接。（主从关系）
 
@@ -1049,9 +1014,9 @@ from 'table_name1'
 inner join 'table_name2' on  'table_name1'.'field_name' = 'table_name2'.'field_name';
 ```
 
-1. inner join注意事项
 
-1. left join 
+
+## 9.3 left join 左外连接查询
 
 以左表为基准，将两个表建立连接
 
@@ -1063,7 +1028,7 @@ from 'table_name1' left join 'table_name2'
 on 'table_name1'.'field_name' = 'table_name2'.'field_name';
 ```
 
-1. rigth join
+## 9.4 rigth join 右外连接查询
 
 以右表为基准，将两个表建立连接
 
@@ -1077,50 +1042,44 @@ on 'table_name1'.'field_name' = 'table_name2'.'field_name';
 
 
 
-1. cross join
+## 9.5 cross join 交叉查询
 
 将两个表的字段排列组合组成一个笛卡尔积输出。
 
-1. natural join
+## 9.6 natural join 自然连接查询
 
 默认将两张表字段中名称完全相同的作为公共字段，建立连接。
 
-1. 无公共同名字段的自然返回笛卡尔积
-2. using
+- 无公共同名字段的自然返回笛卡尔积
 
+## 9.7 using
 
-
-1. 哪一个实用？
+## 9.8 哪一个连接实用？
 
 一般来说用inner join， 为了保证两张表的信息都能显示出来。 
 
 ------
-# 十一、子查询
+# 10 子查询
 
-1. 子查询基本语法
+## 10.1 子查询基本语法
 
 在查询语句中嵌套一个子查询。
 
-1. in 和 not in 
+## 10.2 in 和 not in 
 
 一般来说，在where 后使用in(‘child statement ’)
 
-1. exists 和 not exists
+## 10.3 exists 和 not exists
 
 exists: 只要条件存在就显示; not exists:只要不存在就显示; 
 
-1. 基础结束语
-
-
-
 
 ------
-# 十二、高级部分
+# 11 高级部分
 
-## （一）view 视图
+## 11.1 view 视图
 
-1. 开场
-2. view视图创建、使用以及作用
+### 11.1.1 view视图创建、使用以及作用
 
 ```mysql
 create view 'view_name' as
@@ -1130,7 +1089,7 @@ from 'table_name';
 
 
 
-1. 显示视图  
+### 11.1.2 显示视图
 
 ```mysql
 desc view 'view_name';
@@ -1144,17 +1103,17 @@ show create view 'view_name';
 show table status where comment='view' \G
 ```
 
+<font color=red>视图的存在多为保障数据表数据的隐私</font>
 
+### 11.1.3 更新和删除视图
 
-1. 更新和删除视图
-
-更新
+- 更新
 
 ```mysql
 alter view 'view_name' as select...;
 ```
 
-删除
+- 删除
 
 ```mysql
 drop view 'view_name';
@@ -1162,7 +1121,7 @@ drop view 'view_name';
 
 
 
-1. 视图算法： temptable, merge
+### 11.1.4 视图算法
 
 for example,
 
@@ -1170,14 +1129,15 @@ for example,
 create algorithm = temptable view 'view_name'as ...
 ```
 
-temptable 临时算法
+temptable 临时表算法
 
 merge 合并算法
 
-## （二）transaction 事务
+## 11.2 transaction 事务
 
-1. 事务的提出
-2. transaction
+数据库事务概念与后端系统事务概念统一。
+
+### 11.2.1 transaction
 
 for example,
 
@@ -1190,9 +1150,7 @@ commit;
 
 执行rollback 可以回滚到transaction开始；
 
-
-
-1. rollback to point
+### 11.2.2 rollback to
 
 类似与虚拟机快照；
 
@@ -1207,15 +1165,15 @@ rollback to point_one;
 commit;
 ```
 
-1. ACID
+### 11.2.3 ACID
 
-atomicity 原子性,    consistency 一致性,    lsoation  隔离性,    durability  持久性     
+atomicity 原子性,    consistency 一致性,    isoation  隔离性,    durability  持久性     
 
 1. 注意事项
 
-**innoDB 中，才可以使用事务。**
+**<font color= red>innoDB 中，才可以使用事务。</font>**
 
-## （三）索引
+## 11.3 索引
 
 - 索引是关系数据库中对某一列或多个列的值进行预排序的数据结构。
 
@@ -1225,12 +1183,12 @@ atomicity 原子性,    consistency 一致性,    lsoation  隔离性,    durabi
 
 1. 四大索引
 
-## （四）存储过程
+## 11.4 存储过程
 
 1. delimiter 
 2. procedure存储过程的用途
 
-## （五）有趣的函数
+## 11.5 有趣的函数
 
 1. number
 2. string
@@ -1238,7 +1196,7 @@ atomicity 原子性,    consistency 一致性,    lsoation  隔离性,    durabi
 1. others
 
 ------
-# 十三、企业规范约束
+# 12 企业规范约束
 
 1. ★库表字段约束规范
 2. 索引规范

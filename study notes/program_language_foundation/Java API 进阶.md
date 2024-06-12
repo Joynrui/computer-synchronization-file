@@ -179,7 +179,7 @@ throw new NullPointerException();
            fileInputStream.close();
        }
    ```
-2. **文件输出流：`FileOutputStream`**:按照byte的形式，将内存中的数据写入外存中。（**`FileInputStream class`** is useful to read data from a file in the form of a sequence of bytes.）(此方法为原理，并非实际应用中所使用的方法)`
+2. **文件输出流：`FileOutputStream`**:按照byte的形式，将内存中的数据写入外存中。（**`FileInputStream class`** is useful to read data from a file in the form of a sequence of bytes.）(此方法为原理，并非实际应用中所使用的方法)
 
 ```java
 public void outputFile() throws IOException {
@@ -205,6 +205,7 @@ public void copyFileBase() throws IOException {
         //create an array to open a buffer area
         byte[] buffer = new byte[1024];
         int lo;
+    	// it returns -1 to indicate that there is no more data to read.
         while ((lo = fileInputStream.read(buffer)) != -1) {
             fileOutputStream.write(buffer, 0, lo);
         }
@@ -258,7 +259,6 @@ public void bufferFileInputBase() throws IOException {
     @Test
     public void fileReaderTest() throws IOException {
         FileReader fileReader = new FileReader("file/1.txt");
-
         int ch;
         while ((ch = fileReader.read()) != -1) {
             System.out.println((char) ch);
