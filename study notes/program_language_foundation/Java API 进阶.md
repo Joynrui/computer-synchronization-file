@@ -1,34 +1,33 @@
 # Java API Advance
 
-## I. Basic `API`
+# 1 Basic `API`
 
-### 1. `Scanner`
+## 1.1 `Scanner`
 
-### 2. `Number`
+## 1.2 `Number`
 
-### 3. `Math`
+## 1.3 `Math`
 
 `DecimalFormat` class
 
 `DecimalFormat` class uses to output the number according to the regular format.
 
-eg: output fixed length of eight
+eg.: output fixed length of eight
 
 ```java
 DecimalFormat df = new DecimalFormat("00000000");
 ```
 
-### 4. `System`
+## 1.4 `System`
 
-## II. Unit Test  and main function
+# 2 Unit Test and main function
 
-1. 关于 Main function
+## 2.1 关于 Main function
 
-   Java 中，main 方法 应是 一个项目的入口点，而不是用于测试新模块。
+Java中，`main`方法 应是一个项目的入口点，而不是用于测试新模块.`main`方法应具备**“逻辑控制语句少，且只做项目的程序入口点”** 的特点。
 
-   main 方法应具备**“逻辑控制语句少，且只做项目的程序入口点”** 的特点。
-2. 在项目中需要使用的“功能性控制语句”，必须将其从main方法中剥离出来单独建立一个方法，以提高程序的复用性。
-3. 单元测试：主方法测试主要步骤为：
+1. 在项目中需要使用的“功能性控制语句”，必须将其从main方法中剥离出来单独建立一个方法，以提高程序的复用性。
+2. 单元测试：主方法测试主要步骤为：
 
    1） 本地测试；
 
@@ -39,7 +38,7 @@ DecimalFormat df = new DecimalFormat("00000000");
    4） **预期结果和测试结果是通过人工计算的。**
 
    在项目开发当中，一般不使用在main function 当中进行测试，
-4. What's the JUnit?
+3. What's the JUnit?
 
    **JUnit 5 = JUnit Platform + JUnit Jupiter + JUnit Vintage**
 
@@ -79,13 +78,13 @@ DecimalFormat df = new DecimalFormat("00000000");
    }
    ```
 
-## III. String Builder
+# 3 String Builder
 
-    注意：String类概念中明确指出，String 在被定义之后，其值是无法改变的，如果程序中出现了大量的String变量，运行时则会存在占用大量内存的情况，若不及时进行垃圾回收则会出现程序运行速度慢和内存不足的情形，而Java为了解决此问题，从而出现了`StringBuilder()`方法。
+注意：String类概念中明确指出，String 在被定义之后，其值是无法改变的，如果程序中出现了大量的String变量，运行时则会存在占用大量内存的情况，若不及时进行垃圾回收则会出现程序运行速度慢和内存不足的情形，而Java为了解决此问题，从而出现了`StringBuilder()`方法。
 
-## IV. Exception   异常
+# 4 Exception   异常
 
-### 介绍
+## 4.1 介绍
 
 **异常是程序中的一些错误，但并不是所有的错误都是异常，并且错误有时候是可以避免的。**
 
@@ -99,13 +98,13 @@ DecimalFormat df = new DecimalFormat("00000000");
 
 这些异常有的是因为用户错误引起，有的是程序错误引起的，还有其它一些是因为物理错误引起的。
 
-### 异常类结构
+## 4.2 异常类结构
 
     异常类： Thorwable 类. Error类. Exception 类。Error 与Exception 都继承自Thorwable.所有异常和错误实例都属于Thorwable子类。
 
 Error 指非常严重的错误，通常无法通过修改代码来排除错误；Exception 一般指用户造成的错误，语法正确但存在异常。
 
-### 异常分类
+## 4.3 异常分类
 
 异常类通常来讲分为两种，一种是**受检异常**，另一种是**未受检异常**。
 
@@ -118,7 +117,7 @@ Error 指非常严重的错误，通常无法通过修改代码来排除错误�
    编译通过但运行时出现异常。
 2. 非运行时异常。
 
-### 抛出异常
+## 4.4 抛出异常
 
     异常的抛出需要使用throw关键字，抛出的是一个异常对象，一般我们采用下面的方式进行抛出
 
@@ -139,20 +138,20 @@ throw new NullPointerException();
     }
 ```
 
-### 自定义异常
+## 4.5 自定义异常
 
 自定义异常一般可以使用枚举类来实现。
 
-### 好的异常使用习惯
+## 4.6 好的异常使用习惯
 
-- 1. 在写程序时，对可能会出现异常的部分通常要用try{...}catch{...}去捕捉它并对它进行处理；
-  2. 用try{...}catch{...}捕捉了异常之后一定要对在catch{...}中对其进行处理，那怕是最简单的一句输出语句，或栈输入e.printStackTrace();
-  3. 如果是捕捉IO输入输出流中的异常，一定要在try{...}catch{...}后加finally{...}把输入输出流关闭；
-  4. 如果在方法体内用throw抛出了某种异常，最好要在方法名中加throws抛异常声明，然后交给调用它的上层方法进行处理。
+1. 在写程序时，对可能会出现异常的部分通常要用try{...}catch{...}去捕捉它并对它进行处理；
+2.  用try{...}catch{...}捕捉了异常之后一定要对在catch{...}中对其进行处理，那怕是最简单的一句输出语句，或栈输入e.printStackTrace();
+3.  如果是捕捉IO输入输出流中的异常，一定要在try{...}catch{...}后加finally{...}把输入输出流关闭；
+4.  如果在方法体内用throw抛出了某种异常，最好要在方法名中加throws抛异常声明，然后交给调用它的上层方法进行处理。
 
-## V. File stream 文件流
+# 5 File stream 文件流
 
-## VI. I/O stream  输入/输出流
+# 6 I/O stream  输入/输出流
 
 - 注意： `FileInputStream, FileOutputStream, BufferedInputStream, BufferedOutputStream`可以以**byte**类型操作任何文件；
 
@@ -162,24 +161,27 @@ throw new NullPointerException();
 
 **将数据从外存中读取到内存中的称为输入流，将数据从内存写入外存中的称为输出流。**
 
+## 6.1 文件输入流
 
+- `FileInputStream`：按照byte的形式，将外存中的数据读取进内存中，且在monitor上显示文件的每一个字符。（**`OutputStream`** is an output stream for writing data/streams of raw bytes to file or storing data to file.）(此方法为原理，并非实际应用中所使用的方法)
 
-1. **文件输入流：`FileInputStream`**：按照byte的形式，将外存中的数据读取进内存中，且在monitor上显示文件的每一个字符。（**`OutputStream`** is an output stream for writing data/streams of raw bytes to file or storing data to file.）(此方法为原理，并非实际应用中所使用的方法)
+```java
+public void inputFile() throws IOException {
 
-   ```java
-   public void inputFile() throws IOException {
-   
-           FileInputStream fileInputStream = new FileInputStream("file/readFile.txt");
-           int by = 0;
-           while ((by = fileInputStream.read()) != -1) {
-               //fileInputStream默认以比特读取文件，故用强制转换成字节读取
-               System.out.print((char) by);
-           }
-           // 使用读取流后使用close()方法关闭该流
-           fileInputStream.close();
-       }
-   ```
-2. **文件输出流：`FileOutputStream`**:按照byte的形式，将内存中的数据写入外存中。（**`FileInputStream class`** is useful to read data from a file in the form of a sequence of bytes.）(此方法为原理，并非实际应用中所使用的方法)
+        FileInputStream fileInputStream = new FileInputStream("file/readFile.txt");
+        int by = 0;
+        while ((by = fileInputStream.read()) != -1) {
+            //fileInputStream默认以比特读取文件，故用强制转换成字节读取
+            System.out.print((char) by);
+        }
+        // 使用读取流后使用close()方法关闭该流
+        fileInputStream.close();
+    }
+```
+
+## 6.2 文件输出流
+
+`FileOutputStream`:按照byte的形式，将内存中的数据写入外存中。（**`FileInputStream class`** is useful to read data from a file in the form of a sequence of bytes.）(此方法为原理，并非实际应用中所使用的方法)
 
 ```java
 public void outputFile() throws IOException {
@@ -193,7 +195,7 @@ public void outputFile() throws IOException {
     }
 ```
 
-### 拷贝文件信息（先读取再写入）
+## 6.3 拷贝文件信息（先读取再写入）
 
 (此方法为原理，并非实际应用中所使用的方法)
 
@@ -311,7 +313,7 @@ public void bufferFileInputBase() throws IOException {
 
 ---
 
-## VII. 字符集
+# 7 字符集
 
 **ASCII**
 
@@ -319,7 +321,7 @@ GBK   国标字符集      字符编码转换      国际标准    Unicode  UTF 
 
 ---
 
-## VIII. Multithreading
+# 8 Multithreading
 
 **名词解释：**
 
@@ -329,11 +331,11 @@ GBK   国标字符集      字符编码转换      国际标准    Unicode  UTF 
 4. **并发：** 一个cpu在执行一个程序时中断并开始执行另一个程序，称为支持并发。
 5. **并行:** 一个cpu可以同时用不同的进程执行不同的程序称为支持并行。
 
-### 多线程的意义
+## 8.1 多线程的意义
 
 一个进程中多个线程对此进程中的共享变量进行操作。
 
-### Java 多线程的基本实现demo
+## 8.2 Java 多线程的基本实现demo
 
 **主线程**
 
@@ -470,9 +472,9 @@ public class Shoes implements Runnable {
 }
 ```
 
-### Two thread types in Java
+## 8.3 Two thread types in Java
 
-#### Daemon Threads 守护线程
+### 8.3.1 Daemon Threads 守护线程
 
 *Daemon thread in Java is a low-priority thread that runs in the background to perform tasks such as garbage collection. Daemon thread in Java is also a service provider thread that provides services to the user thread. Its life depends on the mercy of user threads i.e. when all the user threads die, JVM terminates this thread automatically.*
 
@@ -529,7 +531,7 @@ public class Main {
 }
 ```
 
-### Multithreading synchronized
+## 8.4 Multithreading synchronized
 
 **多线程同步问题和两种解决方案**   **synchronized   Lock**
 
@@ -658,7 +660,7 @@ public class Shoes implements Runnable {
 
 ```
 
-### Synchronized  和  Lock
+## 8.6 Synchronized和Lock
 
 | 类别     | **synchronized**                                                         | **Lock**                                                                                   |
 | -------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
@@ -677,7 +679,7 @@ public class Shoes implements Runnable {
 
 
 
-### CPU 线程调度
+## 8.7 CPU 线程调度
 
 操作系统对线程有不同的调度方法。
 
@@ -685,7 +687,7 @@ public class Shoes implements Runnable {
 
 系统允许人为对线程进行优先级的设定。
 
-#### 线程状态
+### 8.7.1 线程状态
 
 1. **初始状态(new)**
 
@@ -726,7 +728,7 @@ public class Shoes implements Runnable {
 
 Java  的手段是抢占CPU的资源
 
-#### Java 线程优先级
+### 8.7.2 Java 线程优先级
 
 ```java
 public class Main {
@@ -774,7 +776,7 @@ public class MinPriorityThread implements Runnable{
 
 **[CPU 线程调度的细节概念](https://www.cnblogs.com/flyinglion/p/15018009.html)**
 
-#### 线程插队
+### 8.7.3 线程插队
 
 ```java
 public class Main {
@@ -805,19 +807,19 @@ public class SonThread implements Runnable {
 }
 ```
 
-#### 线程休眠
+### 8.7.4 线程休眠
 
 ```java
 Thread.sleep(1000);//毫秒
 ```
 
-#### 线程让步
+### 8.7.5 线程让步
 
 ```java
 Thread.yield();
 ```
 
-#### 线程通信
+### 8.7.6 线程通信
 
 ```JAVA
 public class Main {
@@ -908,15 +910,15 @@ public class Customer extends Thread {
 product.notifyAll();
 ```
 
-## IX.Generic 泛型
+# 9 Generic 泛型
 
-### Generic programming
+## 9.1 Generic programming
 
 **Speciality:**  Generic programming makes you program can multiplex objects of various types. Generic add a limit when you cite a class.
 
 Generic type parameters will give you a prompt when you want to pass the parameters. Generic is a clear way that it makes the program have a compile error rather than a runtime cast exception. It makes the program easier to understand and safer.
 
-### ? Wildcard type
+## 9.2 "`?`" Wildcard type
 
 - Upper Bounded Wildcards：
 
@@ -1019,7 +1021,7 @@ public class UnboundedWildcardsTest {
 
 
 
-## X. Java 集合框架
+# 10 Java 集合框架
 
 Java 集合大致可以分为两大体系，一个是 `Collection`，另一个是 `Map`；
 
@@ -1036,7 +1038,7 @@ Java 集合大致可以分为两大体系，一个是 `Collection`，另一个�
 
 来源：[初探集合框架图](http://www.justdojava.com/2019/09/16/java-collection-1/)
 
-#### ArrayList
+## 10.1 ArrayList
 
 1. add() 方法 ：添加元素
 
@@ -1291,9 +1293,9 @@ public void arrayList15() {
     }
 ```
 
-#### LinkedList
+## 10.2 LinkedList
 
-#### Iterator
+## 10.3 Iterator
 
 1. Iterator 用来**迭代**（遍历）集合和数组的**API** 。
 2. **Iterator和fori,foreach的区别** ：
@@ -1350,11 +1352,11 @@ public void display（Iterator<object> it）{
 
 ***注意： for循环中尽量不适用Iterator;  Iterator有自己的remove方法。***
 
-#### Lambda expression    (Anonymous Classes)
+## 10.4 Lambda expression(Anonymous Classes)
 
 *Java SE 8 new feature*
 
-#### HashSet
+## 10.5 HashSet
 
 HashSet is from the Set class.
 
@@ -1395,7 +1397,7 @@ public void hashSetTest() {
     }
 ```
 
-#### LinkedHashSet
+## 10.6 LinkedHashSet
 
 按顺序输出元素
 
@@ -1412,7 +1414,7 @@ public void hashSetTest() {
     }
 ```
 
-#### Map
+## 10.7 Map
 
 1. HashMap,  put,  Set,  Map.Entry<K， V>的使用
 
@@ -1465,7 +1467,7 @@ public void hashMaoTest() {
     }
 ```
 
-#### TreeMap
+## 10.8 TreeMap
 
 **Methods in the TreeMap Class**
 
@@ -1490,13 +1492,13 @@ public void hashMaoTest() {
 
 
 
-## XI. JDBC
+# 11 JDBC
 
-### concept
+## 11.1 Concept
 
  **Java数据库连接**，（**Java Database Connectivity**，简称**JDBC**）是[Java语言](https://zh.wikipedia.org/wiki/Java语言)中用来规范[客户端](https://zh.wikipedia.org/wiki/客户端)程序如何来访问[数据库](https://zh.wikipedia.org/wiki/数据库)的[应用程序接口](https://zh.wikipedia.org/wiki/应用程序接口)，提供了诸如查询和更新数据库中数据的方法。JDBC是面向[关系型数据库](https://zh.wikipedia.org/wiki/关系型数据库)的。
 
-### example for JDBC
+## 11.2 Example for JDBC
 
 ```java
 package jdbc;
@@ -1561,7 +1563,7 @@ public class JdbcDemo {
 
 [原文链接](https://blog.csdn.net/qq_43511405/article/details/108565216)
 
-### Example2 for JDBC
+## 11.3 Example2 for JDBC
 
 ```java
 import java.sql.*;
@@ -1603,7 +1605,7 @@ public class JdbcDemo2 {
 }
 ```
 
-### JDBCUtilsPackaging
+## 11.4 JDBCUtilsPackaging
 
 - step 1: Create a java class "`JdbcUtils`" to package "`jdbc`" function.
 - step 2: Create a properties file named "`db`" to write configuration.
@@ -1623,7 +1625,7 @@ driver = com.mysql.cj.jdbc.Driver
 - step 4: Through the static code block, pre-execute the configuration items of the read configuration file for preprocessing.
 - step 5:
 
-### Example For `JDBCUtils`
+## 11.5 Example For `JDBCUtils`
 
 ```java
 import java.io.InputStream;
@@ -1683,7 +1685,7 @@ public class JdbcUtils {
 }
 ```
 
-### Update
+## 11.6 Update
 
   (insert, delete, update) (**have some question, it should be modified**)
 
@@ -1722,7 +1724,7 @@ public class JdbcTest {
 
 ```
 
-### The latest  demo for insert, delete, update.
+## 11.7 The latest demo for insert, delete, update.
 
 - *JdbcTest file*
 
@@ -1912,7 +1914,7 @@ public class JdbcUtils {
 
 ```
 
-### Encoding problem.
+## 11.8 Encoding problem.
 
 - System encoding.
 - IDE encoding.
@@ -1922,7 +1924,7 @@ public class JdbcUtils {
 
 
 
-### PreparedStatement 和问号占位符
+## 11.9 PreparedStatement 和问号占位符
 
 -------（用户手动输入数据库数据信息）
 
@@ -2153,15 +2155,9 @@ public class JdbcUtils {
 }
 ```
 
-### Student information management system  demo
+# 12 Java GUI
 
-
-
-
-
-## XII. Java GUI
-
-### AWT and Swing
+## 12.1 AWT and Swing
 
 - `AWT`，package `java.awt;`Abstract Window Toolkit, 抽象窗口工具包。AWT调用系统自带的**原生GUI接口**，产生对应的窗口显示界面； 
 
@@ -2269,7 +2265,7 @@ setIconImage(img);
 
 
 
-## XIII. Annotation 
+# 13 Annotation
 
 Java **Annotation** is a tag that represents the *metadata* i.e. attached with class, interface, methods or fields to indicate some additional information which can be used by java compiler and JVM.
 
@@ -2277,7 +2273,7 @@ Annotations in Java are used to provide additional information, so it is an alte
 
 
 
-### Meta-annotation
+## 13.1 Meta-annotation
 
 There are five annotation types in the `java.lang.annotation` package called **meta-annotations**. These annotation types are used to annotate other annotation types.
 
@@ -2306,7 +2302,7 @@ The `@Retention` meta-annotation specifies how long an annotation type should be
 
 
 
-### Custom Annotation
+## 13.2 Custom Annotation
 
 Use `@Interface` creates custom annotation, it inherit `java.lang.annotation.Annotation` interface. 
 
@@ -2315,9 +2311,6 @@ e.g.,
 
 
 ```java
-
-
-
 public class MaxCroft{
     
     @CustomAnnotation(name = Sunshine, identify = 10)
@@ -2328,7 +2321,6 @@ public class MaxCroft{
     @CustomAnnotation2()
     public void test2() {    
     }
-    
 }
 
 @Target({ElementType.TYPE, EleementType.METHOD})
@@ -2353,9 +2345,7 @@ public class MaxCroft{
 
 
 
-
-
-## XIV. Reflection
+# 14 Reflection
 
  There is a `Class` object will be created when a class loaded in the memory, the class **has and only has one Class object** in a runtime process.  
 
@@ -2473,7 +2463,7 @@ int[] arr2 = new int[100];
 
 
 
-### When does class initialization occur?
+## 14.1 When does class initialization occur?
 
 - active reference (must occur class initialization)
     - when JVM start, it will initialize the class has main method
@@ -2489,7 +2479,7 @@ int[] arr2 = new int[100];
 
 
 
-### Get runtime strutures
+## 14.2 Get runtime strutures
 
 When you get a Class object of a entity,you can get the structure details via some methods. 
 
@@ -2562,7 +2552,7 @@ public class test{
 
 
 
-## XV. POJO and Java Bean
+# 15 POJO and Java Bean
 
 There are all entity with a little different aspect.
 
@@ -2588,20 +2578,18 @@ There are all entity with a little different aspect.
 
 
 
+# Appendix
 
-
-## Java 人脸识别
+Java 人脸识别
 
 completion
 
-## Android Hacker
+Android Hacker
 
-## Android 嵌入Linux
+Android 嵌入Linux
 
-## IOS Hacker
+IOS Hacker
 
 IOS越狱
 
-## IOS 嵌入 Linux
-
-ish
+IOS 嵌入 Linux

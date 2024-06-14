@@ -297,15 +297,13 @@ super关键字的作用在于当子类中覆盖了父类的某个成员变量，
    - 继承
    - 重写
    - 父类引用指向子类对象：**`Parent p = new Child();`**     【向上转型】
-   - 
-   
 3. 多态的好处：可以使程序有良好的扩展，并可以对所有类的对象进行通用处理。
 
 ![img](https://www.runoob.com/wp-content/uploads/2013/12/java-polymorphism-222.png)
 
 ## 附录
 
-### *Arrays类 举例	
+### Arrays类 举例
 
 `java.util.Arrays` 类能方便地操作数组，它提供的所有方法都是**静态**的。
 
@@ -335,7 +333,7 @@ super关键字的作用在于当子类中覆盖了父类的某个成员变量，
 
 
 
-### *注意
+### Attention
 
 1. **类当中的变量和方法统称为属性，属性可分为共有性和特殊性。**
 
@@ -351,9 +349,9 @@ super关键字的作用在于当子类中覆盖了父类的某个成员变量，
 
 
 
-### *IDEA快捷键
+### IDEA hotkey
 
-#### Intellij IDEA基本快捷键
+#### Intellij IDEA basic hotkey
 
 1.  编译运行当前程序： shift + F10
 2.  编译运行程序选择： shift +Alt + F10
