@@ -204,18 +204,18 @@ public class SonClass extends FatherClass {
 ```
 
 2. 继承可以嵌套，例如：
-
-   `public class SonClass extends FatherClass(){`
-
-   `}`
-
-   `public class SonClass extends GrandsonClass(){`
-
-   `}`
-
-   Transfer ： `SonClass objectOne = new FatherClass();`
-
-   ​					 `Grandson objectTwo = new SonClass();`
+```java
+public class SonClass extends FatherClass(){
+   
+}
+   
+public class SonClass extends GrandsonClass(){
+   
+}
+// Transfer 
+SonClass objectOne = new FatherClass();
+Grandson objectTwo = new SonClass();
+```
 
    ***`objectTwo` 继承的仍然是 `FatherClass()`;**
 
@@ -256,25 +256,23 @@ super关键字的作用在于当子类中覆盖了父类的某个成员变量，
 
 ### 3. 抽象类与接口的区别
 
-- #### 相同点：
+- #### 相同点
 
-​			（1）都不能被实例化；
+    - 都不能被实例化；
+    - 接口的实现类或抽象类的子类都只有实现了接口或抽象类中的方法后才能实例化。
 
-​			（2）接口的实现类或抽象类的子类都只有实现了接口或抽象类中的方法后才能实例化。
 
 - #### 不同点：
 
-  ​	（1）接口只有定义，不能有方法的实现。
-
-  ​	（2）实现接口的关键字为implements，继承抽象类的关键字为extends。一个类可以实现多个接口，但一个类只能继承一个抽象类。所以，使用接口可以间接地实现多重继承。
-
-  ​	（3）接口强调特定功能的实现，而抽象类强调所属关系。
-
-  ​	（4）接口成员变量默认为public static final，必须赋初值，不能被修改；其所有的成员方法都是public、abstract的。抽象类中成员变量默认default，可在子类中被重新定义，也可被重新赋值；抽象方法被abstract修饰，不能被private、static、synchronized和native等修饰，必须以分号结尾，不带花括号。
+  - 接口只有定义，不能有方法的实现。
+  - 实现接口的关键字为implements，继承抽象类的关键字为extends。一个类可以实现多个接口，但一个类只能继承一个抽象类。所以，使用接口可以间接地实现多重继承。
+  - 接口强调特定功能的实现，而抽象类强调所属关系。
+  - 接口成员变量默认为public static final，必须赋初值，不能被修改；其所有的成员方法都是public、abstract的。抽象类中成员变量默认default，可在子类中被重新定义，也可被重新赋值；抽象方法被abstract修饰，不能被private、static、synchronized和native等修饰，必须以分号结尾，不带花括号。
+  
 
 ***工程师见解：***
 
-​		**本身的设计目的就是不同的。**
+**本身的设计目的就是不同的。**
 
 大家讲的都很详细了，我说说我自己的一点浅薄的理解。
 
@@ -290,7 +288,7 @@ super关键字的作用在于当子类中覆盖了父类的某个成员变量，
 链接：https://www.zhihu.com/question/20149818/answer/150169365
 来源：知乎
 
-### *4. 多态
+### 4. 多态
 
 1. 多态是同一个行为具有多个不同表现形式或形态的能力，就是同一个接口，使用不同的实例而执行不同操作。
 2. 多态存在的三个必要条件：

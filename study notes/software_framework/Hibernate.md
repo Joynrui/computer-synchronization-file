@@ -18,16 +18,6 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 ```
 
-
-
-
-
-
-
-
-
-
-
 **Hibernate ORM** (or simply **Hibernate**) is an [object–relational mapping](https://en.wikipedia.org/wiki/Object–relational_mapping) tool for the [Java](https://en.wikipedia.org/wiki/Java_(programming_language)) programming language. It provides a [framework](https://en.wikipedia.org/wiki/Software_framework) for mapping an [object-oriented](https://en.wikipedia.org/wiki/Object-oriented_programming) domain model to a [relational database](https://en.wikipedia.org/wiki/Relational_database). Hibernate handles [object–relational impedance mismatch](https://en.wikipedia.org/wiki/Object–relational_impedance_mismatch) problems by replacing direct, [persistent](https://en.wikipedia.org/wiki/Persistence_(computer_science)) database accesses with high-level object handling functions.
 
 The mapping of Java classes to database tables is implemented by the configuration of an [XML](https://en.wikipedia.org/wiki/XML) file or by using [Java Annotations](https://en.wikipedia.org/wiki/Java_annotation). When using an XML file, Hibernate can [generate](https://en.wikipedia.org/wiki/Program_synthesis) [skeleton](the structure consisting of all the bones) [source code](https://en.wikipedia.org/wiki/Source_code) for the persistence classes. This is [auxiliary]( auxiliary workers provide additional help for another group of workers) when annotations are used. Hibernate can use the XML file or the Java annotations to maintain the [database schema](https://en.wikipedia.org/wiki/Database_schema).
@@ -166,8 +156,6 @@ query.executeUpdate();
 high level architecture of Hibernate with **mapping file** and **configuration file**.
 
 ![hibernate architecture](assets/Hibernate.assets/architecture.jpg)
-
-
 
 
 
@@ -504,8 +492,6 @@ public class HibernateUtil {
 You can create the ".hbm.xml"  file to mapping persistent class, such as the example shows before. 
 
 Hibernate mapping Generator tools :**XDoclet, Middlegen, AndroMDA** 
-
-
 
 
 

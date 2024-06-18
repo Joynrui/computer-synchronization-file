@@ -1,8 +1,8 @@
 # Vue Series
 
-### Vue3 Basic function
+## Vue3 Basic function
 
-#### basetest.html
+### basetest.html
 
 ```html
 <!DOCTYPE html>
@@ -37,7 +37,7 @@
 </html>
 ```
 
-#### content.html
+### content.html
 
 ```html
 <!DOCTYPE html>
@@ -77,7 +77,7 @@
 </html>
 ```
 
-#### parameter_binding.html
+### parameter_binding.html
 
 ```html
 <!DOCTYPE html>
@@ -119,7 +119,7 @@
 </html>
 ```
 
-#### js_expression.html
+### js_expression.html
 
 ```html
 <!DOCTYPE html>
@@ -159,7 +159,7 @@
 </html>
 ```
 
-#### action_binding.html
+### action_binding.html
 
 ```html
 <!DOCTYPE html>
@@ -198,7 +198,7 @@
 </html>
 ```
 
-#### condition_rendering.html
+### condition_rendering.html
 
 ```html
 <!DOCTYPE html>
@@ -233,7 +233,7 @@
 </html>
 ```
 
-#### v-else_and_v-else-if.html
+### v-else_and_v-else-if.html
 
 ```html
 <!DOCTYPE html>
@@ -274,7 +274,7 @@
 </html>
 ```
 
-#### list_rendering.html
+### list_rendering.html
 
 ```html
 <!DOCTYPE html>
@@ -314,7 +314,7 @@
 
 
 
-### Create new Vue project
+## Create new Vue project
 
 1. download node.js
 2. use:
@@ -339,7 +339,7 @@ npm run serve
 
 
 
-### Vue project content
+## Vue project content
 
 - `package.json` is project dependency catalog.
 - `App.vue` is project root component.
@@ -348,7 +348,7 @@ npm run serve
 
 
 
-## `Vue Router`
+# `Vue Router`
 
 Vue2.x corresponding Vue router3.x
 
@@ -366,7 +366,7 @@ npm install vue-router@3.6.5
 
 
 
-## `Vuex`
+# `Vuex`
 
 
 
@@ -382,7 +382,7 @@ npm install vuex@3
 
 
 
-## `Mockjs`
+# `Mockjs`
 
 Frontend intercept Ajax request and create random data tools, used to simulate  server response.
 
@@ -394,7 +394,7 @@ npm install mockjs
 
 
 
-## Element UI
+# Element UI
 
 1. install
 
@@ -413,7 +413,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 ```
 
-## Third Party Gallery
+# Third Party Gallery
 
 [`Fontawesome4`](http://fontawesome.dashgame.com/)
 
@@ -435,7 +435,7 @@ import 'font-awesome/css/font-awesome.min.css'
 
 
 
-## `Axios`
+# `Axios`
 
 An Ajax framework, `Axios` is a *[promise-based](https://javascript.info/promise-basics)* HTTP Client for [`node.js`](https://nodejs.org/) and the browser. 
 
@@ -457,7 +457,7 @@ import axios from 'axios';
 
 - 一般在组件创建时调用请求，或需要某些动作时调用请求。
 
-### Configure Axios
+## Configure Axios
 
 Import `axios` in main.js, and set `baseUrl`, associate axios
 
@@ -468,7 +468,7 @@ axios.defaults.baseURL = 'http://localhost:8081'
 Vue.prototype.$http = axios
 ```
 
-## Axios CRUD
+# Axios CRUD
 
 ```js
 axios.get(url, config);
@@ -478,7 +478,7 @@ axios.put(url, data, config);
 axios.patch(url, data, config);
 ```
 
-### notice： Data format of Axios response is res.data
+notice： **Data format of Axios response is res.data**
 
 
 
@@ -546,13 +546,7 @@ async function deleteRemove(id: number){
 
 
 
-
-
-
-
-
-
-### Question
+## Question
 
 使用请求时，因存在回调函数， 而回调函数的作用域会发生变化，故以下代码会出现异常：
 
@@ -590,9 +584,7 @@ solution:使用箭头函数：箭头函数的作用域与其所属的父级函�
 
 
 
-
-
-## Less
+# Less
 
 CSS framework
 

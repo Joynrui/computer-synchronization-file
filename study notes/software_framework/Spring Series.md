@@ -1,4 +1,4 @@
-# Spring Series
+# 1 Spring Series
 
 
 
@@ -131,15 +131,15 @@ server.port=8081
 
 
 
-## Controller
+## 1.4 Controller
 
-### `@Controller`与 `@RestController`
+### 1.4.1 `@Controller`与 `@RestController`
 
 `@Controller`用于非前后端分离的项目类型，`@Controller`中返回的参数是MVC中的视图层View，而`@RestController`用于前后端分离的项目，控制器层的方法返回的是一个字符串，并将字符串转换为JOSN格式数据发送给前端。
 
 
 
-### `@RequestParam`
+### 1.4.2 `@RequestParam`
 
 用于处理方法接收的参数与方法的形参不一致的情况
 
@@ -155,7 +155,7 @@ usage example:
 
 
 
-## Set static file access directory
+## 1.5 Set static file access directory
 
 ```properties
 # 设置默认静态资源访问路径格式，如设置为"/images/**"路径,要访问static目录中的文件则必须加上images前缀，即"http://localhost:8080/images/test.jpg"
@@ -167,7 +167,7 @@ spring.web.resources.static-locations=classpath:/filename
 
 
 
-## File Upload
+## 1.6 File Upload
 
 **文件上传原理**
 
@@ -241,7 +241,7 @@ focus：开发阶段每次tomcat存储上文件的路径都会改变，所以每
 
 
 
-## Spring Boot Interceptor
+## 1.7 Spring Boot Interceptor
 
 拦截器适用于全局操作，应用场景如下：
 
@@ -274,7 +274,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 }
 ```
 
-### Interceptor registry
+### 1.7.1 Interceptor registry
 
 - `addPathPatterns`方法定义拦截器地址
 - `excludePathPatterns`定义排除某些地址不被拦截
@@ -301,7 +301,7 @@ public class WebConfigurer implements WebMvcConfigurer {
 
 
 
-### Interceptor data localized question
+### 1.7.2 Interceptor data localized question
 
 - `request.getAttribute`表示从request范围取得设置的属性，必须要先`setAttribute`设置属性，才能通过`getAttribute`来取得，设置与取得的为Object对象类型 。
 
@@ -323,5 +323,5 @@ public class WebConfigurer implements WebMvcConfigurer {
 
 
 
-# Spring Data JPA
+# 2 Spring Data JPA
 

@@ -4,6 +4,19 @@
 
 ## 1.1 `Scanner`
 
+e.g,
+
+```java
+class example{
+	public void Scanner() {
+        Scanner input = new Scanner();
+        input.nextInt();
+    }   
+}
+```
+
+
+
 ## 1.2 `Number`
 
 ## 1.3 `Math`
@@ -2347,7 +2360,7 @@ public class MaxCroft{
 
 # 14 Reflection
 
- There is a `Class` object will be created when a class loaded in the memory, the class **has and only has one Class object** in a runtime process.  
+There is a `Class` object will be created when a class loaded in the memory, the class **has and only has one Class object** in a runtime process.  
 
 
 

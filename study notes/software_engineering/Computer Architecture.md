@@ -1,6 +1,6 @@
 # Computer Organization and Architecture
 
-    ---*form ETH Zurich  苏黎世联邦理工*
+---*form ETH Zurich  苏黎世联邦理工*
 
 *Two goals of this course:  Enable you to think critically and broadly*
 

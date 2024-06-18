@@ -2236,19 +2236,13 @@ public class MapTestInstance<T extends Comparable<? super T>> {
     private static <T> void update(Map<T, List<String>> m, T key, String value) {
         List<String> lst = m.get(key);
         if (lst == null) {
-            lst = new ArrayList<>();
+            lst = new ArrayList<>()
             m.put(key, lst);
         }
         lst.add(value);
     }
 }
 ```
-
-
-
-  
-
-
 
 
 
@@ -2276,7 +2270,7 @@ The structure of hash like map  strurcture, but the key in the hash uses a diver
 
 
 
-###  5.3 Separate chaining 
+###  5.3 Separate chaining
 
 分离链接法，is <font color = red>to keep a list of all elements that hash to the same value</font>. We can use the standard library list implementations.
 
@@ -2498,8 +2492,6 @@ $$
 $$
 \frac{1}{2}(1 + \frac{1}{(1 - λ)^2})
 $$
-
-
 
 
 

@@ -8,7 +8,7 @@
 
 ## 概论
 
-### I. Linux 学习内容
+### Linux 学习内容
 
 1. **Linux kernel ;**
 2. **GNU Tools ;**
@@ -23,7 +23,7 @@
 - **GNU**亦指一个组织。由于Linux内核上原本没有任何软件，所以GNU 通过模仿Unix,为Linux 开发了一些必要的系统软件。
 - **GNU通用公共许可协议**（英语：GNU General Public License，缩写GNU GPL 或 GPL），是被广泛使用的[自由软件](https://zh.wikipedia.org/wiki/自由軟件)[许可证](https://zh.wikipedia.org/wiki/软件许可证)，给予了终端用户运行、学习、共享和修改软件的自由。[[6\]](https://zh.wikipedia.org/wiki/GNU通用公共许可证#cite_note-blackduck2015-6)许可证最初由[自由软件基金会](https://zh.wikipedia.org/wiki/自由軟件基金會)的[理查德·斯托曼](https://zh.wikipedia.org/wiki/理查德·斯托曼)为GNU项目所撰写，并授予计算机程序的用户[自由软件定义](https://zh.wikipedia.org/wiki/自由軟體定義)（The Free Software Definition）的协议。
 
-### II. Linux  基本框架
+### Linux  基本框架
 
 1. 应用软件 ------> GUI  ------>   GNU  ------>  Linux kernel ------->  hardware
 
@@ -514,15 +514,7 @@ ubuntu@Dsaktop-MaxCroft:~$
 
 1. yum：
 
-
-
 #### 第三方软件
-
-示例： The fuck： 
-
-
-
-
 
 ### Linux用户与权限
 
