@@ -853,9 +853,7 @@ nameserver 202.102.192.69
 
 ### problem solved
 
-
-
-1.   **已更改公钥问题：**
+#### 已更改公钥问题
 
 arnold@WSN:~$ ssh 10.18.46.111
 
@@ -880,3 +878,33 @@ Host key verification failed.
 然后后再次建立新的连接，即可获得新的公钥。
 
 **ssh-keygen -R 192.168.2.129**   在文件/.ssh/know_hosts中将192.168.2.129该行删除。
+
+#### ssh无法连接os
+
+ssh: connect to host 192.168.0.11 port 22: Connection refused
+
+ssh connect condition：
+
+- 目标主机必须安装openssh-server
+
+```shell
+# 检查是否安装了 OpenSSH 服务器，无输出则表示未安装
+dpkg -l | grep openssh-server
+# 安装
+sudo apt update
+sudo apt install openssh-server
+# 启动 SSH 服务并设置开机自动启动
+sudo systemctl start sshd
+sudo systemctl enable sshd
+# 检查 SSH 服务状态
+sudo systemctl status sshd
+# 确保防火墙允许 SSH 连接
+sudo ufw allow 22/tcp
+sudo ufw reload
+# 确保 SSH 配置文件 /etc/ssh/sshd_config 中的配置正确
+sudo nano /etc/ssh/sshd_config
+# 重启 ssh
+sudo systemctl restart sshd
+
+```
+

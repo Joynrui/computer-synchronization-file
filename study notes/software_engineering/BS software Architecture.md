@@ -84,3 +84,14 @@
 
 
 
+
+
+# BS Software Development Notice
+
+## POJO
+
+- `POJO` should override the `Object` `equals()` method to compare other objects' attributes equally. (String's equals() method has been overridden because Object's equals() methods compare the ROM address of the objects and String's equals() methods compare String content of the String objects.)
+- Don't use the "`return`" keyword in the "`finally`" code block because the "`return`" keyword in the "`try`" block will be ignored.
+
+
+
